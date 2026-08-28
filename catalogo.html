@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Catálogo | ReManga</title>
+
+    <!-- =====================================================
+         GOOGLE FONTS
+         ===================================================== -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    >
+
+
+    <!-- =====================================================
+         CSS PRINCIPAL
+         ===================================================== -->
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header id="header">
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <a href="index.html">
+
+                <img
+                    src="static/isotipo sin fondo.png"
+                    alt="Logo ReManga"
+                >
+
+            </a>
+
+        </div>
+
+
+        <!-- NAVEGACIÓN -->
+
+         <nav>
+
+        <ul>
+
+            <li>
+                <a href="index.html">
+                    Inicio
+                </a>
+            </li>
+
+            <li>
+                <a href="catalogo.html" class="active">
+                    Catálogo
+                </a>
+            </li>
+
+            <li>
+                <a href="vender.html">
+                    Vender
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+        <!-- PARTE DERECHA -->
+
+        <div class="header-right">
+
+
+            <!-- BUSCADOR -->
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="catalogSearch"
+                    placeholder="Buscar manga..."
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    id="searchButton"
+                    aria-label="Buscar"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- ICONOS -->
+
+            <div class="header-icons">
+
+                <a href="#">
+
+                    <i class="fa-regular fa-user"></i>
+
+                </a>
+
+                <a
+                    href="carrito.html"
+                    class="cart-icon-container"
+                >
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    <span
+                        class="cart-counter"
+                        id="cartCounter"
+                    >
+                        0
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTENIDO PRINCIPAL
+         ===================================================== -->
+
+    <main class="catalog-page">
+
+
+        <!-- =================================================
+             ENCABEZADO DEL CATÁLOGO
+             ================================================= -->
+
+        <section class="catalog-hero">
+
+            <div class="catalog-hero-content">
+
+                <span class="catalog-eyebrow">
+                    REMANGA STORE
+                </span>
+
+                <h1>
+                    Catálogo
+                </h1>
+
+                <p>
+                    Encontrá tu próximo manga entre nuestra
+                    selección de títulos nuevos y usados.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CONTENIDO DEL CATÁLOGO
+             ================================================= -->
+
+        <section class="catalog-container">
+
+
+            <!-- =============================================
+                 FILTROS
+                 ============================================= -->
+
+            <aside class="filters" id="filters">
+
+
+                <div class="filters-header">
+
+                    <h2>
+                        Filtrar
+                    </h2>
+
+                    <button
+                        type="button"
+                        id="clearFilters"
+                    >
+                        Limpiar
+                    </button>
+
+                </div>
+
+
+
+                <!-- BUSCAR -->
+
+                <div class="filter-group">
+
+                    <label for="filterSearch">
+                        Buscar
+                    </label>
+
+                    <div class="filter-search">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="filterSearch"
+                            placeholder="Nombre del manga..."
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ESTADO -->
+
+                <div class="filter-group">
+
+                    <h3>
+                        Estado
+                    </h3>
+
+
+                    <label class="check-option">
+
+                        <input
+                            type="checkbox"
+                            name="estado"
+                            value="nuevo"
+                            id="filterNuevo"
+                        >
+
+                        <span class="custom-check"></span>
+
+                        <span>
+                            Nuevo
+                        </span>
+
+                    </label>
+
+
+                    <label class="check-option">
+
+                        <input
+                            type="checkbox"
+                            name="estado"
+                            value="usado"
+                            id="filterUsado"
+                        >
+
+                        <span class="custom-check"></span>
+
+                        <span>
+                            Usado
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- PRECIO -->
+
+                <div class="filter-group">
+
+                    <h3>
+                        Precio máximo
+                    </h3>
+
+
+                    <div class="price-value">
+
+                        <span>
+                            Hasta
+                        </span>
+
+                        <strong id="priceDisplay">
+                            $50.000
+                        </strong>
+
+                    </div>
+
+
+                    <input
+                        type="range"
+                        id="priceFilter"
+                        min="0"
+                        max="50000"
+                        value="50000"
+                        step="500"
+                    >
+
+                    <div class="price-range">
+
+                        <span>
+                            $0
+                        </span>
+
+                        <span>
+                            $50.000
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+
+                <!-- BOTÓN FILTROS MOBILE -->
+
+                <button
+                    type="button"
+                    class="apply-filters"
+                    id="applyFilters"
+                >
+                    Aplicar filtros
+                </button>
+
+
+            </aside>
+
+
+
+            <!-- =============================================
+                 PRODUCTOS
+                 ============================================= -->
+
+            <div class="catalog-products">
+
+
+                <!-- =========================================
+                     BARRA SUPERIOR
+                     ========================================= -->
+
+                <div class="catalog-toolbar">
+
+
+                    <div class="results-count">
+
+                        <span id="resultsCount">
+                            8 productos encontrados
+                        </span>
+
+                    </div>
+
+
+                    <div class="catalog-sort">
+
+                        <label for="sortProducts">
+                            Ordenar:
+                        </label>
+
+                        <select id="sortProducts">
+
+                            <option value="default">
+                                Recomendados
+                            </option>
+
+                            <option value="price-low">
+                                Precio: menor a mayor
+                            </option>
+
+                            <option value="price-high">
+                                Precio: mayor a menor
+                            </option>
+
+                            <option value="name">
+                                Nombre A-Z
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =========================================
+     GRID DE PRODUCTOS
+     ========================================= -->
+
+<div
+    class="catalog-grid"
+    id="catalogGrid"
+>
+
+</div>
+
+
+<!-- =========================================
+     CARGANDO PRODUCTOS
+     ========================================= -->
+
+<div
+    class="catalog-loading"
+    id="catalogLoading"
+>
+
+    <i class="fa-solid fa-spinner"></i>
+
+    <p>
+        Cargando mangas...
+    </p>
+
+</div>
+
+
+<!-- =========================================
+     SIN RESULTADOS
+     ========================================= -->
+
+<div
+    class="no-results"
+    id="noResults"
+>
+
+    <i class="fa-solid fa-book-open"></i>
+
+    <h2>
+        No encontramos mangas
+    </h2>
+
+    <p>
+        Probá modificando los filtros o
+        buscando otro título.
+    </p>
+
+    <button
+        type="button"
+        id="resetSearch"
+    >
+        Ver todos los mangas
+    </button>
+
+</div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         NEWSLETTER
+         ===================================================== -->
+
+    <section class="newsletter">
+
+        <h2>
+            Enterate antes que nadie de las novedades
+        </h2>
+
+        <p>
+            Recibí lanzamientos y ofertas exclusivas.
+        </p>
+
+        <form>
+
+            <input
+                type="email"
+                placeholder="Tu correo electrónico"
+            >
+
+            <button type="submit">
+                Suscribirme
+            </button>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer>
+
+        <div class="footer-logo">
+
+            <a href="index.html">
+
+                <img
+                    src="static/isotipo sin fondo.png"
+                    alt="Logo ReManga"
+                >
+
+            </a>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Inicio
+            </a>
+
+            <a href="catalogo.html">
+                Catálogo
+            </a>
+
+
+            <a href="#">
+                Vender
+            </a>
+
+        </div>
+
+
+        <div class="footer-social">
+
+            <i class="fa-brands fa-instagram"></i>
+
+            <i class="fa-brands fa-facebook"></i>
+
+            <i class="fa-brands fa-x-twitter"></i>
+
+        </div>
+
+
+        <p>
+            © 2026 ReManga - Todos los derechos reservados.
+        </p>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

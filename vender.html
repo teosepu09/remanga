@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Vender | ReManga</title>
+
+
+    <!-- =====================================================
+         TIPOGRAFÍAS
+         ===================================================== -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         ICONOS
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    >
+
+
+    <!-- =====================================================
+         CSS
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header id="header">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <a href="index.html">
+
+                <img
+                    src="static/isotipo sin fondo.png"
+                    alt="Logo ReManga"
+                >
+
+            </a>
+
+        </div>
+
+
+        <!-- NAVEGACIÓN -->
+
+        <nav>
+
+        <ul>
+
+            <li>
+                <a href="index.html" >
+                    Inicio
+                </a>
+            </li>
+
+            <li>
+                <a href="catalogo.html">
+                    Catálogo
+                </a>
+            </li>
+
+            <li>
+                <a href="vender.html" class="active">
+                    Vender
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+        <!-- PARTE DERECHA -->
+
+        <div class="header-right">
+
+
+            <!-- BUSCADOR -->
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="sellSearch"
+                    placeholder="Buscar manga..."
+                >
+
+                <button
+                    type="button"
+                    id="sellSearchButton"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- ICONOS -->
+
+            <div class="header-icons">
+
+                <a href="#" aria-label="Mi cuenta">
+
+                    <i class="fa-regular fa-user"></i>
+
+                </a>
+
+
+                <a
+                    href="carrito.html"
+                    class="cart-icon-container"
+                    aria-label="Carrito"
+                >
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    <span
+                        class="cart-counter"
+                        id="cartCounter"
+                    >
+                        0
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTENIDO PRINCIPAL
+         ===================================================== -->
+
+    <main class="sell-page">
+
+
+        <div class="sell-container">
+
+
+            <!-- =================================================
+                 ENCABEZADO
+                 ================================================= -->
+
+            <section class="sell-heading">
+
+                <span>
+                    REMANGA MARKETPLACE
+                </span>
+
+                <h1>
+                    Vendé tu manga
+                </h1>
+
+                <p>
+                    Publicá tus mangas usados y encontrá
+                    compradores dentro de la comunidad.
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FORMULARIO
+                 ================================================= -->
+
+            <form
+                class="sell-form"
+                id="sellForm"
+            >
+
+
+                <!-- =================================================
+                     COLUMNA IZQUIERDA
+                     ================================================= -->
+
+                <div class="sell-left">
+
+
+                    <!-- FOTO -->
+
+                    <div class="sell-card">
+
+                        <div class="sell-card-title">
+
+                            <i class="fa-regular fa-image"></i>
+
+                            <div>
+
+                                <h2>
+                                    Fotos del manga
+                                </h2>
+
+                                <p>
+                                    Mostrá el estado real del producto.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <label
+                            for="mangaImage"
+                            class="image-upload"
+                        >
+
+                            <div class="image-upload-icon">
+
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                            </div>
+
+                            <strong>
+                                Subí una imagen
+                            </strong>
+
+                            <span>
+                                JPG, PNG o WEBP
+                            </span>
+
+                        </label>
+
+
+                        <input
+                            type="file"
+                            id="mangaImage"
+                            accept="image/png,image/jpeg,image/webp"
+                            hidden
+                        >
+
+
+                        <div
+                            class="image-preview"
+                            id="imagePreview"
+                        >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- INFORMACIÓN -->
+
+                    <div class="sell-card">
+
+                        <div class="sell-card-title">
+
+                            <i class="fa-solid fa-book"></i>
+
+                            <div>
+
+                                <h2>
+                                    Información del manga
+                                </h2>
+
+                                <p>
+                                    Completá los datos de tu publicación.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- TÍTULO -->
+
+                        <div class="form-group">
+
+                            <label for="mangaTitle">
+                                Título del manga
+                            </label>
+
+                            <input
+                                type="text"
+                                id="mangaTitle"
+                                name="title"
+                                placeholder="Ej: One Piece"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- TOMO -->
+
+                        <div class="form-row">
+
+
+                            <div class="form-group">
+
+                                <label for="mangaVolume">
+                                    Tomo
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="mangaVolume"
+                                    name="volume"
+                                    min="1"
+                                    placeholder="Ej: 12"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- ESTADO -->
+
+                            <div class="form-group">
+
+                                <label for="mangaState">
+                                    Estado
+                                </label>
+
+                                <select
+                                    id="mangaState"
+                                    name="state"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Seleccionar
+                                    </option>
+
+                                    <option value="Nuevo">
+                                        Nuevo
+
+                                    <option value="Usado">
+                                        Usado
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PRECIO -->
+
+                        <div class="form-group">
+
+                            <label for="mangaPrice">
+                                Precio
+                            </label>
+
+                            <div class="price-input">
+
+                                <span>
+                                    $
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="mangaPrice"
+                                    name="price"
+                                    min="1"
+                                    placeholder="Ej: 12500"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DESCRIPCIÓN -->
+
+                        <div class="form-group">
+
+                            <label for="mangaDescription">
+                                Descripción
+                            </label>
+
+                            <textarea
+                                id="mangaDescription"
+                                name="description"
+                                rows="5"
+                                maxlength="500"
+                                placeholder="Contale a los compradores en qué estado se encuentra el manga..."
+                            ></textarea>
+
+                            <span class="character-count">
+                                Máximo 500 caracteres
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     COLUMNA DERECHA
+                     ================================================= -->
+
+                <aside class="sell-right">
+
+
+                    <!-- RESUMEN -->
+
+                    <div class="sell-summary">
+
+                        <div class="sell-summary-heading">
+
+                            <span>
+                                PUBLICACIÓN
+                            </span>
+
+                            <h2>
+                                Revisá tu manga
+                            </h2>
+
+                        </div>
+
+
+                        <div
+                            class="sell-summary-image"
+                            id="summaryImage"
+                        >
+
+                            <i class="fa-solid fa-book-open"></i>
+
+                        </div>
+
+
+                        <div class="sell-summary-info">
+
+                            <h3 id="summaryTitle">
+                                Nombre del manga
+                            </h3>
+
+                            <p id="summaryVolume">
+                                Tomo -
+                            </p>
+
+                            <span id="summaryState">
+                                Estado -
+                            </span>
+
+                        </div>
+
+
+                        <div class="sell-summary-price">
+
+                            <small>
+                                Precio
+                            </small>
+
+                            <strong id="summaryPrice">
+                                $0
+                            </strong>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="publish-button"
+                        >
+
+                            Publicar manga
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </button>
+
+
+                        <p class="publish-info">
+
+                            <i class="fa-solid fa-circle-info"></i>
+
+                            Tu publicación podrá ser vista
+                            por otros usuarios.
+
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- CONSEJOS -->
+
+                    <div class="sell-tips">
+
+                        <h3>
+                            Consejos para vender
+                        </h3>
+
+
+                        <div class="tip">
+
+                            <i class="fa-solid fa-camera"></i>
+
+                            <p>
+                                Usá fotos claras y mostrale
+                                al comprador el estado real.
+                            </p>
+
+                        </div>
+
+
+                        <div class="tip">
+
+                            <i class="fa-solid fa-tag"></i>
+
+                            <p>
+                                Compará precios para publicar
+                                una oferta atractiva.
+                            </p>
+
+                        </div>
+
+
+                        <div class="tip">
+
+                            <i class="fa-solid fa-star"></i>
+
+                            <p>
+                                Una buena descripción genera
+                                más confianza.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer>
+
+        <div class="footer-logo">
+
+            <img
+                src="static/isotipo sin fondo.png"
+                alt="Logo ReManga"
+            >
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Inicio
+            </a>
+
+            <a href="catalogo.html">
+                Catálogo
+            </a>
+
+            <a href="vender.html">
+                Vender
+            </a>
+
+        </div>
+
+
+        <div class="footer-social">
+
+            <i class="fa-brands fa-instagram"></i>
+
+            <i class="fa-brands fa-facebook"></i>
+
+            <i class="fa-brands fa-x-twitter"></i>
+
+        </div>
+
+
+        <p>
+            © 2026 ReManga - Todos los derechos reservados.
+        </p>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Carrito | ReManga</title>
+
+
+    <!-- TIPOGRAFÍAS -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ICONOS -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    >
+
+
+    <!-- CSS -->
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header id="header">
+
+        <div class="logo">
+
+            <a href="index.html">
+
+                <img
+                    src="static/isotipo sin fondo.png"
+                    alt="Logo ReManga"
+                >
+
+            </a>
+
+        </div>
+
+
+        <nav>
+
+            <ul>
+
+                <li>
+
+                    <a href="index.html">
+                        Inicio
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a href="catalogo.html">
+                        Catálogo
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a href="vender.html">
+                        Vender
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </nav>
+
+
+        <div class="header-right">
+
+
+            <!-- BUSCADOR -->
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="cartSearch"
+                    placeholder="Buscar manga..."
+                >
+
+                <button
+                    type="button"
+                    id="cartSearchButton"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- ICONOS -->
+
+            <div class="header-icons">
+
+
+                <a
+                    href="#"
+                    aria-label="Mi cuenta"
+                >
+
+                    <i class="fa-regular fa-user"></i>
+
+                </a>
+
+
+                <a
+                    href="carrito.html"
+                    class="cart-icon-container"
+                    aria-label="Carrito"
+                >
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    <span
+                        class="cart-counter"
+                        id="cartCounter"
+                    >
+                        0
+                    </span>
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CARRITO
+         ===================================================== -->
+
+    <main class="cart-page">
+
+
+        <div class="cart-container">
+
+
+            <!-- TÍTULO -->
+
+            <div class="cart-heading">
+
+                <span>
+                    REMANGA
+                </span>
+
+                <h1>
+                    Tu carrito
+                </h1>
+
+                <p>
+                    Revisá tus productos antes de finalizar la compra.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 CONTENIDO DEL CARRITO
+                 ================================================= -->
+
+            <div class="cart-layout">
+
+
+                <!-- ================================
+                     PRODUCTOS
+                     ================================= -->
+
+                <section class="cart-products">
+
+
+                    <div class="cart-products-header">
+
+                        <h2>
+                            Productos
+                        </h2>
+
+                        <span id="cartItemsCount">
+                            0 productos
+                        </span>
+
+                    </div>
+
+
+                    <!--
+                        JAVASCRIPT VA A INSERTAR
+                        LOS PRODUCTOS ACÁ
+                    -->
+
+                    <div
+                        class="cart-items"
+                        id="cartItems"
+                    >
+
+                    </div>
+
+
+                    <!-- CARRITO VACÍO -->
+
+                    <div
+                        class="empty-cart"
+                        id="emptyCart"
+                    >
+
+                        <div class="empty-cart-icon">
+
+                            <i class="fa-solid fa-cart-shopping"></i>
+
+                        </div>
+
+                        <h2>
+                            Tu carrito está vacío
+                        </h2>
+
+                        <p>
+                            Todavía no agregaste ningún manga.
+                        </p>
+
+                        <a
+                            href="catalogo.html"
+                            class="btn-primary"
+                        >
+                            Explorar catálogo
+                        </a>
+
+                    </div>
+
+
+                    <!-- CONTINUAR COMPRANDO -->
+
+                    <a
+                        href="catalogo.html"
+                        class="continue-shopping"
+                    >
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Continuar comprando
+
+                    </a>
+
+
+                </section>
+
+
+
+                <!-- ================================
+                     RESUMEN
+                     ================================= -->
+
+                <aside class="cart-summary">
+
+
+                    <h2>
+                        Resumen
+                    </h2>
+
+
+                    <div class="summary-line">
+
+                        <span>
+                            Productos
+                        </span>
+
+                        <strong id="summarySubtotal">
+                            $0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-line">
+
+                        <span>
+                            Envío
+                        </span>
+
+                        <strong id="summaryShipping">
+                            A calcular
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-divider"></div>
+
+
+                    <div class="summary-total">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong id="summaryTotal">
+                            $0
+                        </strong>
+
+                    </div>
+
+
+                    <!-- FINALIZAR -->
+
+                    <button
+                        type="button"
+                        class="checkout-button"
+                        id="checkoutButton"
+                    >
+
+                        Finalizar compra
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+
+                    <!-- SEGURIDAD -->
+
+                    <div class="checkout-security">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        <span>
+                            Compra segura dentro de ReManga
+                        </span>
+
+                    </div>
+
+
+                </aside>
+
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer>
+
+        <div class="footer-logo">
+
+            <img
+                src="static/isotipo sin fondo.png"
+                alt="Logo ReManga"
+            >
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Inicio
+            </a>
+
+            <a href="catalogo.html">
+                Catálogo
+            </a>
+
+
+            <a href="#">
+                Vender
+            </a>
+
+        </div>
+
+
+        <div class="footer-social">
+
+            <i class="fa-brands fa-instagram"></i>
+
+            <i class="fa-brands fa-facebook"></i>
+
+            <i class="fa-brands fa-x-twitter"></i>
+
+        </div>
+
+
+        <p>
+            © 2026 ReManga - Todos los derechos reservados.
+        </p>
+
+    </footer>
+
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

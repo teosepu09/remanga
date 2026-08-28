@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Producto | ReManga</title>
+
+
+    <!-- =====================================================
+         TIPOGRAFÍAS
+         ===================================================== -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         ICONOS
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    >
+
+
+    <!-- =====================================================
+         CSS
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header id="header">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <a href="index.html">
+
+                <img
+                    src="static/isotipo sin fondo.png"
+                    alt="Logo ReManga"
+                >
+
+            </a>
+
+        </div>
+
+
+        <!-- NAVEGACIÓN -->
+
+        <nav>
+
+            <ul>
+
+                <li>
+
+                    <a href="index.html">
+                        Inicio
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a
+                        href="catalogo.html"
+                        class="active"
+                    >
+                        Catálogo
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a href="vender.html">
+                        Vender
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </nav>
+
+
+        <!-- PARTE DERECHA -->
+
+        <div class="header-right">
+
+
+            <!-- BUSCADOR -->
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="productSearch"
+                    placeholder="Buscar manga..."
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    id="productSearchButton"
+                    aria-label="Buscar"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- ICONOS -->
+
+            <div class="header-icons">
+
+
+                <!-- USUARIO -->
+
+                <a
+                    href="#"
+                    aria-label="Mi cuenta"
+                >
+
+                    <i class="fa-regular fa-user"></i>
+
+                </a>
+
+
+                <!-- CARRITO -->
+
+                <a
+                    href="carrito.html"
+                    class="cart-icon-container"
+                    aria-label="Carrito"
+                >
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    <span
+                        class="cart-counter"
+                        id="cartCounter"
+                    >
+                        0
+                    </span>
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         PRODUCTO
+         ===================================================== -->
+
+    <main class="product-page">
+
+
+        <div class="product-container">
+
+
+            <!-- VOLVER -->
+
+            <a
+                href="catalogo.html"
+                class="back-catalog"
+            >
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Volver al catálogo
+
+            </a>
+
+
+
+            <!-- =================================================
+                 INFORMACIÓN PRINCIPAL
+                 ================================================= -->
+
+            <section
+                class="product-detail"
+                id="productDetail"
+            >
+
+
+                <!-- ================= IMAGEN ================= -->
+
+                <div class="product-gallery">
+
+                    <div class="product-main-image">
+
+
+                        <!--
+                            Esta imagen es solamente
+                            un valor inicial.
+
+                            JavaScript la reemplazará
+                            por la imagen de la API.
+                        -->
+
+                        <img
+                            id="productImage"
+                            src="imagenes/onepiece1.webp"
+                            alt="Portada del manga"
+                        >
+
+
+                        <!-- ESTADO -->
+
+                        <span
+                            class="product-state new"
+                            id="productState"
+                        >
+                            NUEVO
+                        </span>
+
+
+                        <!-- FAVORITO -->
+
+                        <button
+                            class="product-favorite"
+                            id="productFavorite"
+                            type="button"
+                            aria-label="Agregar a favoritos"
+                        >
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================= INFORMACIÓN ================= -->
+
+                <div class="product-info">
+
+
+                    <!-- CATEGORÍA -->
+
+                    <span
+                        class="product-category"
+                        id="productCategory"
+                    >
+                        MANGA
+                    </span>
+
+
+                    <!-- TÍTULO -->
+
+                    <h1 id="productTitle">
+                        Cargando...
+                    </h1>
+
+
+                    <!-- TOMO -->
+
+                    <p
+                        class="product-volume"
+                        id="productVolume"
+                    >
+                        Cargando...
+                    </p>
+
+
+                    <!-- VALORACIÓN -->
+
+                    <div class="product-rating">
+
+                        <div class="stars">
+
+                            <i class="fa-solid fa-star"></i>
+
+                            <i class="fa-solid fa-star"></i>
+
+                            <i class="fa-solid fa-star"></i>
+
+                            <i class="fa-solid fa-star"></i>
+
+                            <i class="fa-solid fa-star"></i>
+
+                        </div>
+
+                        <span>
+                            4.9
+                        </span>
+
+                    </div>
+
+
+                    <!-- PRECIO -->
+
+                    <div class="product-price">
+
+                        <span id="productPrice">
+                            $0
+                        </span>
+
+                    </div>
+
+
+                    <!-- DISPONIBILIDAD -->
+
+                    <div class="product-availability">
+
+                        <span class="availability-dot"></span>
+
+                        <span
+                            id="productAvailability"
+                        >
+                            Disponible
+                        </span>
+
+                    </div>
+
+
+                    <!-- DIVISOR -->
+
+                    <div class="product-divider"></div>
+
+
+                    <!-- DESCRIPCIÓN -->
+
+                    <p
+                        class="product-short-description"
+                        id="productShortDescription"
+                    >
+                        Cargando información...
+                    </p>
+
+
+                    <!-- BOTONES -->
+
+                    <div class="product-actions">
+
+
+                        <!-- CANTIDAD -->
+
+                        <div class="quantity-selector">
+
+                            <button
+                                type="button"
+                                id="quantityMinus"
+                                aria-label="Disminuir cantidad"
+                            >
+                                −
+                            </button>
+
+                            <span id="productQuantity">
+                                1
+                            </span>
+
+                            <button
+                                type="button"
+                                id="quantityPlus"
+                                aria-label="Aumentar cantidad"
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+
+                        <!-- CARRITO -->
+
+                        <button
+                            type="button"
+                            class="product-cart-button"
+                            id="addProductToCart"
+                        >
+
+                            <i class="fa-solid fa-cart-shopping"></i>
+
+                            Agregar al carrito
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- COMPRA INMEDIATA -->
+
+                    <button
+                        type="button"
+                        class="buy-now-button"
+                        id="buyNow"
+                    >
+
+                        Comprar ahora
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+
+                    <!-- BENEFICIOS -->
+
+                    <div class="product-benefits">
+
+
+                        <div class="product-benefit">
+
+                            <i class="fa-solid fa-truck-fast"></i>
+
+                            <div>
+
+                                <strong>
+                                    Envíos rápidos
+                                </strong>
+
+                                <span>
+                                    Recibí tu manga de forma segura.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="product-benefit">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                            <div>
+
+                                <strong>
+                                    Compra segura
+                                </strong>
+
+                                <span>
+                                    Compra dentro de ReManga.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="product-benefit">
+
+                            <i class="fa-solid fa-rotate-left"></i>
+
+                            <div>
+
+                                <strong>
+                                    Comunidad
+                                </strong>
+
+                                <span>
+                                    Comprá y vendé con otros usuarios.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 INFORMACIÓN DEL PRODUCTO
+                 ================================================= -->
+
+            <section class="product-information">
+
+
+                <div class="product-tabs">
+
+                    <button
+                        class="product-tab active"
+                        type="button"
+                    >
+                        Descripción
+                    </button>
+
+                    <button
+                        class="product-tab"
+                        type="button"
+                    >
+                        Información
+                    </button>
+
+                    <button
+                        class="product-tab"
+                        type="button"
+                    >
+                        Estado
+                    </button>
+
+                </div>
+
+
+                <!-- DESCRIPCIÓN -->
+
+                <div class="product-description">
+
+                    <h2>
+                        Sobre este manga
+                    </h2>
+
+                    <p id="productDescription">
+                        Cargando información del producto...
+                    </p>
+
+                </div>
+
+
+                <!-- DATOS -->
+
+                <div class="product-data-grid">
+
+
+                    <div class="product-data">
+
+                        <span>
+                            Título
+                        </span>
+
+                        <strong id="dataTitle">
+                            Cargando...
+                        </strong>
+
+                    </div>
+
+
+                    <div class="product-data">
+
+                        <span>
+                            Tomo
+                        </span>
+
+                        <strong id="dataVolume">
+                            Cargando...
+                        </strong>
+
+                    </div>
+
+
+                    <div class="product-data">
+
+                        <span>
+                            Estado
+                        </span>
+
+                        <strong id="dataState">
+                            Cargando...
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRODUCTOS RELACIONADOS
+                 ================================================= -->
+
+            <section class="related-products">
+
+
+                <div class="section-title">
+
+                    <h2>
+                        También te puede interesar
+                    </h2>
+
+                    <p>
+                        Descubrí otros mangas disponibles en ReManga.
+                    </p>
+
+                </div>
+
+
+                <!--
+                    JavaScript va a cargar aquí
+                    los productos relacionados
+                    desde la API.
+                -->
+
+                <div
+                    class="related-grid"
+                    id="relatedGrid"
+                >
+
+                </div>
+
+
+                <!-- CARGANDO -->
+
+                <div
+                    class="related-loading"
+                    id="relatedLoading"
+                >
+
+                    <i class="fa-solid fa-spinner"></i>
+
+                    <p>
+                        Cargando recomendaciones...
+                    </p>
+
+                </div>
+
+
+                <!-- SIN RELACIONADOS -->
+
+                <div
+                    class="related-empty"
+                    id="relatedEmpty"
+                >
+
+                    <p>
+                        No hay otros mangas disponibles.
+                    </p>
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer>
+
+        <div class="footer-logo">
+
+            <a href="index.html">
+
+                <img
+                    src="static/isotipo sin fondo.png"
+                    alt="Logo ReManga"
+                >
+
+            </a>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Inicio
+            </a>
+
+            <a href="catalogo.html">
+                Catálogo
+            </a>
+
+            <a href="catalogo.html">
+                Comprar
+            </a>
+
+            <a href="vender.html">
+                Vender
+            </a>
+
+        </div>
+
+
+        <div class="footer-social">
+
+            <i class="fa-brands fa-instagram"></i>
+
+            <i class="fa-brands fa-facebook"></i>
+
+            <i class="fa-brands fa-x-twitter"></i>
+
+        </div>
+
+
+        <p>
+            © 2026 ReManga - Todos los derechos reservados.
+        </p>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
