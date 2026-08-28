@@ -1,4 +1,4 @@
-# Archetype: Manga Store Application
+# Archetype: Manga Store Application Beta
 
 ## Project Overview
 A Flask-based web application for buying and selling manga. Users can browse a product catalog, manage shopping carts, and sellers can list products for sale. The application uses SQLite for data persistence and includes image upload capabilities.
