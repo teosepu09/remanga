@@ -3,7 +3,25 @@
    Unifica lógica repetida y organiza todo por funciones.
    ========================================================= */
 
-const API_URL = "http://127.0.0.1:5000";
+// Detectar automáticamente si estamos en desarrollo o producción
+const isDevelopment = window.location.hostname === 'localhost' || 
+                      window.location.hostname === '127.0.0.1';
+
+const API_URL = (() => {
+    // Si hay una variable global definida en HTML
+    if (typeof REMANGA_API_URL !== 'undefined') {
+        return REMANGA_API_URL;
+    }
+    
+    // Detectar según el entorno
+    if (isDevelopment) {
+        return 'http://127.0.0.1:5000';
+    } else {
+        // En producción, usar la misma URL base que el sitio
+        return window.location.origin.replace(/\/$/, '');
+    }
+})();
+
 const CART_KEY = "remangaCart";
 
 /* ========================= INICIO ========================= */
@@ -34,14 +52,17 @@ function formatearPrecio(precio) {
 function obtenerRutaImagen(imagen) {
     if (!imagen) return "imagenes/onepiece1.webp";
 
+    // URL absoluta
     if (/^https?:\/\//i.test(imagen)) {
         return imagen;
     }
 
+    // Ruta relativa local
     if (/^img\//i.test(imagen)) {
         return imagen;
     }
 
+    // Ruta desde el API
     return `${API_URL}/imagenes/${encodeURIComponent(imagen)}`;
 }
 
