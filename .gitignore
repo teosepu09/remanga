@@ -47,6 +47,7 @@ Thumbs.db
 *.sqlite
 *.sqlite3
 db_*.db
+db_mangas1.0.db
 
 # Logs
 *.log
