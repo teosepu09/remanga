@@ -1,68 +1,42 @@
 // =========================================================
-// ELEMENTOS
+// Login script — safer: wait DOMContentLoaded and guard nulls
 // =========================================================
 
-const loginForm = document.getElementById("loginForm");
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById("loginForm");
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
 
-const passwordInput = document.getElementById("password");
+    if (!loginForm) return; // nothing to do
 
-const togglePassword = document.getElementById("togglePassword");
-
-
-// =========================================================
-// MOSTRAR / OCULTAR CONTRASEÑA
-// =========================================================
-
-togglePassword.addEventListener("click", () => {
-
-    if (passwordInput.type === "password") {
-
-        passwordInput.type = "text";
-
-        togglePassword.textContent = "◉";
-
-    } else {
-
-        passwordInput.type = "password";
-
-        togglePassword.textContent = "◉";
-
+    // Mostrar / ocultar contraseña (si existe el botón)
+    if (togglePassword && passwordInput) {
+        togglePassword.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePassword.textContent = "◉";
+            } else {
+                passwordInput.type = "password";
+                togglePassword.textContent = "◉";
+            }
+        });
     }
 
-});
+    // Manejo del envío del formulario
+    loginForm.addEventListener("submit", (event) => {
+        event.preventDefault();
 
+        const usuarioEl = document.getElementById("usuario");
+        const usuario = usuarioEl ? usuarioEl.value.trim() : "";
+        const password = passwordInput ? passwordInput.value.trim() : "";
 
-// =========================================================
-// LOGIN
-// =========================================================
+        if (usuario === "" || password === "") {
+            alert("Completá todos los campos.");
+            return;
+        }
 
-loginForm.addEventListener("submit", (event) => {
-
-    event.preventDefault();
-
-
-    const usuario = document.getElementById("usuario").value.trim();
-
-    const password = passwordInput.value.trim();
-
-
-    // -----------------------------------------------------
-    // VALIDACIÓN BÁSICA
-    // -----------------------------------------------------
-
-    if (usuario === "" || password === "") {
-
-        alert("Completá todos los campos.");
-
-        return;
-
-    }
-
-
-    // -----------------------------------------------------
-    // POR AHORA NO HAY BASE DE DATOS
-    // -----------------------------------------------------
-
-    window.location.href = "index.html";
-
+        // Por ahora no hay backend: redirigimos a la página principal
+        // usamos replace para no dejar el login en el historial
+        window.location.replace('index.html');
+    });
 });
