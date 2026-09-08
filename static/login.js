@@ -14,10 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
         togglePassword.addEventListener("click", () => {
             if (passwordInput.type === "password") {
                 passwordInput.type = "text";
-                togglePassword.textContent = "◉";
+                togglePassword.textContent = "○";
+                togglePassword.setAttribute("aria-label", "Ocultar contraseña");
             } else {
                 passwordInput.type = "password";
                 togglePassword.textContent = "◉";
+                togglePassword.setAttribute("aria-label", "Mostrar contraseña");
             }
         });
     }
@@ -37,6 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Por ahora no hay backend: redirigimos a la página principal
         // usamos replace para no dejar el login en el historial
-        window.location.replace('index.html');
+        window.location.replace('./index.html');
     });
 });
