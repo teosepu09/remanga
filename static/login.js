@@ -6,6 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById("loginForm");
     const passwordInput = document.getElementById("password");
     const togglePassword = document.getElementById("togglePassword");
+    const guestButton = document.querySelector("#guestBtn, .guest-button");
+
+    if (guestButton) {
+        guestButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            window.location.replace("./index.html");
+        });
+    }
 
     if (!loginForm) return; // nothing to do
 
