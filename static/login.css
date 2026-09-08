@@ -547,10 +547,8 @@ body {
 }
 
 
-guest-button:active {
-
+.guest-button:active {
     transform: translateY(0);
-
 }
 
 
