@@ -40,7 +40,8 @@ def url_imagen_supabase(nombre):
         return ""
     if nombre.startswith(("http://", "https://")):
         return nombre
-    return f"{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET}/public/{nombre}"
+    ruta = nombre.lstrip("/")
+    return f"{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET}/{ruta}"
 
 
 def normalizar_producto(producto):
@@ -64,7 +65,7 @@ def guardar_imagen_supabase(archivo):
         return None
     try:
         supabase.storage.from_(SUPABASE_BUCKET).upload(
-            f"public/{nombre}",
+            nombre,
             archivo.read(),
             {"content-type": archivo.content_type or "application/octet-stream", "upsert": "true"}
         )
