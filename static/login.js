@@ -8,10 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const togglePassword = document.getElementById("togglePassword");
     const guestButton = document.querySelector("#guestBtn, .guest-button");
 
-    if (guestButton) {
-        guestButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            window.location.replace("./catalogo.html");
+    if (guestButton && !guestButton.getAttribute("href")) {
+        guestButton.addEventListener("click", () => {
+            window.location.href = "./catalogo.html";
         });
     }
 
