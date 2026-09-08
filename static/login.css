@@ -52,6 +52,7 @@ body {
     z-index: -2;
 
     transform: scale(1.02);
+    pointer-events: none;
 
 }
 
@@ -77,6 +78,7 @@ body {
         );
 
     z-index: -1;
+    pointer-events: none;
 
 }
 
@@ -89,6 +91,8 @@ body {
 
     width: 100%;
     min-height: 100vh;
+    position: relative;
+    z-index: 1;
 
     display: grid;
 
