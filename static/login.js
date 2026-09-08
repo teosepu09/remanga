@@ -9,13 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const guestButton = document.getElementById("guestBtn");
     const rememberInput = document.getElementById("remember");
 
-    // Si el usuario ya inició sesión y marcó "Recordarme",
-    // mostramos directamente el Home.
-    const savedSession = localStorage.getItem("remangaLoggedIn");
-    if (savedSession === "true") {
-        mostrarHome();
-    }
-
     // Mostrar / ocultar contraseña.
     if (togglePassword && passwordInput) {
         togglePassword.addEventListener("click", () => {
@@ -29,11 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Continuar sin iniciar sesión: también lleva al Home.
+    // Continuar sin iniciar sesión: entra al Home (index.html).
     if (guestButton) {
-        guestButton.addEventListener("click", () => {
+        guestButton.addEventListener("click", (event) => {
+            event.preventDefault();
             sessionStorage.setItem("remangaGuest", "true");
-            mostrarHome();
+            window.location.replace("./index.html");
         });
     }
 
@@ -53,19 +47,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (rememberInput && rememberInput.checked) {
                 localStorage.setItem("remangaLoggedIn", "true");
+                sessionStorage.removeItem("remangaLoggedIn");
             } else {
                 sessionStorage.setItem("remangaLoggedIn", "true");
             }
 
-            mostrarHome();
+            // Después de iniciar sesión, el usuario entra al Home.
+            window.location.replace("./index.html");
         });
-    }
-
-    // Enlaces que todavía usan el antiguo comportamiento pueden utilizar
-    // esta función sin provocar una redirección directa al catálogo.
-    function mostrarHome() {
-        document.body.classList.add("remanga-authenticated");
-        document.title = "ReManga | Compra y Venta de Mangas";
-        window.scrollTo(0, 0);
     }
 });
