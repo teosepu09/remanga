@@ -41,7 +41,7 @@ body {
     height: 100%;
 
     background-image:
-        url("fondo.png");
+        url("../fondo.png");
 
     background-size: cover;
 
@@ -530,8 +530,14 @@ body {
 
     text-decoration: none;
 
+    transition: 0.25s;
+}
+
+.guest-button:hover {
 
     background: #e76f58;
+
+    color: white;
 
     transform: translateY(-2px);
 
@@ -541,7 +547,7 @@ body {
 }
 
 
-.login-button:active {
+guest-button:active {
 
     transform: translateY(0);
 
