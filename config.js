@@ -16,7 +16,7 @@ const REMANGA_API_URL = remangaIsDevelopment
 // La service_role key NO debe colocarse aquí.
 const REMANGA_SUPABASE_CONFIG = {
     url: 'https://hhssfhcxlehuojuwacyy.supabase.co',
-    bucket: 'imagenes-mangas',
+    bucket: 'imagenes',
     enabled: true
 };
 
