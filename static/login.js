@@ -1,51 +1,71 @@
 // =========================================================
-// Login script — safer: wait DOMContentLoaded and guard nulls
+// ReManga - Login / navegación inicial
 // =========================================================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById("loginForm");
     const passwordInput = document.getElementById("password");
     const togglePassword = document.getElementById("togglePassword");
-    const guestButton = document.querySelector("#guestBtn, .guest-button");
+    const guestButton = document.getElementById("guestBtn");
+    const rememberInput = document.getElementById("remember");
 
-    if (guestButton && !guestButton.getAttribute("href")) {
-        guestButton.addEventListener("click", () => {
-            window.location.href = "./catalogo.html";
-        });
+    // Si el usuario ya inició sesión y marcó "Recordarme",
+    // mostramos directamente el Home.
+    const savedSession = localStorage.getItem("remangaLoggedIn");
+    if (savedSession === "true") {
+        mostrarHome();
     }
 
-    if (!loginForm) return; // nothing to do
-
-    // Mostrar / ocultar contraseña (si existe el botón)
+    // Mostrar / ocultar contraseña.
     if (togglePassword && passwordInput) {
         togglePassword.addEventListener("click", () => {
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-                togglePassword.textContent = "○";
-                togglePassword.setAttribute("aria-label", "Ocultar contraseña");
-            } else {
-                passwordInput.type = "password";
-                togglePassword.textContent = "◉";
-                togglePassword.setAttribute("aria-label", "Mostrar contraseña");
-            }
+            const visible = passwordInput.type === "text";
+            passwordInput.type = visible ? "password" : "text";
+            togglePassword.textContent = visible ? "◉" : "○";
+            togglePassword.setAttribute(
+                "aria-label",
+                visible ? "Mostrar contraseña" : "Ocultar contraseña"
+            );
         });
     }
 
-    // Manejo del envío del formulario
-    loginForm.addEventListener("submit", (event) => {
-        event.preventDefault();
+    // Continuar sin iniciar sesión: también lleva al Home.
+    if (guestButton) {
+        guestButton.addEventListener("click", () => {
+            sessionStorage.setItem("remangaGuest", "true");
+            mostrarHome();
+        });
+    }
 
-        const usuarioEl = document.getElementById("usuario");
-        const usuario = usuarioEl ? usuarioEl.value.trim() : "";
-        const password = passwordInput ? passwordInput.value.trim() : "";
+    // Login de demostración mientras no exista autenticación en backend.
+    if (loginForm) {
+        loginForm.addEventListener("submit", (event) => {
+            event.preventDefault();
 
-        if (usuario === "" || password === "") {
-            alert("Completá todos los campos.");
-            return;
-        }
+            const usuarioEl = document.getElementById("usuario");
+            const usuario = usuarioEl ? usuarioEl.value.trim() : "";
+            const password = passwordInput ? passwordInput.value.trim() : "";
 
-        // Por ahora no hay backend: redirigimos a la página principal
-        // usamos replace para no dejar el login en el historial
-        window.location.replace('./catalogo.html');
-    });
+            if (!usuario || !password) {
+                alert("Completá todos los campos.");
+                return;
+            }
+
+            if (rememberInput && rememberInput.checked) {
+                localStorage.setItem("remangaLoggedIn", "true");
+            } else {
+                sessionStorage.setItem("remangaLoggedIn", "true");
+            }
+
+            mostrarHome();
+        });
+    }
+
+    // Enlaces que todavía usan el antiguo comportamiento pueden utilizar
+    // esta función sin provocar una redirección directa al catálogo.
+    function mostrarHome() {
+        document.body.classList.add("remanga-authenticated");
+        document.title = "ReManga | Compra y Venta de Mangas";
+        window.scrollTo(0, 0);
+    }
 });
