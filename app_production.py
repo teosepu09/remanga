@@ -17,7 +17,7 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 ENVIRONMENT = os.getenv("ENVIRONMENT", "production")
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_KEY")
-SUPABASE_BUCKET = os.getenv("SUPABASE_BUCKET", "imagenes-mangas")
+SUPABASE_BUCKET = os.getenv("SUPABASE_BUCKET", "imagenes")
 USE_SUPABASE = bool(SUPABASE_URL and SUPABASE_KEY)
 
 if USE_SUPABASE:
