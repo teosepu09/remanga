@@ -1,287 +1,230 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Producto | ReManga</title>
 
-
-    <!-- =====================================================
-         TIPOGRAFÍAS
-         ===================================================== -->
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-
-    <!-- =====================================================
-         ICONOS
-         ===================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    >
-
-
-    <!-- =====================================================
-         CSS
-         ===================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="static/style.css"
-    >
-
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="static/style.css">
 </head>
-
-
 <body>
 
+<header id="header">
+    <div class="logo">
+        <a href="index.html">
+            <img src="static/isotipo sin fondo.png" alt="Logo ReManga">
+        </a>
+    </div>
 
-    <!-- =====================================================
-         HEADER
-         ===================================================== -->
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="catalogo.html" class="active">Catálogo</a></li>
+            <li><a href="vender.html">Vender</a></li>
+        </ul>
+    </nav>
 
-    <header id="header">
-
-
-        <!-- LOGO -->
-
-        <div class="logo">
-
-            <a href="index.html">
-
-                <img
-                    src="static/isotipo sin fondo.png"
-                    alt="Logo ReManga"
-                >
-
-            </a>
-
+    <div class="header-right">
+        <div class="search-box">
+            <input type="text" id="productSearch" placeholder="Buscar manga..." autocomplete="off">
+            <button type="button" id="productSearchButton" aria-label="Buscar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
         </div>
 
-
-        <!-- NAVEGACIÓN -->
-
-        <nav>
-
-            <ul>
-
-                <li>
-
-                    <a href="index.html">
-                        Inicio
-                    </a>
-
-                </li>
-
-                <li>
-
-                    <a
-                        href="catalogo.html"
-                        class="active"
-                    >
-                        Catálogo
-                    </a>
-
-                </li>
-
-                <li>
-
-                    <a href="vender.html">
-                        Vender
-                    </a>
-
-                </li>
-
-            </ul>
-
-        </nav>
-
-
-        <!-- PARTE DERECHA -->
-
-        <div class="header-right">
-
-
-            <!-- BUSCADOR -->
-
-            <div class="search-box">
-
-                <input
-                    type="text"
-                    id="productSearch"
-                    placeholder="Buscar manga..."
-                    autocomplete="off"
-                >
-
-                <button
-                    type="button"
-                    id="productSearchButton"
-                    aria-label="Buscar"
-                >
-
-                    <i class="fa-solid fa-magnifying-glass"></i>
-
-                </button>
-
-            </div>
-
-
-            <!-- ICONOS -->
-
-            <div class="header-icons">
-
-
-                <!-- USUARIO -->
-
-                <a
-                    href="#"
-                    aria-label="Mi cuenta"
-                >
-
-                    <i class="fa-regular fa-user"></i>
-
-                </a>
-
-
-                <!-- CARRITO -->
-
-                <a
-                    href="carrito.html"
-                    class="cart-icon-container"
-                    aria-label="Carrito"
-                >
-
-                    <i class="fa-solid fa-cart-shopping"></i>
-
-                    <span
-                        class="cart-counter"
-                        id="cartCounter"
-                    >
-                        0
-                    </span>
-
-                </a>
-
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-
-    <!-- =====================================================
-         PRODUCTO
-         ===================================================== -->
-
-    <main class="product-page">
-
-
-        <div class="product-container">
-
-
-            <!-- VOLVER -->
-
-            <a
-                href="catalogo.html"
-                class="back-catalog"
-            >
-
-                <i class="fa-solid fa-arrow-left"></i>
-
-                Volver al catálogo
-
+        <div class="header-icons">
+            <a href="#" aria-label="Mi cuenta">
+                <i class="fa-regular fa-user"></i>
             </a>
+            <a href="carrito.html" class="cart-icon-container" aria-label="Carrito">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="cart-counter" id="cartCounter">0</span>
+            </a>
+        </div>
+    </div>
+</header>
 
+<main class="product-page">
+    <div class="product-container">
+        <a href="catalogo.html" class="back-catalog">
+            <i class="fa-solid fa-arrow-left"></i>
+            Volver al catálogo
+        </a>
 
+        <section class="product-detail" id="productDetail">
+            <div class="product-gallery">
+                <div class="product-main-image">
+                    <img id="productImage" src="static/isotipo sin fondo.png" alt="Portada del manga">
 
-            <!-- =================================================
-                 INFORMACIÓN PRINCIPAL
-                 ================================================= -->
+                    <span class="product-state new" id="productState">NUEVO</span>
 
-            <section
-                class="product-detail"
-                id="productDetail"
-            >
+                    <button class="product-favorite" id="productFavorite" type="button" aria-label="Agregar a favoritos">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                </div>
+            </div>
 
+            <div class="product-info">
+                <span class="product-category" id="productCategory">MANGA</span>
 
-                <!-- ================= IMAGEN ================= -->
+                <h1 id="productTitle">Cargando producto...</h1>
 
-                <div class="product-gallery">
+                <p class="product-volume" id="productVolume">Tomo -</p>
 
-                    <div class="product-main-image">
-
-
-                        <!--
-                            Esta imagen es solamente
-                            un valor inicial.
-
-                            JavaScript la reemplazará
-                            por la imagen de la API.
-                        -->
-
-                        <img
-                            id="productImage"
-                            src="static/isotipo sin fondo.png"
-                            alt="Portada del manga"
-                        >
-
-
-                        <!-- ESTADO -->
-
-                        <span
-                            class="product-state new"
-                            id="productState"
-                        >
-                            NUEVO
-                        </span>
-
-
-                        <!-- FAVORITO -->
-
-                        <button
-                            class="product-favorite"
-                            id="productFavorite"
-                            type="button"
-                            aria-label="Agregar a favoritos"
-                        >
-
-                            <i class="fa-regular fa-heart"></i>
-
-                        </button>
-
+                <div class="product-rating">
+                    <div class="stars" aria-label="Sin valoración">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
                     </div>
-
+                    <span>Producto disponible</span>
                 </div>
 
-                ... (rest unchanged) ...
+                <div class="product-price">
+                    <span id="productPrice">$0</span>
+                </div>
 
-    <!-- JAVASCRIPT -->
+                <div class="product-availability">
+                    <span class="availability-dot"></span>
+                    <span id="productAvailability">Disponible</span>
+                </div>
 
-    <script src="config.js"></script>
-    <script src="static/script.js"></script>
+                <div class="product-divider"></div>
 
+                <p class="product-short-description" id="productShortDescription">
+                    Cargando descripción...
+                </p>
+
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button type="button" id="quantityMinus" aria-label="Disminuir cantidad">
+                            <i class="fa-solid fa-minus"></i>
+                        </button>
+                        <span id="productQuantity">1</span>
+                        <button type="button" id="quantityPlus" aria-label="Aumentar cantidad">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <button type="button" class="product-cart-button" id="addProductToCart">
+                        <i class="fa-solid fa-cart-plus"></i>
+                        Agregar al carrito
+                    </button>
+                </div>
+
+                <button type="button" class="buy-now-button" id="buyNow">
+                    <i class="fa-solid fa-bolt"></i>
+                    Comprar ahora
+                </button>
+
+                <div class="product-benefits">
+                    <div class="product-benefit">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div>
+                            <strong>Compra segura</strong>
+                            <span>Datos protegidos durante el proceso.</span>
+                        </div>
+                    </div>
+
+                    <div class="product-benefit">
+                        <i class="fa-solid fa-box-open"></i>
+                        <div>
+                            <strong>Producto verificado</strong>
+                            <span>Información tomada de la publicación.</span>
+                        </div>
+                    </div>
+
+                    <div class="product-benefit">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <div>
+                            <strong>Envío</strong>
+                            <span>Costos y disponibilidad a confirmar.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="product-information">
+            <div class="product-tabs">
+                <button type="button" class="product-tab active">Descripción</button>
+                <button type="button" class="product-tab">Datos del producto</button>
+            </div>
+
+            <div class="product-description">
+                <h2>Descripción</h2>
+                <p id="productDescription">Cargando descripción...</p>
+            </div>
+
+            <div class="product-data-grid">
+                <div class="product-data">
+                    <span>Título</span>
+                    <strong id="dataTitle">-</strong>
+                </div>
+                <div class="product-data">
+                    <span>Tomo</span>
+                    <strong id="dataVolume">-</strong>
+                </div>
+                <div class="product-data">
+                    <span>Estado</span>
+                    <strong id="dataState">-</strong>
+                </div>
+                <div class="product-data">
+                    <span>Categoría</span>
+                    <strong>Manga</strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="related-products">
+            <div class="section-title">
+                <h2>También te puede interesar</h2>
+                <p>Otros mangas disponibles en ReManga.</p>
+            </div>
+
+            <div class="related-grid" id="relatedGrid"></div>
+
+            <div id="relatedLoading" style="display:none; text-align:center; padding:30px; color:var(--text-secondary);">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <p>Cargando productos...</p>
+            </div>
+
+            <div id="relatedEmpty" style="display:none; text-align:center; padding:30px; color:var(--text-secondary);">
+                <p>No hay productos relacionados.</p>
+            </div>
+        </section>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-logo">
+        <a href="index.html">
+            <img src="static/isotipo sin fondo.png" alt="Logo ReManga">
+        </a>
+    </div>
+
+    <div class="footer-links">
+        <a href="index.html">Inicio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="vender.html">Vender</a>
+    </div>
+
+    <div class="footer-social">
+        <i class="fa-brands fa-instagram"></i>
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-x-twitter"></i>
+    </div>
+
+    <p>© 2026 ReManga - Todos los derechos reservados.</p>
+</footer>
+
+<script src="config.js"></script>
+<script src="static/script.js"></script>
 </body>
-
 </html>
