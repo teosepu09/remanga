@@ -5,16 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>ReManga — Redirigiendo a Iniciar Sesión</title>
+  <title>ReManga — Redirigiendo al Catálogo</title>
 
-  <!-- Redirección inmediata a login.html -->
-  <meta http-equiv="refresh" content="0; url=login.html">
+  <!-- Redirección inmediata a catalogo.html -->
+  <meta http-equiv="refresh" content="0; url=catalogo.html">
 
   <script>
     // Fallback JS redirect if meta refresh is blocked
     (function() {
       if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('/index.html')) {
-        window.location.replace('login.html');
+        window.location.replace('catalogo.html');
       }
     })();
   </script>
@@ -25,8 +25,8 @@
 <body>
   <main style="display:flex;align-items:center;justify-content:center;height:100vh;">
     <div style="text-align:center;">
-      <h1>Redirigiendo a Iniciar Sesión…</h1>
-      <p>Si no te redirige automáticamente, <a href="login.html">hacé clic acá</a>.</p>
+      <h1>Redirigiendo al Catálogo…</h1>
+      <p>Si no te redirige automáticamente, <a href="catalogo.html">hacé clic acá</a>.</p>
     </div>
   </main>
 
