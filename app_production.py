@@ -1,9 +1,11 @@
 """ReManga API de producción: Supabase en nube y SQLite como fallback local."""
 
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory, send_file
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from supabase import create_client, Client
+from urllib.parse import quote, urlparse, unquote
+from io import BytesIO
 import os
 from dotenv import load_dotenv
 
@@ -35,13 +37,37 @@ def archivo_es_imagen(nombre):
     return nombre.rsplit(".", 1)[1].lower() in EXTENSIONES_PERMITIDAS
 
 
-def url_imagen_supabase(nombre):
-    if not nombre or not SUPABASE_URL:
+def ruta_storage_desde_valor(nombre):
+    """Obtiene la ruta real del objeto, aceptando nombre simple o URL de Supabase."""
+    if not nombre:
         return ""
-    if nombre.startswith(("http://", "https://")):
-        return nombre
-    ruta = nombre.lstrip("/")
-    return f"{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET}/{ruta}"
+
+    valor = str(nombre).strip()
+
+    if valor.startswith(("http://", "https://")):
+        try:
+            ruta = urlparse(valor).path
+            marcador = f"/storage/v1/object/public/{SUPABASE_BUCKET}/"
+            if marcador in ruta:
+                valor = ruta.split(marcador, 1)[1]
+            else:
+                marcador_privado = f"/storage/v1/object/{SUPABASE_BUCKET}/"
+                if marcador_privado in ruta:
+                    valor = ruta.split(marcador_privado, 1)[1]
+        except Exception:
+            pass
+
+    return unquote(valor).lstrip("/")
+
+
+def url_imagen_supabase(nombre):
+    """La URL pública ya no se usa como vía principal; se sirve por el proxy de Railway."""
+    ruta = ruta_storage_desde_valor(nombre)
+    if not ruta:
+        return ""
+
+    base = request.host_url.rstrip("/")
+    return f"{base}/imagenes/{quote(ruta, safe='/')}"
 
 
 def normalizar_producto(producto):
@@ -221,7 +247,28 @@ def eliminar_producto(id):
 @app.route("/imagenes/<path:nombre_imagen>", methods=["GET"])
 def mostrar_imagen(nombre_imagen):
     if USE_SUPABASE:
-        return jsonify({"error": "En producción las imágenes se sirven desde Supabase Storage"}), 400
+        ruta = ruta_storage_desde_valor(nombre_imagen)
+        if not ruta:
+            return jsonify({"error": "Imagen no especificada"}), 400
+        try:
+            contenido = supabase.storage.from_(SUPABASE_BUCKET).download(ruta)
+            extension = ruta.rsplit(".", 1)[1].lower() if "." in ruta else ""
+            tipos = {
+                "jpg": "image/jpeg",
+                "jpeg": "image/jpeg",
+                "png": "image/png",
+                "webp": "image/webp",
+                "gif": "image/gif"
+            }
+            return send_file(
+                BytesIO(contenido),
+                mimetype=tipos.get(extension, "application/octet-stream"),
+                download_name=os.path.basename(ruta),
+                max_age=3600
+            )
+        except Exception as error:
+            print(f"Error GET /imagenes/{ruta}: {error}")
+            return jsonify({"error": "No se pudo obtener la imagen", "detalle": str(error)}), 404
     return send_from_directory(CARPETA_IMAGENES, nombre_imagen)
 
 
