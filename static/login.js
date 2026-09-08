@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (guestButton) {
         guestButton.addEventListener("click", (event) => {
             event.preventDefault();
-            window.location.replace("./index.html");
+            window.location.replace("./catalogo.html");
         });
     }
 
@@ -47,6 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Por ahora no hay backend: redirigimos a la página principal
         // usamos replace para no dejar el login en el historial
-        window.location.replace('./index.html');
+        window.location.replace('./catalogo.html');
     });
 });
