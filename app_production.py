@@ -61,13 +61,12 @@ def ruta_storage_desde_valor(nombre):
 
 
 def url_imagen_supabase(nombre):
-    """La URL pública ya no se usa como vía principal; se sirve por el proxy de Railway."""
+    """Construye directamente la URL pública del bucket de Supabase Storage."""
     ruta = ruta_storage_desde_valor(nombre)
-    if not ruta:
+    if not ruta or not SUPABASE_URL:
         return ""
 
-    base = request.host_url.rstrip("/")
-    return f"{base}/imagenes/{quote(ruta, safe='/')}"
+    return f"{SUPABASE_URL.rstrip('/')}/storage/v1/object/public/{SUPABASE_BUCKET}/{quote(ruta, safe='/')}"
 
 
 def normalizar_producto(producto):
