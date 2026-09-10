@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReManga | Compra y Venta de Mangas</title>
 
-    <!-- Entrada inicial: el Home sigue siendo index.html, pero los visitantes
-         sin sesión son enviados primero a login.html. -->
     <script>
         (function () {
             const loggedIn = localStorage.getItem("remangaLoggedIn") === "true";
@@ -31,10 +29,10 @@
 <body>
 
 <header id="header">
-    <div class="logo" style="gap: 10px;">
-        <a href="index.html" style="display: flex; align-items: center; gap: 10px;">
-            <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" style="width: 46px; height: 46px; object-fit: contain;">
-            <img src="static/logotipo.png" alt="ReManga" style="width: 118px; height: auto; object-fit: contain;">
+    <div class="logo">
+        <a href="index.html" class="brand-lockup" aria-label="ReManga">
+            <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
+            <img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
         </a>
     </div>
 
@@ -81,94 +79,42 @@
 </section>
 
 <section class="benefits">
-    <div class="benefit">
-        <i class="fa-solid fa-truck-fast"></i>
-        <h3>Envíos rápidos</h3>
-        <p>Recibí tus mangas de forma segura.</p>
-    </div>
-    <div class="benefit">
-        <i class="fa-solid fa-tags"></i>
-        <h3>Mejores precios</h3>
-        <p>Nuevos y usados al mejor valor.</p>
-    </div>
-    <div class="benefit">
-        <i class="fa-solid fa-bolt"></i>
-        <h3>Compra inmediata</h3>
-        <p>Publicaciones disponibles al instante.</p>
-    </div>
-    <div class="benefit">
-        <i class="fa-solid fa-users"></i>
-        <h3>Comunidad</h3>
-        <p>Conectate con otros fanáticos.</p>
-    </div>
+    <div class="benefit"><i class="fa-solid fa-truck-fast"></i><h3>Envíos rápidos</h3><p>Recibí tus mangas de forma segura.</p></div>
+    <div class="benefit"><i class="fa-solid fa-tags"></i><h3>Mejores precios</h3><p>Nuevos y usados al mejor valor.</p></div>
+    <div class="benefit"><i class="fa-solid fa-bolt"></i><h3>Compra inmediata</h3><p>Publicaciones disponibles al instante.</p></div>
+    <div class="benefit"><i class="fa-solid fa-users"></i><h3>Comunidad</h3><p>Conectate con otros fanáticos.</p></div>
 </section>
 
 <section class="actions">
-    <div class="action-card">
-        <img src="static/fondo compra.jpg" alt="Comprar">
-        <div class="action-info">
-            <h2>Comprar Mangas</h2>
-            <p>Explorá cientos de títulos nuevos y usados.</p>
-            <a href="catalogo.html" class="btn-primary">Explorar</a>
-        </div>
-    </div>
-
-    <div class="action-card">
-        <img src="static/fondo venta.jpg" alt="Vender">
-        <div class="action-info">
-            <h2>Vender Mangas</h2>
-            <p>Publicá tus mangas en pocos minutos.</p>
-            <a href="vender.html" class="btn-primary">Publicar</a>
-        </div>
-    </div>
+    <div class="action-card"><img src="static/fondo compra.jpg" alt="Comprar"><div class="action-info"><h2>Comprar Mangas</h2><p>Explorá cientos de títulos nuevos y usados.</p><a href="catalogo.html" class="btn-primary">Explorar</a></div></div>
+    <div class="action-card"><img src="static/fondo venta.jpg" alt="Vender"><div class="action-info"><h2>Vender Mangas</h2><p>Publicá tus mangas en pocos minutos.</p><a href="vender.html" class="btn-primary">Publicar</a></div></div>
 </section>
 
 <section class="recommended">
     <div class="section-title">
-        <div>
-            <h2>Recomendados</h2>
-            <p>Descubrí mangas de nuestra colección.</p>
-        </div>
-
-        <div class="recommended-controls">
-            <button type="button" id="recommendedPrev" aria-label="Mangas anteriores">
-                <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <button type="button" id="recommendedNext" aria-label="Mangas siguientes">
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
-        </div>
+        <div><h2>Recomendados</h2><p>Descubrí mangas de nuestra colección.</p></div>
+        <div class="recommended-controls"><button type="button" id="recommendedPrev" aria-label="Mangas anteriores"><i class="fa-solid fa-chevron-left"></i></button><button type="button" id="recommendedNext" aria-label="Mangas siguientes"><i class="fa-solid fa-chevron-right"></i></button></div>
     </div>
-
-    <div class="recommended-carousel">
-        <div class="cards" id="homeProducts"></div>
-    </div>
+    <div class="recommended-carousel"><div class="cards" id="homeProducts"></div></div>
 </section>
 
 <section class="newsletter">
     <h2>Enterate antes que nadie de las novedades</h2>
     <p>Recibí lanzamientos y ofertas exclusivas.</p>
-    <form>
-        <input type="email" placeholder="Tu correo electrónico">
-        <button>Suscribirme</button>
-    </form>
+    <form><input type="email" placeholder="Tu correo electrónico"><button>Suscribirme</button></form>
 </section>
 
 <footer>
     <div class="footer-logo">
-        <img src="static/isotipo sin fondo.png" alt="Logo">
+        <a href="index.html" class="brand-lockup" aria-label="ReManga">
+            <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
+            <img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
+        </a>
     </div>
     <div class="footer-links">
-        <a href="index.html">Inicio</a>
-        <a href="catalogo.html">Catálogo</a>
-        <a href="vender.html">Vender</a>
-        <a href="carrito.html">Carrito</a>
+        <a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a><a href="carrito.html">Carrito</a>
     </div>
-    <div class="footer-social">
-        <i class="fa-brands fa-instagram"></i>
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-x-twitter"></i>
-    </div>
+    <div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div>
     <p>© 2026 ReManga - Todos los derechos reservados.</p>
 </footer>
 
