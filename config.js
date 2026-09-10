@@ -7,22 +7,28 @@ const remangaIsDevelopment =
     window.location.hostname === 'localhost' ||
     window.location.hostname === '127.0.0.1';
 
-// URL pública del backend Flask.
 const REMANGA_API_URL = remangaIsDevelopment
     ? 'http://127.0.0.1:5000'
     : 'https://remanga.up.railway.app';
 
-// Configuración pública de Supabase para las imágenes.
-// La service_role key NO debe colocarse aquí.
 const REMANGA_SUPABASE_CONFIG = {
-    url: 'https://hhssfhcxlehuojuwacyy.supabase.co',
+    url: 'https://hhssfhcxlehuojuwacy.supabase.co',
     bucket: 'imagenes',
     enabled: true
 };
 
-// Exponer configuración para scripts existentes sin duplicar const globales.
 window.REMANGA_API_URL = REMANGA_API_URL;
 window.REMANGA_SUPABASE_CONFIG = REMANGA_SUPABASE_CONFIG;
+
+// Sistema de marca global para las pantallas que utilizan esta configuración.
+(function cargarEstilosDeMarca() {
+    if (document.querySelector('link[data-remanga-brand]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'static/brand.css';
+    link.dataset.remangaBrand = 'true';
+    document.head.appendChild(link);
+})();
 
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
