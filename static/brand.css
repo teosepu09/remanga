@@ -1,24 +1,19 @@
 /* =========================================================
    REMANGA — IDENTIDAD VISUAL
-   Sistema único para isotipo + logotipo
+   Lockup consistente de isotipo + logotipo
    ========================================================= */
 
-/* -------- HEADER -------- */
-#header .logo {
-    display: flex;
+.brand-lockup {
+    display: inline-flex;
     align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    text-decoration: none;
+    line-height: 0;
     flex: 0 0 auto;
 }
 
-#header .logo > a {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 46px;
-}
-
-/* Isotipo presente en todas las pantallas */
-#header .logo img:first-child {
+.brand-mark {
     width: 44px !important;
     height: 44px !important;
     max-width: 44px !important;
@@ -26,8 +21,7 @@
     flex: 0 0 44px;
 }
 
-/* Logotipo explícito: cuando el HTML ya contiene los dos PNG */
-#header .logo .brand-wordmark {
+.brand-wordmark {
     width: 112px !important;
     height: auto !important;
     max-width: 112px !important;
@@ -35,84 +29,50 @@
     flex: 0 0 auto;
 }
 
-/* Para las pantallas que todavía contienen solamente el isotipo,
-   mostramos el mismo logotipo como parte del lockup. */
-#header .logo > a:not(:has(.brand-wordmark))::after {
-    content: "";
-    display: block;
-    width: 112px;
-    height: 34px;
-    flex: 0 0 112px;
-    background: url("logotipo.png") center / contain no-repeat;
+#header .logo {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
 }
 
-#header .logo > a:hover img,
-#header .logo > a:hover::after {
+#header .logo .brand-lockup:hover img {
     filter: brightness(1.06);
 }
 
-#header.scrolled .logo > a {
-    min-height: 40px;
+#header.scrolled .brand-lockup {
+    gap: 9px;
 }
 
-#header.scrolled .logo img:first-child {
+#header.scrolled .brand-mark {
     width: 38px !important;
     height: 38px !important;
     max-width: 38px !important;
     flex-basis: 38px;
 }
 
-#header.scrolled .logo .brand-wordmark {
+#header.scrolled .brand-wordmark {
     width: 98px !important;
     max-width: 98px !important;
 }
 
-#header.scrolled .logo > a:not(:has(.brand-wordmark))::after {
-    width: 98px;
-    height: 30px;
-    flex-basis: 98px;
-}
-
-/* -------- FOOTER -------- */
 footer .footer-logo {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    min-height: 44px;
 }
 
-footer .footer-logo > a {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-}
-
-footer .footer-logo img:first-child {
+footer .footer-logo .brand-mark {
     width: 42px !important;
     height: 42px !important;
     max-width: 42px !important;
-    object-fit: contain;
+    flex-basis: 42px;
 }
 
 footer .footer-logo .brand-wordmark {
     width: 108px !important;
-    height: auto !important;
     max-width: 108px !important;
-    object-fit: contain;
 }
 
-footer .footer-logo > a:not(:has(.brand-wordmark))::after,
-footer .footer-logo:not(:has(a))::after {
-    content: "";
-    display: block;
-    width: 108px;
-    height: 32px;
-    flex: 0 0 108px;
-    background: url("logotipo.png") center / contain no-repeat;
-}
-
-/* -------- LOGIN / BRANDING CENTRAL -------- */
 .login-brand {
     display: inline-flex;
     align-items: center;
@@ -137,65 +97,56 @@ footer .footer-logo:not(:has(a))::after {
     object-fit: contain;
 }
 
-/* -------- RESPONSIVE -------- */
 @media (max-width: 900px) {
-    #header .logo > a {
+    .brand-lockup {
         gap: 8px;
     }
 
-    #header .logo img:first-child {
+    .brand-mark {
         width: 40px !important;
         height: 40px !important;
         max-width: 40px !important;
         flex-basis: 40px;
     }
 
-    #header .logo .brand-wordmark,
-    #header .logo > a:not(:has(.brand-wordmark))::after {
+    .brand-wordmark {
         width: 98px !important;
         max-width: 98px !important;
-        flex-basis: 98px;
     }
 
-    footer .footer-logo img:first-child {
+    footer .footer-logo .brand-mark {
         width: 40px !important;
         height: 40px !important;
         max-width: 40px !important;
+        flex-basis: 40px;
     }
 
-    footer .footer-logo .brand-wordmark,
-    footer .footer-logo > a:not(:has(.brand-wordmark))::after,
-    footer .footer-logo:not(:has(a))::after {
+    footer .footer-logo .brand-wordmark {
         width: 100px !important;
         max-width: 100px !important;
-        flex-basis: 100px;
     }
 }
 
 @media (max-width: 600px) {
-    #header .logo > a {
+    .brand-lockup {
         gap: 7px;
     }
 
-    #header .logo img:first-child {
+    .brand-mark {
         width: 36px !important;
         height: 36px !important;
         max-width: 36px !important;
         flex-basis: 36px;
     }
 
-    #header .logo .brand-wordmark,
-    #header .logo > a:not(:has(.brand-wordmark))::after {
+    .brand-wordmark {
         width: 82px !important;
         max-width: 82px !important;
-        flex-basis: 82px;
     }
 
-    #header.scrolled .logo .brand-wordmark,
-    #header.scrolled .logo > a:not(:has(.brand-wordmark))::after {
+    #header.scrolled .brand-wordmark {
         width: 82px !important;
         max-width: 82px !important;
-        flex-basis: 82px;
     }
 
     .login-brand {
