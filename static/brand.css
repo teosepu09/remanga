@@ -1,12 +1,9 @@
 /* =========================================================
-   REMANGA BRAND SYSTEM
-   Isotipo + logotipo consistente en todas las pantallas
+   REMANGA — IDENTIDAD VISUAL
+   Sistema único para isotipo + logotipo
    ========================================================= */
 
-/* =========================================================
-   HEADER PRINCIPAL
-   ========================================================= */
-
+/* -------- HEADER -------- */
 #header .logo {
     display: flex;
     align-items: center;
@@ -20,8 +17,8 @@
     min-height: 46px;
 }
 
-/* Isotipo */
-#header .logo > a > img:first-child {
+/* Isotipo presente en todas las pantallas */
+#header .logo img:first-child {
     width: 44px !important;
     height: 44px !important;
     max-width: 44px !important;
@@ -29,8 +26,8 @@
     flex: 0 0 44px;
 }
 
-/* Logotipo ya presente en index.html */
-#header .logo > a > img:nth-child(2) {
+/* Logotipo explícito: cuando el HTML ya contiene los dos PNG */
+#header .logo .brand-wordmark {
     width: 112px !important;
     height: auto !important;
     max-width: 112px !important;
@@ -38,19 +35,15 @@
     flex: 0 0 auto;
 }
 
-/* En las demás pantallas, el logotipo se agrega visualmente junto al isotipo. */
-#header .logo > a::after {
+/* Para las pantallas que todavía contienen solamente el isotipo,
+   mostramos el mismo logotipo como parte del lockup. */
+#header .logo > a:not(:has(.brand-wordmark))::after {
     content: "";
+    display: block;
     width: 112px;
     height: 34px;
     flex: 0 0 112px;
-    display: block;
     background: url("logotipo.png") center / contain no-repeat;
-}
-
-/* index.html ya tiene ambos archivos en el HTML, por lo que no agregamos uno extra. */
-#header .logo > a:has(img + img)::after {
-    display: none;
 }
 
 #header .logo > a:hover img,
@@ -58,35 +51,31 @@
     filter: brightness(1.06);
 }
 
-/* El lockup completo mantiene el mismo peso visual al achicarse el header. */
 #header.scrolled .logo > a {
     min-height: 40px;
 }
 
-#header.scrolled .logo > a > img:first-child {
+#header.scrolled .logo img:first-child {
     width: 38px !important;
     height: 38px !important;
     max-width: 38px !important;
     flex-basis: 38px;
 }
 
-#header.scrolled .logo > a::after {
+#header.scrolled .logo .brand-wordmark {
+    width: 98px !important;
+    max-width: 98px !important;
+}
+
+#header.scrolled .logo > a:not(:has(.brand-wordmark))::after {
     width: 98px;
     height: 30px;
     flex-basis: 98px;
 }
 
-#header.scrolled .logo > a > img:nth-child(2) {
-    width: 98px !important;
-    max-width: 98px !important;
-}
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
+/* -------- FOOTER -------- */
 footer .footer-logo {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
@@ -99,40 +88,38 @@ footer .footer-logo > a {
     gap: 10px;
 }
 
-footer .footer-logo > img,
-footer .footer-logo > a > img {
+footer .footer-logo img:first-child {
     width: 42px !important;
     height: 42px !important;
     max-width: 42px !important;
     object-fit: contain;
 }
 
-footer .footer-logo::after,
-footer .footer-logo > a::after {
+footer .footer-logo .brand-wordmark {
+    width: 108px !important;
+    height: auto !important;
+    max-width: 108px !important;
+    object-fit: contain;
+}
+
+footer .footer-logo > a:not(:has(.brand-wordmark))::after,
+footer .footer-logo:not(:has(a))::after {
     content: "";
+    display: block;
     width: 108px;
     height: 32px;
     flex: 0 0 108px;
-    display: block;
     background: url("logotipo.png") center / contain no-repeat;
 }
 
-/* Evita duplicar si en el futuro el HTML del footer ya incluye el logotipo. */
-footer .footer-logo:has(img + img)::after,
-footer .footer-logo > a:has(img + img)::after {
-    display: none;
-}
-
-/* =========================================================
-   LOGIN
-   ========================================================= */
-
+/* -------- LOGIN / BRANDING CENTRAL -------- */
 .login-brand {
     display: inline-flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 18px;
     width: auto;
-    max-width: min(520px, 100%);
+    max-width: 100%;
     margin: 0 0 14px;
 }
 
@@ -150,39 +137,37 @@ footer .footer-logo > a:has(img + img)::after {
     object-fit: contain;
 }
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
+/* -------- RESPONSIVE -------- */
 @media (max-width: 900px) {
     #header .logo > a {
         gap: 8px;
     }
 
-    #header .logo > a > img:first-child {
+    #header .logo img:first-child {
         width: 40px !important;
         height: 40px !important;
         max-width: 40px !important;
         flex-basis: 40px;
     }
 
-    #header .logo > a::after,
-    #header .logo > a > img:nth-child(2) {
+    #header .logo .brand-wordmark,
+    #header .logo > a:not(:has(.brand-wordmark))::after {
         width: 98px !important;
         max-width: 98px !important;
         flex-basis: 98px;
     }
 
-    footer .footer-logo > img,
-    footer .footer-logo > a > img {
+    footer .footer-logo img:first-child {
         width: 40px !important;
         height: 40px !important;
         max-width: 40px !important;
     }
 
-    footer .footer-logo::after,
-    footer .footer-logo > a::after {
-        width: 100px;
+    footer .footer-logo .brand-wordmark,
+    footer .footer-logo > a:not(:has(.brand-wordmark))::after,
+    footer .footer-logo:not(:has(a))::after {
+        width: 100px !important;
+        max-width: 100px !important;
         flex-basis: 100px;
     }
 }
@@ -192,22 +177,22 @@ footer .footer-logo > a:has(img + img)::after {
         gap: 7px;
     }
 
-    #header .logo > a > img:first-child {
+    #header .logo img:first-child {
         width: 36px !important;
         height: 36px !important;
         max-width: 36px !important;
         flex-basis: 36px;
     }
 
-    #header .logo > a::after,
-    #header .logo > a > img:nth-child(2) {
+    #header .logo .brand-wordmark,
+    #header .logo > a:not(:has(.brand-wordmark))::after {
         width: 82px !important;
         max-width: 82px !important;
         flex-basis: 82px;
     }
 
-    #header.scrolled .logo > a::after,
-    #header.scrolled .logo > a > img:nth-child(2) {
+    #header.scrolled .logo .brand-wordmark,
+    #header.scrolled .logo > a:not(:has(.brand-wordmark))::after {
         width: 82px !important;
         max-width: 82px !important;
         flex-basis: 82px;
