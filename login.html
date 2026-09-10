@@ -3,69 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesión | ReManga</title>
-    <link rel="stylesheet" href="static/login.css">
-    <link rel="stylesheet" href="static/brand.css">
+    <title>Fondo | ReManga</title>
+    <style>
+        /* Reseteo básico para eliminar márgenes del navegador */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Evita que aparezcan barras de desplazamiento */
+        }
+
+        /* Contenedor del fondo ajustado a toda la pantalla */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+
+        /* La magia para que la imagen cubra todo sin estirarse feo */
+        .background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Obliga a la imagen a cubrir todo el espacio */
+            object-position: center; /* Centra la imagen en la pantalla */
+        }
+    </style>
 </head>
 <body>
-    <div class="background">
-        <img src="static/fotologin.jpeg">
-    </div>
     
-    <div class="background-overlay"></div>
+    <!-- Contenedor del fondo -->
+    <div class="background">
+        <img src="static/fotologin.jpeg" alt="Fondo ReManga">
+    </div>
 
-    <main class="login-container">
-        <section class="branding">
-            <div class="login-brand">
-                <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="login-brand-mark">
-                <img src="static/logotipo.png" alt="ReManga" class="login-brand-wordmark">
-            </div>
-            <p class="slogan">COMPRA <span>•</span> VENDE <span>•</span> DESCUBRÍ</p>
-            <p class="branding-description">Tu comunidad para comprar, vender y descubrir nuevas historias.</p>
-        </section>
+    <!-- Se eliminaron los contenedores <main class="login-container"> y <div class="background-overlay"> 
+         para dejar la imagen completamente limpia -->
 
-        <section class="login-panel">
-            <div class="login-header">
-                <div class="user-icon"><span>♙</span></div>
-                <h1>Iniciar sesión</h1>
-                <p>Bienvenido de nuevo a ReManga</p>
-            </div>
-
-            <form id="loginForm">
-                <div class="input-group">
-                    <label for="usuario">Usuario o correo electrónico</label>
-                    <input type="text" id="usuario" name="usuario" placeholder="Ingresá tu usuario o correo" autocomplete="username" required>
-                </div>
-
-                <div class="input-group">
-                    <div class="password-label">
-                        <label for="password">Contraseña</label>
-                        <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
-                    </div>
-                    <div class="password-container">
-                        <input type="password" id="password" name="password" placeholder="Ingresá tu contraseña" autocomplete="current-password" required>
-                        <button type="button" id="togglePassword" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
-                    </div>
-                </div>
-
-                <div class="remember-container">
-                    <label class="remember-label">
-                        <input type="checkbox" id="remember">
-                        <span>Recordarme</span>
-                    </label>
-                </div>
-
-                <button type="submit" class="login-button">ENTRAR</button>
-                <a href="./index.html" id="guestBtn" class="guest-button">CONTINUAR SIN INICIAR SESIÓN</a>
-            </form>
-
-            <div class="register-section">
-                <span>¿No tenés una cuenta?</span>
-                <a href="registro.html">Crear cuenta</a>
-            </div>
-        </section>
-    </main>
-
-    <script src="static/login.js"></script>
 </body>
 </html>
