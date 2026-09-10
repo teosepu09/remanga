@@ -17,7 +17,10 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 ENVIRONMENT = os.getenv("ENVIRONMENT", "production")
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_KEY")
-SUPABASE_BUCKET = os.getenv("SUPABASE_BUCKET", "imagenes")
+# El bucket real de producción es "imagenes". Se fija aquí para evitar
+# que una variable de entorno antigua (por ejemplo, "imagenes-mangas")
+# vuelva a apuntar al bucket equivocado.
+SUPABASE_BUCKET = "imagenes"
 USE_SUPABASE = bool(SUPABASE_URL and SUPABASE_KEY)
 
 if USE_SUPABASE:
@@ -38,30 +41,49 @@ def archivo_es_imagen(nombre):
 
 
 def ruta_storage_desde_valor(nombre):
-    """Obtiene la ruta real del objeto, aceptando nombre simple o URL de Supabase."""
+    """Obtiene la ruta real del objeto, tolerando nombres, rutas locales o URLs."""
     if not nombre:
         return ""
 
     valor = str(nombre).strip()
 
+    # Si la BD contiene una URL completa, extraer solamente la ruta del objeto.
     if valor.startswith(("http://", "https://")):
         try:
             ruta = urlparse(valor).path
-            marcador = f"/storage/v1/object/public/{SUPABASE_BUCKET}/"
-            if marcador in ruta:
-                valor = ruta.split(marcador, 1)[1]
+            marcadores = [
+                f"/storage/v1/object/public/{SUPABASE_BUCKET}/",
+                f"/storage/v1/object/{SUPABASE_BUCKET}/",
+            ]
+            for marcador in marcadores:
+                if marcador in ruta:
+                    valor = ruta.split(marcador, 1)[1]
+                    break
             else:
-                marcador_privado = f"/storage/v1/object/{SUPABASE_BUCKET}/"
-                if marcador_privado in ruta:
-                    valor = ruta.split(marcador_privado, 1)[1]
+                # Compatibilidad con URLs antiguas del proxy de Railway.
+                if "/imagenes/" in ruta:
+                    valor = ruta.split("/imagenes/", 1)[1]
         except Exception:
             pass
 
-    return unquote(valor).lstrip("/")
+    valor = unquote(valor).strip().lstrip("/")
+
+    # Normalizar rutas antiguas/locales que puedan estar guardadas en la BD.
+    prefijos = (
+        "img/mangas/",
+        "imagenes/",
+        "public/",
+    )
+    for prefijo in prefijos:
+        if valor.startswith(prefijo):
+            valor = valor[len(prefijo):]
+            break
+
+    return valor
 
 
 def url_imagen_supabase(nombre):
-    """Construye directamente la URL pública del bucket de Supabase Storage."""
+    """Construye la URL pública directa del bucket de Supabase Storage."""
     ruta = ruta_storage_desde_valor(nombre)
     if not ruta or not SUPABASE_URL:
         return ""
