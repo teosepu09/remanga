@@ -12,7 +12,8 @@ const REMANGA_API_URL = remangaIsDevelopment
     : 'https://remanga.up.railway.app';
 
 const REMANGA_SUPABASE_CONFIG = {
-    url: 'https://hhssfhcxlehuojuwacy.supabase.co',
+    url: 'https://hhssfhcxlehuojuwacyy.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhoc3NmaGN4bGVodW9qdXdhY3l5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc5MzkyODQsImV4cCI6MjEwMzUxNTI4NH0.MiGy10ZMe1mv1LE-PcSj0wAEJON2jgWqq-cWXnhy-c4',
     bucket: 'imagenes',
     enabled: true
 };
