@@ -1,0 +1,230 @@
+/* =========================================================
+   REMANGA BRAND SYSTEM
+   Isotipo + logotipo consistente en todas las pantallas
+   ========================================================= */
+
+/* =========================================================
+   HEADER PRINCIPAL
+   ========================================================= */
+
+#header .logo {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+#header .logo > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 46px;
+}
+
+/* Isotipo */
+#header .logo > a > img:first-child {
+    width: 44px !important;
+    height: 44px !important;
+    max-width: 44px !important;
+    object-fit: contain;
+    flex: 0 0 44px;
+}
+
+/* Logotipo ya presente en index.html */
+#header .logo > a > img:nth-child(2) {
+    width: 112px !important;
+    height: auto !important;
+    max-width: 112px !important;
+    object-fit: contain;
+    flex: 0 0 auto;
+}
+
+/* En las demás pantallas, el logotipo se agrega visualmente junto al isotipo. */
+#header .logo > a::after {
+    content: "";
+    width: 112px;
+    height: 34px;
+    flex: 0 0 112px;
+    display: block;
+    background: url("logotipo.png") center / contain no-repeat;
+}
+
+/* index.html ya tiene ambos archivos en el HTML, por lo que no agregamos uno extra. */
+#header .logo > a:has(img + img)::after {
+    display: none;
+}
+
+#header .logo > a:hover img,
+#header .logo > a:hover::after {
+    filter: brightness(1.06);
+}
+
+/* El lockup completo mantiene el mismo peso visual al achicarse el header. */
+#header.scrolled .logo > a {
+    min-height: 40px;
+}
+
+#header.scrolled .logo > a > img:first-child {
+    width: 38px !important;
+    height: 38px !important;
+    max-width: 38px !important;
+    flex-basis: 38px;
+}
+
+#header.scrolled .logo > a::after {
+    width: 98px;
+    height: 30px;
+    flex-basis: 98px;
+}
+
+#header.scrolled .logo > a > img:nth-child(2) {
+    width: 98px !important;
+    max-width: 98px !important;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer .footer-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 44px;
+}
+
+footer .footer-logo > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+footer .footer-logo > img,
+footer .footer-logo > a > img {
+    width: 42px !important;
+    height: 42px !important;
+    max-width: 42px !important;
+    object-fit: contain;
+}
+
+footer .footer-logo::after,
+footer .footer-logo > a::after {
+    content: "";
+    width: 108px;
+    height: 32px;
+    flex: 0 0 108px;
+    display: block;
+    background: url("logotipo.png") center / contain no-repeat;
+}
+
+/* Evita duplicar si en el futuro el HTML del footer ya incluye el logotipo. */
+footer .footer-logo:has(img + img)::after,
+footer .footer-logo > a:has(img + img)::after {
+    display: none;
+}
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+.login-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    width: auto;
+    max-width: min(520px, 100%);
+    margin: 0 0 14px;
+}
+
+.login-brand .login-brand-mark {
+    width: 82px;
+    height: 82px;
+    flex: 0 0 82px;
+    object-fit: contain;
+}
+
+.login-brand .login-brand-wordmark {
+    width: min(300px, 58vw);
+    height: auto;
+    max-width: 300px;
+    object-fit: contain;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+    #header .logo > a {
+        gap: 8px;
+    }
+
+    #header .logo > a > img:first-child {
+        width: 40px !important;
+        height: 40px !important;
+        max-width: 40px !important;
+        flex-basis: 40px;
+    }
+
+    #header .logo > a::after,
+    #header .logo > a > img:nth-child(2) {
+        width: 98px !important;
+        max-width: 98px !important;
+        flex-basis: 98px;
+    }
+
+    footer .footer-logo > img,
+    footer .footer-logo > a > img {
+        width: 40px !important;
+        height: 40px !important;
+        max-width: 40px !important;
+    }
+
+    footer .footer-logo::after,
+    footer .footer-logo > a::after {
+        width: 100px;
+        flex-basis: 100px;
+    }
+}
+
+@media (max-width: 600px) {
+    #header .logo > a {
+        gap: 7px;
+    }
+
+    #header .logo > a > img:first-child {
+        width: 36px !important;
+        height: 36px !important;
+        max-width: 36px !important;
+        flex-basis: 36px;
+    }
+
+    #header .logo > a::after,
+    #header .logo > a > img:nth-child(2) {
+        width: 82px !important;
+        max-width: 82px !important;
+        flex-basis: 82px;
+    }
+
+    #header.scrolled .logo > a::after,
+    #header.scrolled .logo > a > img:nth-child(2) {
+        width: 82px !important;
+        max-width: 82px !important;
+        flex-basis: 82px;
+    }
+
+    .login-brand {
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .login-brand .login-brand-mark {
+        width: 64px;
+        height: 64px;
+        flex-basis: 64px;
+    }
+
+    .login-brand .login-brand-wordmark {
+        width: min(220px, 62vw);
+    }
+}
