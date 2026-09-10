@@ -61,6 +61,10 @@ footer .footer-logo {
     justify-content: center;
 }
 
+footer .footer-logo .brand-lockup {
+    gap: 10px;
+}
+
 footer .footer-logo .brand-mark {
     width: 42px !important;
     height: 42px !important;
@@ -77,23 +81,23 @@ footer .footer-logo .brand-wordmark {
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 18px;
+    gap: 22px;
     width: auto;
     max-width: 100%;
-    margin: 0 0 14px;
+    margin: 0 0 18px;
 }
 
 .login-brand .login-brand-mark {
-    width: 82px;
-    height: 82px;
-    flex: 0 0 82px;
+    width: 96px;
+    height: 96px;
+    flex: 0 0 96px;
     object-fit: contain;
 }
 
 .login-brand .login-brand-wordmark {
-    width: min(300px, 58vw);
+    width: min(340px, 62vw);
     height: auto;
-    max-width: 300px;
+    max-width: 340px;
     object-fit: contain;
 }
 
@@ -125,6 +129,20 @@ footer .footer-logo .brand-wordmark {
         width: 100px !important;
         max-width: 100px !important;
     }
+
+    .login-brand {
+        gap: 16px;
+    }
+
+    .login-brand .login-brand-mark {
+        width: 82px;
+        height: 82px;
+        flex-basis: 82px;
+    }
+
+    .login-brand .login-brand-wordmark {
+        width: min(300px, 58vw);
+    }
 }
 
 @media (max-width: 600px) {
@@ -155,12 +173,12 @@ footer .footer-logo .brand-wordmark {
     }
 
     .login-brand .login-brand-mark {
-        width: 64px;
-        height: 64px;
-        flex-basis: 64px;
+        width: 70px;
+        height: 70px;
+        flex-basis: 70px;
     }
 
     .login-brand .login-brand-wordmark {
-        width: min(220px, 62vw);
+        width: min(240px, 62vw);
     }
 }
