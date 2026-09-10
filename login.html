@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesión | ReManga</title>
     <link rel="stylesheet" href="static/login.css">
+    <link rel="stylesheet" href="static/brand.css">
 </head>
 <body>
     <div class="background"></div>
@@ -12,7 +13,10 @@
 
     <main class="login-container">
         <section class="branding">
-            <img src="static/isotipo sin fondo.png" alt="ReManga" class="logo">
+            <div class="login-brand">
+                <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="login-brand-mark">
+                <img src="static/logotipo.png" alt="ReManga" class="login-brand-wordmark">
+            </div>
             <p class="slogan">COMPRA <span>•</span> VENDE <span>•</span> DESCUBRÍ</p>
             <p class="branding-description">Tu comunidad para comprar, vender y descubrir nuevas historias.</p>
         </section>
@@ -49,7 +53,6 @@
                 </div>
 
                 <button type="submit" class="login-button">ENTRAR</button>
-
                 <a href="./index.html" id="guestBtn" class="guest-button">CONTINUAR SIN INICIAR SESIÓN</a>
             </form>
 
