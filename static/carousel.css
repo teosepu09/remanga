@@ -13,25 +13,11 @@
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    mask-image: linear-gradient(
-        to right,
-        transparent 0,
-        black 34px,
-        black calc(100% - 34px),
-        transparent 100%
-    );
-    -webkit-mask-image: linear-gradient(
-        to right,
-        transparent 0,
-        black 34px,
-        black calc(100% - 34px),
-        transparent 100%
-    );
+    mask-image: linear-gradient(to right, transparent 0, black 34px, black calc(100% - 34px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black 34px, black calc(100% - 34px), transparent 100%);
 }
 
-.recommended-carousel::-webkit-scrollbar {
-    display: none;
-}
+.recommended-carousel::-webkit-scrollbar { display: none; }
 
 .recommended-carousel .cards {
     display: flex;
@@ -69,22 +55,27 @@
     background: rgba(0, 0, 0, 0.18);
 }
 
+/* Solo suaviza la transición entre portada y contenido.
+   No invade la zona del nombre del producto. */
 .recommended-carousel .card::after {
     content: "";
     position: absolute;
     left: 0;
     right: 0;
-    top: 255px;
-    height: 80px;
+    top: 265px;
+    height: 32px;
     pointer-events: none;
-    background: linear-gradient(180deg, transparent, rgba(28, 28, 38, 0.94));
+    background: linear-gradient(180deg, transparent, rgba(28, 28, 38, 0.92));
 }
 
 .recommended-carousel .card-content {
+    position: relative;
+    z-index: 2;
     min-height: 130px;
     padding: 18px 19px 20px;
     display: flex;
     flex-direction: column;
+    background: rgba(28, 28, 38, 0.98);
 }
 
 .recommended-carousel .card-content h3 {
@@ -130,10 +121,7 @@
     transform: translateY(-1px);
 }
 
-.recommended-controls {
-    display: flex;
-    gap: 10px;
-}
+.recommended-controls { display: flex; gap: 10px; }
 
 .recommended-controls button {
     width: 42px;
@@ -156,55 +144,22 @@
 }
 
 @media (max-width: 900px) {
-    .recommended-carousel .cards {
-        gap: 16px;
-        padding-inline: 12px;
-    }
-
-    .recommended-carousel .card {
-        flex-basis: 235px;
-        min-height: 405px;
-    }
-
-    .recommended-carousel .card > img {
-        height: 278px;
-    }
-
-    .recommended-carousel .card::after {
-        top: 235px;
-    }
+    .recommended-carousel .cards { gap: 16px; padding-inline: 12px; }
+    .recommended-carousel .card { flex-basis: 235px; min-height: 405px; }
+    .recommended-carousel .card > img { height: 278px; }
+    .recommended-carousel .card::after { top: 244px; }
 }
 
 @media (max-width: 600px) {
-    .recommended-carousel {
-        margin-top: 20px;
-        mask-image: none;
-        -webkit-mask-image: none;
-    }
-
-    .recommended-carousel .cards {
-        gap: 14px;
-        padding-inline: 4px;
-    }
-
-    .recommended-carousel .card {
-        flex-basis: min(74vw, 250px);
-    }
-
-    .recommended-controls button {
-        width: 38px;
-        height: 38px;
-    }
+    .recommended-carousel { margin-top: 20px; mask-image: none; -webkit-mask-image: none; }
+    .recommended-carousel .cards { gap: 14px; padding-inline: 4px; }
+    .recommended-carousel .card { flex-basis: min(74vw, 250px); }
+    .recommended-controls button { width: 38px; height: 38px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .recommended-carousel {
-        scroll-behavior: auto;
-    }
-
+    .recommended-carousel { scroll-behavior: auto; }
     .recommended-carousel .card,
     .recommended-controls button,
-    .recommended-carousel .card-content button {
-        transition: none;
-    }
+    .recommended-carousel .card-content button { transition: none; }
 }
