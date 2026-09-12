@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear cuenta | ReManga</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/login.css">
+    <link rel="stylesheet" href="static/brand.css">
+    <style>
+        .auth-message { min-height: 20px; margin: -4px 0 14px; font-size: 13px; line-height: 1.45; }
+        .auth-message.error { color: #ff8b79; }
+        .auth-message.success { color: #68e0a0; }
+        .auth-message.info { color: rgba(255,255,255,.68); }
+        .login-button:disabled { opacity: .65; cursor: wait; transform: none; }
+        .back-login { display:block; margin-top:18px; text-align:center; color:rgba(255,255,255,.62); text-decoration:none; font-size:14px; }
+        .back-login:hover { color:white; }
+        .register-note { margin-top:8px; color:rgba(255,255,255,.48); font-size:12px; line-height:1.5; text-align:center; }
+    </style>
+</head>
+<body>
+    <div class="login-background" aria-hidden="true">
+        <img class="login-background-image" src="static/fotologin.jpeg" alt="">
+        <div class="login-background-glow"></div>
+    </div>
+
+    <main class="login-container">
+        <section class="branding">
+            <div class="login-brand">
+                <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="login-brand-mark">
+                <img src="static/logotipo.png" alt="ReManga" class="login-brand-wordmark">
+            </div>
+            <p class="slogan">COMPRA <span>•</span> VENDE <span>•</span> DESCUBRÍ</p>
+            <p class="branding-description">Creá tu cuenta y formá parte de la comunidad ReManga.</p>
+        </section>
+
+        <section class="login-panel" aria-labelledby="registerTitle">
+            <div class="login-header">
+                <div class="user-icon" aria-hidden="true"><span>♙</span></div>
+                <h1 id="registerTitle">Crear cuenta</h1>
+                <p>Unite a ReManga</p>
+            </div>
+
+            <form id="registerForm" novalidate>
+                <div class="input-group">
+                    <label for="username">Nombre de usuario</label>
+                    <input type="text" id="username" name="username" placeholder="Elegí tu nombre de usuario" autocomplete="username" minlength="3" maxlength="30" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" name="email" placeholder="Ingresá tu correo electrónico" autocomplete="email" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" placeholder="Creá una contraseña" autocomplete="new-password" minlength="6" required>
+                        <button type="button" id="togglePassword" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="passwordConfirm">Confirmar contraseña</label>
+                    <div class="password-container">
+                        <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Repetí tu contraseña" autocomplete="new-password" minlength="6" required>
+                        <button type="button" id="togglePasswordConfirm" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
+                    </div>
+                </div>
+
+                <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+                <button type="submit" class="login-button">CREAR CUENTA</button>
+                <a href="login.html" class="back-login">Ya tengo una cuenta</a>
+                <p class="register-note">Tu contraseña será administrada de forma segura por Supabase Auth.</p>
+            </form>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="static/registro.js"></script>
+</body>
+</html>
