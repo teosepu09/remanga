@@ -1,0 +1,160 @@
+/* =========================================================
+   ReManga - Mi cuenta
+   ========================================================= */
+
+.profile-page {
+    min-height: calc(100vh - 180px);
+    padding: 80px 7% 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+
+.profile-card,
+.profile-actions {
+    width: min(760px, 100%);
+    box-sizing: border-box;
+}
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 34px;
+    border-radius: 22px;
+    background: rgba(28, 28, 38, .96);
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 18px 45px rgba(0,0,0,.24);
+}
+
+.profile-avatar {
+    width: 96px;
+    height: 96px;
+    flex: 0 0 96px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    font-size: 36px;
+}
+
+.profile-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    opacity: .55;
+}
+
+.profile-main h1 {
+    margin: 7px 0 5px;
+    font-size: 30px;
+}
+
+.profile-main p {
+    margin: 0 0 12px;
+    opacity: .62;
+}
+
+.profile-status {
+    font-size: 13px;
+    opacity: .72;
+}
+
+.profile-status i {
+    margin-right: 6px;
+}
+
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-info-card {
+    width: 100%;
+    display: flex;
+    gap: 18px;
+    padding: 24px;
+    box-sizing: border-box;
+    border-radius: 18px;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.profile-info-card > i {
+    font-size: 22px;
+    opacity: .7;
+    padding-top: 3px;
+}
+
+.profile-info-card h2 {
+    margin: 0 0 7px;
+    font-size: 18px;
+}
+
+.profile-info-card p {
+    margin: 0;
+    line-height: 1.6;
+    opacity: .58;
+    font-size: 14px;
+}
+
+.logout-button {
+    margin-top: 28px;
+    border: 0;
+    border-radius: 10px;
+    padding: 14px 24px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    background: rgba(255,255,255,.1);
+    color: inherit;
+    transition: .2s ease;
+}
+
+.logout-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,.16);
+}
+
+.logout-button:disabled {
+    opacity: .55;
+    cursor: wait;
+}
+
+.profile-message {
+    min-height: 20px;
+    margin: 12px 0 0;
+    font-size: 13px;
+}
+
+.profile-message.error { color: #ff8b79; }
+.profile-message.info { opacity: .65; }
+
+.back-home {
+    margin-top: 6px;
+    color: inherit;
+    text-decoration: none;
+    opacity: .58;
+    font-size: 14px;
+}
+
+.back-home:hover { opacity: 1; }
+
+@media (max-width: 650px) {
+    .profile-page {
+        padding: 50px 20px 70px;
+    }
+
+    .profile-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 28px 20px;
+    }
+
+    .profile-main h1 {
+        font-size: 25px;
+    }
+}
