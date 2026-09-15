@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const togglePassword = document.getElementById("togglePassword");
     const guestButton = document.getElementById("guestBtn");
     const rememberInput = document.getElementById("remember");
-    const forgotPassword = document.querySelector(".forgot-password");
     const authMessage = document.getElementById("authMessage");
 
     const config = window.REMANGA_SUPABASE_CONFIG;
@@ -50,13 +49,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Recuperación de contraseña: todavía se implementará en el siguiente paso.
-    if (forgotPassword) {
-        forgotPassword.addEventListener("click", (event) => {
-            event.preventDefault();
-            mostrarMensaje("La recuperación de contraseña la agregaremos en el próximo paso.", "info");
-        });
-    }
+    // El enlace de recuperación es un link normal hacia recuperar.html.
+    // No se intercepta con JavaScript para permitir la navegación.
 
     // Continuar como invitado.
     if (guestButton) {
