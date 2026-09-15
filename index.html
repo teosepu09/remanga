@@ -7,24 +7,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReManga | Compra y Venta de Mangas</title>
 
-    <script>
-        (function () {
-            const loggedIn = localStorage.getItem("remangaLoggedIn") === "true";
-            const sessionLoggedIn = sessionStorage.getItem("remangaLoggedIn") === "true";
-            const guest = sessionStorage.getItem("remangaGuest") === "true";
-
-            if (!loggedIn && !sessionLoggedIn && !guest) {
-                window.location.replace("./login.html");
-            }
-        })();
-    </script>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="static/style.css">
     <link rel="stylesheet" href="static/carousel.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+
+    <script>
+        (async function () {
+            const guest = sessionStorage.getItem("remangaGuest") === "true";
+            const config = window.REMANGA_SUPABASE_CONFIG;
+
+            const supabaseClient = (config?.enabled && window.supabase && config.url && config.anonKey)
+                ? window.supabase.createClient(config.url, config.anonKey, {
+                    auth: {
+                        persistSession: true,
+                        autoRefreshToken: true,
+                        detectSessionInUrl: true
+                    }
+                })
+                : null;
+
+            if (supabaseClient) {
+                const { data, error } = await supabaseClient.auth.getSession();
+
+                if (!error && data?.session) {
+                    sessionStorage.removeItem("remangaGuest");
+                    return;
+                }
+            }
+
+            if (guest) return;
+
+            window.location.replace("./login.html");
+        })();
+    </script>
 </head>
 
 <body>
@@ -119,8 +140,6 @@
     <p>© 2026 ReManga - Todos los derechos reservados.</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
 <script src="static/script.js"></script>
 
 </body>
