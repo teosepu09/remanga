@@ -9,11 +9,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const togglePassword = document.getElementById("togglePassword");
     const toggleConfirm = document.getElementById("togglePasswordConfirm");
     const message = document.getElementById("authMessage");
+    const submitButton = form?.querySelector(".login-button");
 
     const config = window.REMANGA_SUPABASE_CONFIG;
     const supabaseClient = (config?.enabled && window.supabase && config.url && config.anonKey)
         ? window.supabase.createClient(config.url, config.anonKey, {
-            auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
         })
         : null;
 
@@ -29,7 +34,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             const visible = input.type === "text";
             input.type = visible ? "password" : "text";
             button.textContent = visible ? "◉" : "○";
-            button.setAttribute("aria-label", visible ? "Mostrar contraseña" : "Ocultar contraseña");
+            button.setAttribute(
+                "aria-label",
+                visible ? "Mostrar contraseña" : "Ocultar contraseña"
+            );
         });
     }
 
@@ -41,24 +49,55 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    let recoverySession = false;
-    const { data: sessionData } = await supabaseClient.auth.getSession();
-    recoverySession = !!sessionData?.session;
+    if (!form || !submitButton) return;
 
-    supabaseClient.auth.onAuthStateChange((event, session) => {
-        if (event === "PASSWORD_RECOVERY" && session) recoverySession = true;
+    submitButton.disabled = true;
+    mostrarMensaje("Verificando el enlace de recuperación...", "info");
+
+    let recoveryReady = false;
+    let recoveryEventReceived = false;
+
+    // Supabase puede establecer la sesión de recuperación de forma asíncrona
+    // mientras procesa el enlace recibido por correo. Escuchamos el evento
+    // PASSWORD_RECOVERY antes de decidir que el enlace no es válido.
+    const { data: authListener } = supabaseClient.auth.onAuthStateChange((event, session) => {
+        if (event === "PASSWORD_RECOVERY" && session) {
+            recoveryEventReceived = true;
+            recoveryReady = true;
+            submitButton.disabled = false;
+            mostrarMensaje("Enlace válido. Elegí tu nueva contraseña.", "info");
+        }
     });
 
-    if (!recoverySession) {
-        mostrarMensaje("El enlace de recuperación no es válido o ya venció. Solicitá uno nuevo desde el login.");
-        if (form) form.querySelector(".login-button").disabled = true;
+    // Si la sesión ya quedó disponible al cargar la página, también es válida.
+    const { data: sessionData } = await supabaseClient.auth.getSession();
+    if (sessionData?.session) {
+        recoveryReady = true;
+        submitButton.disabled = false;
+        mostrarMensaje("Enlace válido. Elegí tu nueva contraseña.", "info");
+    }
+
+    // Damos tiempo a Supabase para procesar el token/hash antes de mostrar error.
+    if (!recoveryReady) {
+        await new Promise(resolve => setTimeout(resolve, 1500));
+    }
+
+    if (!recoveryReady) {
+        mostrarMensaje(
+            "El enlace de recuperación no es válido o ya venció. Solicitá uno nuevo desde el login."
+        );
+        submitButton.disabled = true;
+        authListener?.subscription?.unsubscribe?.();
         return;
     }
 
-    if (!form) return;
-
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
+
+        if (!recoveryReady) {
+            mostrarMensaje("Esperá un momento mientras se valida el enlace.");
+            return;
+        }
 
         const password = passwordInput?.value || "";
         const confirm = confirmInput?.value || "";
@@ -67,32 +106,31 @@ document.addEventListener("DOMContentLoaded", async () => {
             mostrarMensaje("La contraseña debe tener al menos 6 caracteres.");
             return;
         }
+
         if (password !== confirm) {
             mostrarMensaje("Las contraseñas no coinciden.");
             return;
         }
 
-        const button = form.querySelector(".login-button");
-        if (button) {
-            button.disabled = true;
-            button.textContent = "GUARDANDO...";
-        }
-        mostrarMensaje("", "info");
+        submitButton.disabled = true;
+        submitButton.textContent = "GUARDANDO...";
+        mostrarMensaje("Actualizando tu contraseña...", "info");
 
         const { error } = await supabaseClient.auth.updateUser({ password });
 
         if (error) {
             mostrarMensaje(error.message || "No se pudo cambiar la contraseña.");
-            if (button) {
-                button.disabled = false;
-                button.textContent = "CAMBIAR CONTRASEÑA";
-            }
+            submitButton.disabled = false;
+            submitButton.textContent = "CAMBIAR CONTRASEÑA";
             return;
         }
 
         await supabaseClient.auth.signOut();
-        mostrarMensaje("Contraseña actualizada correctamente. Ya podés iniciar sesión con tu nueva contraseña.", "success");
+        mostrarMensaje(
+            "Contraseña actualizada correctamente. Ya podés iniciar sesión con tu nueva contraseña.",
+            "success"
+        );
         form.reset();
-        if (button) button.style.display = "none";
+        submitButton.style.display = "none";
     });
 });
