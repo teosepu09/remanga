@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi cuenta | ReManga</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="static/brand.css">
+    <link rel="stylesheet" href="static/perfil.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+</head>
+<body>
+    <header id="header">
+        <div class="logo">
+            <a href="index.html" class="brand-lockup" aria-label="ReManga">
+                <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
+                <img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="catalogo.html">Catálogo</a></li>
+                <li><a href="vender.html">Vender</a></li>
+            </ul>
+        </nav>
+        <div class="header-right">
+            <div class="header-icons">
+                <a href="perfil.html" class="profile-active" aria-label="Mi cuenta" title="Mi cuenta">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+                <a href="carrito.html" class="cart-icon-container" aria-label="Carrito">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-counter" id="cartCounter">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="profile-page">
+        <section class="profile-card">
+            <div class="profile-avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></div>
+            <div class="profile-main">
+                <span class="profile-eyebrow">MI CUENTA</span>
+                <h1 id="profileUsername">Cargando...</h1>
+                <p id="profileEmail">Cargando correo...</p>
+                <span class="profile-status"><i class="fa-solid fa-circle-check"></i> Sesión activa</span>
+            </div>
+        </section>
+
+        <section class="profile-actions">
+            <div class="profile-info-card">
+                <i class="fa-solid fa-id-card"></i>
+                <div>
+                    <h2>Perfil</h2>
+                    <p>Esta es tu cuenta de ReManga. Más adelante vamos a sumar edición de datos, publicaciones, compras y otras funciones.</p>
+                </div>
+            </div>
+
+            <button id="logoutBtn" class="logout-button" type="button">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                CERRAR SESIÓN
+            </button>
+            <p id="profileMessage" class="profile-message" role="status" aria-live="polite"></p>
+            <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i> Volver al inicio</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-logo">
+            <a href="index.html" class="brand-lockup" aria-label="ReManga">
+                <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
+                <img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
+            </a>
+        </div>
+        <div class="footer-links">
+            <a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a><a href="carrito.html">Carrito</a>
+        </div>
+        <p>© 2026 ReManga - Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="static/perfil.js"></script>
+</body>
+</html>
