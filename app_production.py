@@ -36,7 +36,28 @@ def pagina_inicio():
 
 @app.route("/config.js", methods=["GET"])
 def servir_config_js():
-    return send_from_directory(APP_ROOT, "config.js", mimetype="application/javascript")
+    """Sirve la configuración pública de Supabase desde variables de entorno."""
+    supabase_url_publica = os.getenv("SUPABASE_URL", "https://hhssfhcxlehuojuwacy.supabase.co")
+    supabase_publishable_key = (
+        os.getenv("SUPABASE_PUBLISHABLE_KEY")
+        or os.getenv("SUPABASE_ANON_KEY")
+        or ""
+    )
+
+    contenido = f"""const REMANGA_SUPABASE_CONFIG = {{
+    url: {supabase_url_publica!r},
+    anonKey: {supabase_publishable_key!r},
+    bucket: "imagenes",
+    enabled: true
+}};
+
+window.REMANGA_SUPABASE_CONFIG = REMANGA_SUPABASE_CONFIG;
+"""
+    return app.response_class(
+        contenido,
+        mimetype="application/javascript",
+        headers={"Cache-Control": "no-store"}
+    )
 
 
 @app.route("/<path:nombre_archivo>", methods=["GET"])
