@@ -14,6 +14,32 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+PAGINAS_PUBLICAS = {
+    "index.html",
+    "login.html",
+    "registro.html",
+    "recuperar.html",
+    "restablecer.html",
+    "catalogo.html",
+    "producto.html",
+    "carrito.html",
+    "vender.html",
+    "perfil.html",
+}
+
+
+@app.route("/", methods=["GET"])
+def pagina_inicio():
+    return send_from_directory(APP_ROOT, "index.html")
+
+
+@app.route("/<path:nombre_archivo>", methods=["GET"])
+def pagina_html(nombre_archivo):
+    if nombre_archivo in PAGINAS_PUBLICAS:
+        return send_from_directory(APP_ROOT, nombre_archivo)
+    return not_found(None)
+
 ENVIRONMENT = os.getenv("ENVIRONMENT", "production")
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_KEY")
