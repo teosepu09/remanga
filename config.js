@@ -9,7 +9,7 @@ const remangaIsDevelopment =
 
 const REMANGA_API_URL = remangaIsDevelopment
     ? 'http://127.0.0.1:5000'
-    : 'https://remanga.up.railway.app';
+    : window.location.origin;
 
 const REMANGA_SUPABASE_CONFIG = {
     url: 'https://hhssfhcxlehuojuwacyy.supabase.co',
