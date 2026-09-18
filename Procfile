@@ -1,1 +1,1 @@
-web: python app_production.py
+web: gunicorn app_production:app
