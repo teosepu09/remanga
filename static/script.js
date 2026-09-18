@@ -475,6 +475,14 @@ async function iniciarHome() {
             producto.precio
         );
 
+    const favorite =
+        document.createElement("button");
+
+    favorite.type = "button";
+    favorite.className = "favorite-button home-favorite-button";
+    favorite.dataset.productId = String(producto.id);
+    favorite.setAttribute("aria-label", "Agregar a favoritos");
+    favorite.innerHTML = '<i class="fa-regular fa-heart"></i>';
 
     const button =
         document.createElement("button");
@@ -550,6 +558,10 @@ async function iniciarHome() {
 
     card.appendChild(
         image
+    );
+
+    card.appendChild(
+        favorite
     );
 
     card.appendChild(
@@ -730,6 +742,7 @@ function crearCardProducto(producto) {
     const favorite = document.createElement("button");
     favorite.type = "button";
     favorite.className = "favorite-button";
+    favorite.dataset.productId = String(producto.id);
     favorite.setAttribute("aria-label", "Agregar a favoritos");
     favorite.innerHTML = `<i class="fa-regular fa-heart"></i>`;
 
