@@ -11,15 +11,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     const authMessage = document.getElementById("authMessage");
 
     const config = window.REMANGA_SUPABASE_CONFIG;
-    const supabaseClient = (config?.enabled && window.supabase && config.url && config.anonKey)
-        ? window.supabase.createClient(config.url, config.anonKey, {
-            auth: {
-                persistSession: true,
-                autoRefreshToken: true,
-                detectSessionInUrl: true
-            }
-        })
-        : null;
+    let supabaseClient = null;
+
+    try {
+        supabaseClient = (config?.enabled && window.supabase && config.url && config.anonKey)
+            ? window.supabase.createClient(config.url, config.anonKey, {
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true,
+                    detectSessionInUrl: true
+                }
+            })
+            : null;
+    } catch (error) {
+        console.error("Error creando el cliente de Supabase:", error);
+    }
 
     function mostrarMensaje(mensaje, tipo = "error") {
         if (!authMessage) return;
@@ -29,10 +35,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Si ya existe una sesión real, no tiene sentido mostrar nuevamente el login.
     if (supabaseClient) {
-        const { data } = await supabaseClient.auth.getSession();
-        if (data?.session) {
-            window.location.replace("./index.html");
-            return;
+        try {
+            const { data, error } = await supabaseClient.auth.getSession();
+            if (error) {
+                console.error("Error al recuperar la sesión:", error);
+            }
+            if (data?.session) {
+                window.location.replace("./index.html");
+                return;
+            }
+        } catch (error) {
+            console.error("No se pudo comprobar la sesión de Supabase:", error);
         }
     }
 
@@ -93,10 +106,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             mostrarMensaje("", "info");
 
-            const { error } = await supabaseClient.auth.signInWithPassword({
-                email,
-                password
-            });
+            let authResult;
+            try {
+                authResult = await supabaseClient.auth.signInWithPassword({
+                    email,
+                    password
+                });
+            } catch (error) {
+                console.error("Error de red o de Supabase al iniciar sesión:", error);
+                mostrarMensaje("No se pudo conectar con Supabase. Revisá tu conexión e intentá nuevamente.");
+                if (loginButton) {
+                    loginButton.disabled = false;
+                    loginButton.textContent = "ENTRAR";
+                }
+                return;
+            }
+
+            const { error } = authResult;
 
             if (error) {
                 const mensaje = error.message?.toLowerCase().includes("invalid login credentials")
