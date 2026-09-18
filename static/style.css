@@ -164,6 +164,39 @@ button {
     flex-shrink: 0;
 }
 
+/* Lockup de marca: isotipo + logotipo siempre en una sola fila. */
+.logo .brand-lockup {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 10px;
+    width: max-content;
+    line-height: 0;
+    white-space: nowrap;
+}
+
+.logo .brand-lockup img {
+    margin: 0;
+}
+
+.footer-logo .brand-lockup {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    width: max-content;
+    line-height: 0;
+    white-space: nowrap;
+}
+
+.footer-logo .brand-lockup img {
+    margin: 0;
+}
+
 .logo img {
 
     width: 125px;
