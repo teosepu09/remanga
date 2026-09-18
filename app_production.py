@@ -34,6 +34,11 @@ def pagina_inicio():
     return send_from_directory(APP_ROOT, "index.html")
 
 
+@app.route("/config.js", methods=["GET"])
+def servir_config_js():
+    return send_from_directory(APP_ROOT, "config.js", mimetype="application/javascript")
+
+
 @app.route("/<path:nombre_archivo>", methods=["GET"])
 def pagina_html(nombre_archivo):
     if nombre_archivo in PAGINAS_PUBLICAS:
