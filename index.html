@@ -13,6 +13,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="static/style.css">
     <link rel="stylesheet" href="static/carousel.css">
+    <link rel="stylesheet" href="static/brand.css">
+
+    <style>
+        /* El header del index debe mantener el mismo tamaño de marca en Railway y GitHub Pages. */
+        #header .logo .brand-lockup .brand-mark {
+            width: 34px !important;
+            height: 34px !important;
+            max-width: 34px !important;
+            min-width: 34px !important;
+            flex: 0 0 34px !important;
+        }
+
+        #header .logo .brand-lockup .brand-wordmark {
+            width: 112px !important;
+            max-width: 112px !important;
+            height: auto !important;
+        }
+    </style>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="config.js"></script>
