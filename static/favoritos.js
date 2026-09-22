@@ -1,18 +1,20 @@
 // =========================================================
 // ReManga - Favoritos
-// Persistencia local por usuario y funcionamiento para invitados.
-// Más adelante esta capa puede migrarse a Supabase para sincronizar
-// favoritos entre dispositivos.
+// Favoritos por cuenta en Supabase + favoritos de invitado en localStorage.
 // =========================================================
 
 (function () {
     var FAVORITES_PREFIX = "remangaFavorites:";
     var GUEST_KEY = FAVORITES_PREFIX + "guest";
+    var TABLE = "favoritos";
 
     var favoriteKey = GUEST_KEY;
     var favoriteIds = new Set();
     var productosCache = [];
     var initialized = false;
+    var supabaseClient = null;
+    var currentUser = null;
+    var usingDatabase = false;
 
     function obtenerApiUrl() {
         if (typeof REMANGA_API_URL !== "undefined") {
@@ -22,34 +24,60 @@
         return window.location.origin.replace(/\/$/, "");
     }
 
-    async function obtenerClaveFavoritos() {
+    function crearClienteSupabase() {
         var config = window.REMANGA_SUPABASE_CONFIG;
 
         if (!(config && config.enabled && window.supabase && config.url && config.anonKey)) {
-            return GUEST_KEY;
+            return null;
         }
 
         try {
-            var client = window.supabase.createClient(config.url, config.anonKey, {
+            return window.supabase.createClient(config.url, config.anonKey, {
                 auth: {
                     persistSession: true,
                     autoRefreshToken: true,
                     detectSessionInUrl: true
                 }
             });
-
-            var resultado = await client.auth.getSession();
-            var userId = resultado && resultado.data && resultado.data.session &&
-                resultado.data.session.user ? resultado.data.session.user.id : null;
-
-            return userId ? FAVORITES_PREFIX + userId : GUEST_KEY;
         } catch (error) {
-            console.warn("No se pudo identificar la cuenta para favoritos:", error);
-            return GUEST_KEY;
+            console.warn("No se pudo crear el cliente de Supabase para favoritos:", error);
+            return null;
         }
     }
 
-    function cargarFavoritos() {
+    async function identificarUsuario() {
+        supabaseClient = crearClienteSupabase();
+
+        if (!supabaseClient) {
+            usingDatabase = false;
+            currentUser = null;
+            favoriteKey = GUEST_KEY;
+            return;
+        }
+
+        try {
+            var resultado = await supabaseClient.auth.getSession();
+            var session = resultado && resultado.data ? resultado.data.session : null;
+
+            if (!session || !session.user) {
+                usingDatabase = false;
+                currentUser = null;
+                favoriteKey = GUEST_KEY;
+                return;
+            }
+
+            currentUser = session.user;
+            usingDatabase = true;
+            favoriteKey = FAVORITES_PREFIX + currentUser.id;
+        } catch (error) {
+            console.warn("No se pudo identificar la sesión para favoritos:", error);
+            usingDatabase = false;
+            currentUser = null;
+            favoriteKey = GUEST_KEY;
+        }
+    }
+
+    function cargarFavoritosLocales() {
         try {
             var datos = JSON.parse(localStorage.getItem(favoriteKey) || "[]");
 
@@ -57,13 +85,110 @@
                 ? new Set(datos.map(function (id) { return String(id); }).filter(Boolean))
                 : new Set();
         } catch (error) {
-            console.warn("No se pudieron cargar los favoritos:", error);
+            console.warn("No se pudieron cargar los favoritos locales:", error);
             favoriteIds = new Set();
         }
     }
 
-    function guardarFavoritos() {
-        localStorage.setItem(favoriteKey, JSON.stringify(Array.from(favoriteIds)));
+    function obtenerFavoritosLocalesDeUsuario() {
+        if (!currentUser) return [];
+
+        try {
+            var datos = JSON.parse(
+                localStorage.getItem(FAVORITES_PREFIX + currentUser.id) || "[]"
+            );
+
+            return Array.isArray(datos)
+                ? Array.from(new Set(datos.map(function (id) { return String(id); }).filter(Boolean)))
+                : [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function guardarFavoritosLocales() {
+        localStorage.setItem(
+            favoriteKey,
+            JSON.stringify(Array.from(favoriteIds))
+        );
+    }
+
+    async function cargarFavoritosDesdeSupabase() {
+        if (!usingDatabase || !supabaseClient || !currentUser) {
+            cargarFavoritosLocales();
+            return;
+        }
+
+        try {
+            var resultado = await supabaseClient
+                .from(TABLE)
+                .select("producto_id")
+                .eq("user_id", currentUser.id);
+
+            if (resultado.error) {
+                throw resultado.error;
+            }
+
+            favoriteIds = new Set(
+                (resultado.data || []).map(function (row) {
+                    return String(row.producto_id);
+                })
+            );
+
+            await migrarFavoritosLocales();
+        } catch (error) {
+            console.error("Error al cargar favoritos desde Supabase:", error);
+            mostrarAviso("No se pudieron cargar tus favoritos guardados.", "error");
+            favoriteIds = new Set();
+        }
+    }
+
+    async function migrarFavoritosLocales() {
+        var locales = obtenerFavoritosLocalesDeUsuario();
+
+        if (!locales.length || !currentUser || !supabaseClient) {
+            return;
+        }
+
+        var productosValidos = locales.filter(function (id) {
+            return productosCache.some(function (producto) {
+                return String(producto.id) === String(id);
+            });
+        });
+
+        if (!productosValidos.length) {
+            localStorage.removeItem(FAVORITES_PREFIX + currentUser.id);
+            return;
+        }
+
+        var huboError = false;
+
+        for (var i = 0; i < productosValidos.length; i++) {
+            var productoId = Number(productosValidos[i]);
+
+            if (favoriteIds.has(String(productoId))) {
+                continue;
+            }
+
+            var resultado = await supabaseClient
+                .from(TABLE)
+                .insert({
+                    user_id: currentUser.id,
+                    producto_id: productoId
+                });
+
+            if (resultado.error && resultado.error.code !== "23505") {
+                huboError = true;
+                console.warn("No se pudo migrar el favorito " + productoId + ":", resultado.error);
+                break;
+            }
+
+            favoriteIds.add(String(productoId));
+        }
+
+        if (!huboError) {
+            localStorage.removeItem(FAVORITES_PREFIX + currentUser.id);
+        }
     }
 
     function esFavorito(id) {
@@ -84,6 +209,7 @@
             "aria-label",
             activo ? "Quitar de favoritos" : "Agregar a favoritos"
         );
+        button.title = activo ? "Quitar de favoritos" : "Agregar a favoritos";
 
         if (icon) {
             icon.classList.toggle("fa-solid", activo);
@@ -97,9 +223,9 @@
             .forEach(configurarEstadoBoton);
     }
 
-    function mostrarAviso(texto) {
+    function mostrarAviso(texto, tipo) {
         if (typeof window.mostrarMensaje === "function") {
-            window.mostrarMensaje(texto, "success");
+            window.mostrarMensaje(texto, tipo || "success");
             return;
         }
 
@@ -149,23 +275,69 @@
         return String(producto.id);
     }
 
-    function alternarFavorito(id) {
-        var key = String(id);
+    async function agregarFavoritoSupabase(id) {
+        var resultado = await supabaseClient
+            .from(TABLE)
+            .insert({
+                user_id: currentUser.id,
+                producto_id: Number(id)
+            });
 
-        if (favoriteIds.has(key)) {
-            favoriteIds.delete(key);
-            guardarFavoritos();
+        if (resultado.error && resultado.error.code !== "23505") {
+            throw resultado.error;
+        }
+    }
+
+    async function eliminarFavoritoSupabase(id) {
+        var resultado = await supabaseClient
+            .from(TABLE)
+            .delete()
+            .eq("user_id", currentUser.id)
+            .eq("producto_id", Number(id));
+
+        if (resultado.error) {
+            throw resultado.error;
+        }
+    }
+
+    async function alternarFavorito(id) {
+        var key = String(id);
+        var activoAntes = favoriteIds.has(key);
+
+        // Actualizamos después de confirmar la operación remota cuando la cuenta
+        // está conectada a Supabase. Así la interfaz no muestra un estado falso.
+        try {
+            if (usingDatabase && supabaseClient && currentUser) {
+                if (activoAntes) {
+                    await eliminarFavoritoSupabase(id);
+                    favoriteIds.delete(key);
+                    mostrarAviso("Manga eliminado de favoritos.");
+                } else {
+                    await agregarFavoritoSupabase(id);
+                    favoriteIds.add(key);
+                    mostrarAviso("Manga agregado a favoritos.");
+                }
+            } else {
+                if (activoAntes) {
+                    favoriteIds.delete(key);
+                    mostrarAviso("Manga eliminado de favoritos.");
+                } else {
+                    favoriteIds.add(key);
+                    mostrarAviso("Manga agregado a favoritos.");
+                }
+
+                guardarFavoritosLocales();
+            }
+
             actualizarBotonesFavoritos();
             renderizarFavoritosPerfil();
-            mostrarAviso("Manga eliminado de favoritos.");
-            return;
+        } catch (error) {
+            console.error("No se pudo modificar el favorito:", error);
+            mostrarAviso(
+                "No se pudo guardar el favorito. Revisá tu sesión y conexión.",
+                "error"
+            );
         }
-
-        favoriteIds.add(key);
-        guardarFavoritos();
-        actualizarBotonesFavoritos();
-        renderizarFavoritosPerfil();
-        mostrarAviso("Manga agregado a favoritos.");
     }
 
     async function cargarProductos() {
@@ -188,6 +360,26 @@
 
             if (button && id) {
                 button.dataset.productId = id;
+                configurarEstadoBoton(button);
+            }
+        });
+    }
+
+    function prepararTarjetasHome() {
+        document.querySelectorAll(".card").forEach(function (card) {
+            var button = card.querySelector(".home-favorite-button, .favorite-button");
+
+            if (!button || button.dataset.productId) {
+                if (button) configurarEstadoBoton(button);
+                return;
+            }
+
+            var cards = document.querySelectorAll("#homeProducts .card");
+            var indice = Array.prototype.indexOf.call(cards, card);
+            var producto = productosCache[indice];
+
+            if (producto) {
+                button.dataset.productId = String(producto.id);
                 configurarEstadoBoton(button);
             }
         });
@@ -233,6 +425,7 @@
         remove.className = "favorite-remove";
         remove.dataset.productId = String(producto.id);
         remove.setAttribute("aria-label", "Quitar de favoritos");
+        remove.title = "Quitar de favoritos";
         remove.innerHTML = '<i class="fa-solid fa-heart"></i>';
 
         content.append(state, title, volume, price);
@@ -246,10 +439,17 @@
         return card;
     }
 
+    function actualizarContadorPerfil(cantidad) {
+        var count = document.getElementById("favoriteCount");
+        var label = document.getElementById("favoriteCountLabel");
+
+        if (count) count.textContent = cantidad;
+        if (label) label.textContent = cantidad;
+    }
+
     function renderizarFavoritosPerfil() {
         var grid = document.getElementById("favoriteProducts");
         var empty = document.getElementById("favoriteEmpty");
-        var count = document.getElementById("favoriteCount");
 
         if (!grid) return;
 
@@ -258,10 +458,7 @@
         });
 
         grid.innerHTML = "";
-
-        if (count) {
-            count.textContent = productosFavoritos.length;
-        }
+        actualizarContadorPerfil(productosFavoritos.length);
 
         if (!productosFavoritos.length) {
             grid.style.display = "none";
@@ -303,7 +500,7 @@
         }
 
         if (!id) {
-            mostrarAviso("No se pudo identificar el manga.");
+            mostrarAviso("No se pudo identificar el manga.", "error");
             return;
         }
 
@@ -314,27 +511,58 @@
         if (initialized) return;
         initialized = true;
 
-        favoriteKey = await obtenerClaveFavoritos();
-        cargarFavoritos();
+        await identificarUsuario();
         await cargarProductos();
 
+        if (usingDatabase) {
+            await cargarFavoritosDesdeSupabase();
+        } else {
+            cargarFavoritosLocales();
+        }
+
         prepararTarjetasCatalogo();
+        prepararTarjetasHome();
         prepararFavoritoProducto();
         actualizarBotonesFavoritos();
         renderizarFavoritosPerfil();
 
         document.addEventListener("click", manejarClickFavorito, true);
 
-        var observer = new MutationObserver(function () {
-            prepararTarjetasCatalogo();
-            prepararFavoritoProducto();
-            actualizarBotonesFavoritos();
-        });
-
         if (document.body) {
+            var observer = new MutationObserver(function () {
+                prepararTarjetasCatalogo();
+                prepararTarjetasHome();
+                prepararFavoritoProducto();
+                actualizarBotonesFavoritos();
+            });
+
             observer.observe(document.body, {
                 childList: true,
                 subtree: true
+            });
+        }
+
+        if (supabaseClient) {
+            supabaseClient.auth.onAuthStateChange(async function (event, session) {
+                var nuevoUserId = session && session.user ? session.user.id : null;
+                var actualUserId = currentUser ? currentUser.id : null;
+
+                if (nuevoUserId === actualUserId) return;
+
+                currentUser = session ? session.user : null;
+                usingDatabase = !!currentUser;
+                favoriteKey = currentUser
+                    ? FAVORITES_PREFIX + currentUser.id
+                    : GUEST_KEY;
+
+                if (usingDatabase) {
+                    await cargarFavoritosDesdeSupabase();
+                } else {
+                    cargarFavoritosLocales();
+                }
+
+                actualizarBotonesFavoritos();
+                renderizarFavoritosPerfil();
             });
         }
     }
