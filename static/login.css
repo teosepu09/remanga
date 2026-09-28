@@ -60,13 +60,7 @@ img {
     transform: scale(1);
 }
 
-.login-background-glow {
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(115deg, rgba(5, 8, 18, 0.92) 15%, rgba(5, 8, 18, 0.70) 52%, rgba(5, 8, 18, 0.84) 100%),
-        linear-gradient(90deg, rgba(3, 6, 18, 0.46), rgba(3, 6, 18, 0.76));
-}
+
 
 /* =========================================================
    CONTENEDOR
