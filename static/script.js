@@ -62,8 +62,14 @@ function obtenerRutaImagen(imagen) {
         return imagen;
     }
 
-    // Ruta desde el API
-    return `${API_URL}/imagenes/${encodeURIComponent(imagen)}`;
+    // En producción, las imágenes viven directamente en Supabase Storage.
+    const config = window.REMANGA_SUPABASE_CONFIG;
+    if (!isDevelopment && config?.enabled && config.url && config.bucket) {
+        return config.url.replace(/\/$/, "") + "/storage/v1/object/public/" + config.bucket + "/" + encodeURIComponent(imagen);
+    }
+
+    // Compatibilidad con el backend local.
+    return API_URL + "/imagenes/" + encodeURIComponent(imagen);
 }
 
 function obtenerParam(nombre) {
@@ -194,57 +200,96 @@ function iniciarAnimaciones() {
 
 /* ========================= API ========================= */
 
+let remangaSupabaseClient = null;
+
+function obtenerClienteSupabaseDatos() {
+    if (remangaSupabaseClient) return remangaSupabaseClient;
+
+    const config = window.REMANGA_SUPABASE_CONFIG;
+
+    if (!(config?.enabled && window.supabase && config.url && config.anonKey)) {
+        return null;
+    }
+
+    try {
+        remangaSupabaseClient = window.supabase.createClient(config.url, config.anonKey, {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        });
+        return remangaSupabaseClient;
+    } catch (error) {
+        console.warn("No se pudo crear el cliente de Supabase:", error);
+        return null;
+    }
+}
+
 async function apiGetProductos() {
-    const respuesta = await fetch(`${API_URL}/api/productos`);
-    if (!respuesta.ok) throw new Error(`Error HTTP: ${respuesta.status}`);
+    // Producción: consultar PostgreSQL de Supabase directamente.
+    if (!isDevelopment) {
+        const supabaseClient = obtenerClienteSupabaseDatos();
+
+        if (!supabaseClient) {
+            throw new Error("No se pudo conectar con Supabase.");
+        }
+
+        const { data, error } = await supabaseClient
+            .from("productos")
+            .select("id,titulo,tomo,precio,estado,descripcion,imagen")
+            .order("id", { ascending: false });
+
+        if (error) {
+            console.error("Error Supabase al cargar productos:", error);
+            throw new Error(error.message || "No se pudieron cargar los productos.");
+        }
+
+        return Array.isArray(data) ? data : [];
+    }
+
+    // Desarrollo local: conservar compatibilidad con Flask.
+    const respuesta = await fetch(API_URL + "/api/productos");
+    if (!respuesta.ok) throw new Error("Error HTTP: " + respuesta.status);
     const datos = await respuesta.json();
     if (!Array.isArray(datos)) throw new Error("La API no devolvió una lista de productos.");
     return datos;
 }
 
 async function apiGetProducto(id) {
-    const respuesta = await fetch(`${API_URL}/api/productos/${id}`);
+    // Producción: consultar PostgreSQL de Supabase directamente.
+    if (!isDevelopment) {
+        const supabaseClient = obtenerClienteSupabaseDatos();
+
+        if (!supabaseClient) {
+            throw new Error("No se pudo conectar con Supabase.");
+        }
+
+        const { data, error } = await supabaseClient
+            .from("productos")
+            .select("id,titulo,tomo,precio,estado,descripcion,imagen")
+            .eq("id", id)
+            .maybeSingle();
+
+        if (error) {
+            console.error("Error Supabase al cargar producto:", error);
+            throw new Error(error.message || "No se pudo cargar el producto.");
+        }
+
+        if (!data) {
+            throw new Error("El producto no existe.");
+        }
+
+        return data;
+    }
+
+    // Desarrollo local: conservar compatibilidad con Flask.
+    const respuesta = await fetch(API_URL + "/api/productos/" + id);
     if (!respuesta.ok) {
         if (respuesta.status === 404) throw new Error("El producto no existe.");
-        throw new Error(`Error HTTP: ${respuesta.status}`);
+        throw new Error("Error HTTP: " + respuesta.status);
     }
     return await respuesta.json();
-}
-
-async function apiCrearProducto(producto) {
-
-    const opciones = {
-        method: "POST"
-    };
-
-    if (producto instanceof FormData) {
-
-        opciones.body = producto;
-
-    } else {
-
-        opciones.headers = {
-            "Content-Type": "application/json"
-        };
-
-        opciones.body = JSON.stringify(producto);
-    }
-
-    const respuesta =
-        await fetch(`${API_URL}/api/productos`, opciones);
-
-    const datos =
-        await respuesta.json();
-
-    if (!respuesta.ok) {
-
-        throw new Error(
-            datos.error ||
-            "No se pudo publicar el manga."
-        );
-    }
-
-    return datos;
 }
 
 /* ========================= CARRITO: BASE ========================= */
