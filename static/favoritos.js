@@ -16,14 +16,6 @@
     var currentUser = null;
     var usingDatabase = false;
 
-    function obtenerApiUrl() {
-        if (typeof REMANGA_API_URL !== "undefined") {
-            return REMANGA_API_URL;
-        }
-
-        return window.location.origin.replace(/\/$/, "");
-    }
-
     function crearClienteSupabase() {
         var config = window.REMANGA_SUPABASE_CONFIG;
 
@@ -341,12 +333,20 @@
     }
 
     async function cargarProductos() {
-        try {
-            var respuesta = await fetch(obtenerApiUrl() + "/api/productos");
-            if (!respuesta.ok) throw new Error("HTTP " + respuesta.status);
+        if (!supabaseClient) {
+            productosCache = [];
+            return;
+        }
 
-            var datos = await respuesta.json();
-            productosCache = Array.isArray(datos) ? datos : [];
+        try {
+            var resultado = await supabaseClient
+                .from("productos")
+                .select("id,titulo,tomo,precio,estado,descripcion,imagen")
+                .order("id", { ascending: false });
+
+            if (resultado.error) throw resultado.error;
+
+            productosCache = Array.isArray(resultado.data) ? resultado.data : [];
         } catch (error) {
             console.warn("No se pudieron cargar los productos para favoritos:", error);
             productosCache = [];

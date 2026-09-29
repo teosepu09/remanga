@@ -1,26 +1,7 @@
 /* =========================================================
-   ReManga - script.js refactorizado
-   Unifica lógica repetida y organiza todo por funciones.
+   ReManga - script.js
+   El sitio es estático y habla directamente con Supabase.
    ========================================================= */
-
-// Detectar automáticamente si estamos en desarrollo o producción
-const isDevelopment = window.location.hostname === 'localhost' || 
-                      window.location.hostname === '127.0.0.1';
-
-const API_URL = (() => {
-    // Si hay una variable global definida en HTML
-    if (typeof REMANGA_API_URL !== 'undefined') {
-        return REMANGA_API_URL;
-    }
-    
-    // Detectar según el entorno
-    if (isDevelopment) {
-        return 'http://127.0.0.1:5000';
-    } else {
-        // En producción, usar la misma URL base que el sitio
-        return window.location.origin.replace(/\/$/, '');
-    }
-})();
 
 const CART_KEY = "remangaCart";
 
@@ -50,26 +31,25 @@ function formatearPrecio(precio) {
 }
 
 function obtenerRutaImagen(imagen) {
-    if (!imagen) return "imagenes/onepiece1.webp";
+    if (!imagen) return "static/isotipo sin fondo.png";
 
     // URL absoluta
     if (/^https?:\/\//i.test(imagen)) {
         return imagen;
     }
 
-    // Ruta relativa local
-    if (/^img\//i.test(imagen)) {
+    // Ruta relativa dentro del repositorio
+    if (/^(img|static|imagenes)\//i.test(imagen)) {
         return imagen;
     }
 
-    // En producción, las imágenes viven directamente en Supabase Storage.
+    // Las portadas viven en Supabase Storage.
     const config = window.REMANGA_SUPABASE_CONFIG;
-    if (!isDevelopment && config?.enabled && config.url && config.bucket) {
+    if (config?.enabled && config.url && config.bucket) {
         return config.url.replace(/\/$/, "") + "/storage/v1/object/public/" + config.bucket + "/" + encodeURIComponent(imagen);
     }
 
-    // Compatibilidad con el backend local.
-    return API_URL + "/imagenes/" + encodeURIComponent(imagen);
+    return "static/isotipo sin fondo.png";
 }
 
 function obtenerParam(nombre) {
@@ -226,70 +206,145 @@ function obtenerClienteSupabaseDatos() {
     }
 }
 
+const CAMPOS_PRODUCTO = "id,titulo,tomo,precio,estado,descripcion,imagen";
+
 async function apiGetProductos() {
-    // Producción: consultar PostgreSQL de Supabase directamente.
-    if (!isDevelopment) {
-        const supabaseClient = obtenerClienteSupabaseDatos();
+    const supabaseClient = obtenerClienteSupabaseDatos();
 
-        if (!supabaseClient) {
-            throw new Error("No se pudo conectar con Supabase.");
-        }
-
-        const { data, error } = await supabaseClient
-            .from("productos")
-            .select("id,titulo,tomo,precio,estado,descripcion,imagen")
-            .order("id", { ascending: false });
-
-        if (error) {
-            console.error("Error Supabase al cargar productos:", error);
-            throw new Error(error.message || "No se pudieron cargar los productos.");
-        }
-
-        return Array.isArray(data) ? data : [];
+    if (!supabaseClient) {
+        throw new Error("No se pudo conectar con Supabase.");
     }
 
-    // Desarrollo local: conservar compatibilidad con Flask.
-    const respuesta = await fetch(API_URL + "/api/productos");
-    if (!respuesta.ok) throw new Error("Error HTTP: " + respuesta.status);
-    const datos = await respuesta.json();
-    if (!Array.isArray(datos)) throw new Error("La API no devolvió una lista de productos.");
-    return datos;
+    const { data, error } = await supabaseClient
+        .from("productos")
+        .select(CAMPOS_PRODUCTO)
+        .order("id", { ascending: false });
+
+    if (error) {
+        console.error("Error Supabase al cargar productos:", error);
+        throw new Error(error.message || "No se pudieron cargar los productos.");
+    }
+
+    return Array.isArray(data) ? data : [];
 }
 
 async function apiGetProducto(id) {
-    // Producción: consultar PostgreSQL de Supabase directamente.
-    if (!isDevelopment) {
-        const supabaseClient = obtenerClienteSupabaseDatos();
+    const supabaseClient = obtenerClienteSupabaseDatos();
 
-        if (!supabaseClient) {
-            throw new Error("No se pudo conectar con Supabase.");
-        }
-
-        const { data, error } = await supabaseClient
-            .from("productos")
-            .select("id,titulo,tomo,precio,estado,descripcion,imagen")
-            .eq("id", id)
-            .maybeSingle();
-
-        if (error) {
-            console.error("Error Supabase al cargar producto:", error);
-            throw new Error(error.message || "No se pudo cargar el producto.");
-        }
-
-        if (!data) {
-            throw new Error("El producto no existe.");
-        }
-
-        return data;
+    if (!supabaseClient) {
+        throw new Error("No se pudo conectar con Supabase.");
     }
 
-    // Desarrollo local: conservar compatibilidad con Flask.
-    const respuesta = await fetch(API_URL + "/api/productos/" + id);
-    if (!respuesta.ok) {
-        if (respuesta.status === 404) throw new Error("El producto no existe.");
-        throw new Error("Error HTTP: " + respuesta.status);
+    const { data, error } = await supabaseClient
+        .from("productos")
+        .select(CAMPOS_PRODUCTO)
+        .eq("id", id)
+        .maybeSingle();
+
+    if (error) {
+        console.error("Error Supabase al cargar producto:", error);
+        throw new Error(error.message || "No se pudo cargar el producto.");
     }
-    return await respuesta.json();
+
+    if (!data) {
+        throw new Error("El producto no existe.");
+    }
+
+    return data;
+}
+
+/* ---------- Publicar un manga ---------- */
+
+async function obtenerSesionActual() {
+    const supabaseClient = obtenerClienteSupabaseDatos();
+    if (!supabaseClient) return null;
+
+    try {
+        const { data } = await supabaseClient.auth.getSession();
+        return data?.session || null;
+    } catch (error) {
+        console.warn("No se pudo leer la sesión:", error);
+        return null;
+    }
+}
+
+function nombreImagenUnico(archivo) {
+    const extension = (archivo.name.split(".").pop() || "jpg").toLowerCase();
+    const aleatorio = Math.random().toString(36).slice(2, 10);
+    return `${Date.now()}-${aleatorio}.${extension}`;
+}
+
+async function subirImagenProducto(archivo) {
+    const supabaseClient = obtenerClienteSupabaseDatos();
+    const config = window.REMANGA_SUPABASE_CONFIG;
+
+    if (!supabaseClient || !config?.bucket) {
+        throw new Error("No se pudo conectar con el almacenamiento de imágenes.");
+    }
+
+    const nombre = nombreImagenUnico(archivo);
+
+    const { error } = await supabaseClient
+        .storage
+        .from(config.bucket)
+        .upload(nombre, archivo, {
+            contentType: archivo.type || "image/jpeg",
+            upsert: false
+        });
+
+    if (error) {
+        console.error("Error al subir la imagen:", error);
+        throw new Error("No se pudo subir la imagen del manga.");
+    }
+
+    return nombre;
+}
+
+async function apiCrearProducto(producto) {
+    const supabaseClient = obtenerClienteSupabaseDatos();
+
+    if (!supabaseClient) {
+        throw new Error("No se pudo conectar con Supabase.");
+    }
+
+    const sesion = await obtenerSesionActual();
+
+    if (!sesion?.user) {
+        const aviso = new Error("Tenés que iniciar sesión para publicar un manga.");
+        aviso.requiereLogin = true;
+        throw aviso;
+    }
+
+    let nombreImagen = "";
+    const archivo = producto.imagen;
+
+    if (archivo && archivo.size > 0) {
+        if (archivo.size > 5 * 1024 * 1024) {
+            throw new Error("La imagen no puede superar los 5 MB.");
+        }
+        nombreImagen = await subirImagenProducto(archivo);
+    }
+
+    const { data, error } = await supabaseClient
+        .from("productos")
+        .insert({
+            titulo: producto.titulo,
+            tomo: producto.tomo,
+            precio: producto.precio,
+            estado: producto.estado,
+            descripcion: producto.descripcion,
+            imagen: nombreImagen,
+            vendedor_id: sesion.user.id
+        })
+        .select(CAMPOS_PRODUCTO)
+        .single();
+
+    if (error) {
+        console.error("Error Supabase al publicar el manga:", error);
+        throw new Error(error.message || "No se pudo publicar el manga.");
+    }
+
+    return data;
 }
 
 /* ========================= CARRITO: BASE ========================= */
@@ -1511,21 +1566,14 @@ function iniciarVender() {
             return;
         }
 
-        const producto = new FormData();
-
-        producto.append("titulo", titulo);
-        producto.append("tomo", tomo);
-        producto.append("precio", precio);
-        producto.append("estado", estado);
-        producto.append("descripcion", descripcion);
-
-        if (
-            imageInput &&
-            imageInput.files &&
-            imageInput.files.length > 0
-        ) {
-            producto.append("imagen", imageInput.files[0]);
-        }
+        const producto = {
+            titulo: titulo,
+            tomo: tomo,
+            precio: precio,
+            estado: estado,
+            descripcion: descripcion,
+            imagen: imageInput?.files?.[0] || null
+        };
 
         try {
             const datos = await apiCrearProducto(producto);
@@ -1551,7 +1599,12 @@ function iniciarVender() {
             }
 
         } catch (error) {
-            console.error("Error al conectar con la API:", error);
+            if (error.requiereLogin) {
+                alert(error.message);
+                window.location.href = "./login.html";
+                return;
+            }
+            console.error("Error al publicar el manga:", error);
             alert(`No se pudo publicar el manga.\n\n${error.message}`);
         }
     });
