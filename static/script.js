@@ -207,12 +207,12 @@ function obtenerClienteSupabaseDatos() {
 
     const config = window.REMANGA_SUPABASE_CONFIG;
 
-    if (!(config?.enabled && window.supabase && config.url && config.anonKey)) {
+    if (!(config?.enabled && window.supabase && config.url && config.publishableKey)) {
         return null;
     }
 
     try {
-        remangaSupabaseClient = window.supabase.createClient(config.url, config.anonKey, {
+        remangaSupabaseClient = window.supabase.createClient(config.url, config.publishableKey, {
             auth: {
                 persistSession: true,
                 autoRefreshToken: true,
