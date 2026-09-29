@@ -27,12 +27,12 @@
     function crearClienteSupabase() {
         var config = window.REMANGA_SUPABASE_CONFIG;
 
-        if (!(config && config.enabled && window.supabase && config.url && config.anonKey)) {
+        if (!(config && config.enabled && window.supabase && config.url && config.publishableKey)) {
             return null;
         }
 
         try {
-            return window.supabase.createClient(config.url, config.anonKey, {
+            return window.supabase.createClient(config.url, config.publishableKey, {
                 auth: {
                     persistSession: true,
                     autoRefreshToken: true,
