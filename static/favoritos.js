@@ -13,6 +13,29 @@
     var productosCache = [];
     var initialized = false;
     var supabaseClient = null;
+
+    function obtenerRutaImagenFavorito(imagen) {
+        if (typeof obtenerRutaImagen === "function") {
+            return obtenerRutaImagen(imagen);
+        }
+
+        if (!imagen) return "static/isotipo sin fondo.png";
+        if (/^https?:\/\//i.test(imagen)) return imagen;
+        if (/^(img|static|imagenes)\//i.test(imagen)) return imagen;
+
+        var config = window.REMANGA_SUPABASE_CONFIG;
+        if (config && config.enabled && config.url && config.bucket) {
+            return (
+                config.url.replace(/\/$/, "") +
+                "/storage/v1/object/public/" +
+                config.bucket +
+                "/" +
+                encodeURIComponent(imagen)
+            );
+        }
+
+        return "static/isotipo sin fondo.png";
+    }
     var currentUser = null;
     var usingDatabase = false;
 
@@ -401,7 +424,7 @@
         card.className = "profile-favorite-card";
 
         var image = document.createElement("img");
-        image.src = producto.imagen || "";
+        image.src = obtenerRutaImagenFavorito(producto.imagen);
         image.alt = producto.titulo || "Manga";
 
         var content = document.createElement("div");
