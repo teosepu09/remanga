@@ -15,7 +15,7 @@ const REMANGA_API_URL = remangaIsDevelopment
 
 const REMANGA_SUPABASE_CONFIG = {
     url: 'https://hhssfhcxlehuojuwacyy.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFub24iLCJpYXQiOjE3ODc5MzkyODQsImV4cCI6MjEwMzUxNTI4NH0.MiGy10ZMe1mv1LE-PcSj0wAEJON2jgWqq-cWXnhy-c4',
+    publishableKey: 'sb_publishable_lM2qbj2jBEVgLboweAI_Xw_fxhcw-dM',
     bucket: 'imagenes',
     enabled: true
 };
