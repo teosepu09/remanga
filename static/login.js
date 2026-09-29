@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     let supabaseClient = null;
 
     try {
-        supabaseClient = (config?.enabled && window.supabase && config.url && config.anonKey)
-            ? window.supabase.createClient(config.url, config.anonKey, {
+        supabaseClient = (config?.enabled && window.supabase && config.url && config.publishableKey)
+            ? window.supabase.createClient(config.url, config.publishableKey, {
                 auth: {
                     persistSession: true,
                     autoRefreshToken: true,
