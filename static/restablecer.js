@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const submitButton = form?.querySelector(".login-button");
 
     const config = window.REMANGA_SUPABASE_CONFIG;
-    const supabaseClient = (config?.enabled && window.supabase && config.url && config.anonKey)
-        ? window.supabase.createClient(config.url, config.anonKey, {
+    const supabaseClient = (config?.enabled && window.supabase && config.url && config.publishableKey)
+        ? window.supabase.createClient(config.url, config.publishableKey, {
             auth: {
                 persistSession: true,
                 autoRefreshToken: true,
