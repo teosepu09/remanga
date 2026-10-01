@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const user = data.session.user;
-    const username = user.user_metadata?.username || "Usuario ReManga";
+    const username = user.user_metadata?.username || user.user_metadata?.name || (user.email ? user.email.split("@")[0] : "") || "Usuario ReManga";
 
     if (usernameElement) usernameElement.textContent = username;
     if (emailElement) emailElement.textContent = user.email || "Sin correo disponible";
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             const { data, error } = await supabaseClient
                 .from("productos")
-                .select("id,titulo,tomo,precio,estado,descripcion,imagen")
+                .select("id,titulo,tomo,precio,estado,descripcion,imagen,vendedor_id")
                 .eq("vendedor_id", user.id)
                 .order("id", { ascending: false });
 
