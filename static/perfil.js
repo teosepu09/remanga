@@ -44,12 +44,37 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (usernameElement) usernameElement.textContent = username;
     if (emailElement) emailElement.textContent = user.email || "Sin correo disponible";
 
-    renderizarPublicacionesPerfil(publicacionesDePrueba);
+    await cargarMisPublicaciones();
 
 
     // =========================================================
-    // Mis publicaciones - render visual (Paso 2)
+    // Mis publicaciones
     // =========================================================
+
+    async function cargarMisPublicaciones() {
+        if (!supabaseClient || !user) {
+            renderizarPublicacionesPerfil([]);
+            return;
+        }
+
+        try {
+            const { data, error } = await supabaseClient
+                .from("productos")
+                .select("id,titulo,tomo,precio,estado,descripcion,imagen")
+                .eq("vendedor_id", user.id)
+                .order("id", { ascending: false });
+
+            if (error) {
+                throw error;
+            }
+
+            renderizarPublicacionesPerfil(data || []);
+        } catch (error) {
+            console.error("No se pudieron cargar tus publicaciones:", error);
+            renderizarPublicacionesPerfil([]);
+            mostrarMensaje("No se pudieron cargar tus publicaciones.");
+        }
+    }
 
     function obtenerPrecioPublicacion(precio) {
         return "$" + (Number(precio) || 0).toLocaleString("es-AR");
@@ -142,44 +167,3 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Datos temporales únicamente para comprobar el render antes de conectar Supabase.
-    var publicacionesDePrueba = [
-        {
-            titulo: "Manga de prueba",
-            tomo: 1,
-            precio: 4500,
-            estado: "Disponible",
-            imagen: null
-        },
-        {
-            titulo: "Otra publicación",
-            tomo: 3,
-            precio: 6200,
-            estado: "Usado",
-            imagen: null
-        }
-    ];
-
-    if (logoutButton) {
-        logoutButton.addEventListener("click", async () => {
-            logoutButton.disabled = true;
-            logoutButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> CERRANDO...';
-            mostrarMensaje("Cerrando sesión...", "info");
-
-            const { error: logoutError } = await supabaseClient.auth.signOut();
-
-            if (logoutError) {
-                mostrarMensaje("No se pudo cerrar la sesión. Intentá nuevamente.");
-                logoutButton.disabled = false;
-                logoutButton.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> CERRAR SESIÓN';
-                return;
-            }
-
-            sessionStorage.removeItem("remangaGuest");
-            localStorage.removeItem("remangaLoggedIn");
-            sessionStorage.removeItem("remangaLoggedIn");
-
-            window.location.replace("./login.html");
-        });
-    }
-});
