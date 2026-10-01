@@ -4009,11 +4009,7 @@ nav ul li a.active {
 
 @media (max-width: 950px) {
 
-    .product-detail {
-        grid-template-columns: 1fr;
-
-        gap: 50px;
-    }
+    
 
 
     .product-gallery {
@@ -4021,9 +4017,7 @@ nav ul li a.active {
     }
 
 
-    .product-main-image {
-        width: min(100%, 390px);
-    }
+    
 
 
     .product-info {
@@ -4063,19 +4057,13 @@ nav ul li a.active {
     }
 
 
-    .product-detail {
-        gap: 35px;
-    }
+    
 
 
-    .product-main-image {
-        width: 100%;
-    }
+    
 
 
-    .product-info h1 {
-        font-size: 30px;
-    }
+    
 
 
     .product-price span {
