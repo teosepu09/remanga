@@ -193,3 +193,15 @@
 .recommended-controls {
     margin-top: 14px;
 }
+
+
+/* FASE C - más aire entre descripción y controles */
+.recommended-controls {
+    margin-top: 24px;
+}
+
+@media (max-width: 600px) {
+    .recommended-controls {
+        margin-top: 22px;
+    }
+}
