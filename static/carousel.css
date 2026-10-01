@@ -187,3 +187,9 @@
         transition: none;
     }
 }
+
+
+/* FASE C - separación visual entre encabezado y controles */
+.recommended-controls {
+    margin-top: 14px;
+}
