@@ -980,7 +980,7 @@ nav ul li a:hover {
 
     display: block;
 
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 
     color: var(--text-secondary);
 
@@ -3119,10 +3119,10 @@ nav ul li a.active {
     display: grid;
 
     grid-template-columns:
-        minmax(350px, 0.9fr)
-        minmax(450px, 1.1fr);
+        minmax(320px, 0.82fr)
+        minmax(450px, 1.18fr);
 
-    gap: 80px;
+    gap: 58px;
 
     align-items: start;
 }
@@ -3144,7 +3144,7 @@ nav ul li a.active {
 .product-main-image {
     position: relative;
 
-    width: min(100%, 430px);
+    width: min(100%, 390px);
 
     aspect-ratio: 3 / 4;
 
@@ -3295,7 +3295,7 @@ nav ul li a.active {
    ========================================================= */
 
 .product-info {
-    padding-top: 10px;
+    padding-top: 4px;
 }
 
 
@@ -3330,7 +3330,7 @@ nav ul li a.active {
 
 
 .product-volume {
-    margin: 12px 0 22px;
+    margin: 10px 0 18px;
 
     color: rgba(255, 248, 239, 0.55);
 
@@ -3351,7 +3351,7 @@ nav ul li a.active {
 
     gap: 12px;
 
-    margin-bottom: 22px;
+    margin-bottom: 18px;
 }
 
 
@@ -3434,7 +3434,7 @@ nav ul li a.active {
 
     height: 1px;
 
-    margin: 27px 0;
+    margin: 22px 0;
 
     background:
         rgba(255, 255, 255, 0.08);
@@ -3448,7 +3448,7 @@ nav ul li a.active {
 .product-short-description {
     max-width: 580px;
 
-    margin: 0 0 28px;
+    margin: 0 0 22px;
 
     color: rgba(255, 248, 239, 0.62);
 
