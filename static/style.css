@@ -5399,24 +5399,927 @@ nav ul li a.active {
 
     font-size: 12px;
 
+    font-weight: 600;
+}
+
+
+.image-upload span {
+    color:
+        rgba(255, 248, 239, 0.3);
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   7. PREVISUALIZACIÓN
+   ========================================================= */
+
+.image-preview {
+    display: none;
+
+    width: 100%;
+
+    margin-top: 15px;
+
+    text-align: center;
+}
+
+
+.image-preview img {
+    max-width: 220px;
+    max-height: 280px;
+
+    display: inline-block;
+
+    border-radius: 8px;
+
+    object-fit: cover;
+
+    box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, 0.3);
+}
+
+
+/* =========================================================
+   8. GRUPOS DEL FORMULARIO
+   ========================================================= */
+
+.form-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-bottom: 20px;
+}
+
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+
+.form-group label {
+    color:
+        rgba(255, 248, 239, 0.65);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.3px;
+}
+
+
+/* =========================================================
+   9. INPUTS Y SELECT
+   ========================================================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 7px;
+
+    outline: none;
+
+    background:
+        rgba(0, 0, 0, 0.2);
+
+    color: var(--text-light);
+
+    font-family: "Montserrat", sans-serif;
+
+    font-size: 11px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.form-group input,
+.form-group select {
+    height: 45px;
+
+    padding: 0 14px;
+}
+
+
+.form-group textarea {
+    min-height: 125px;
+
+    padding: 13px 14px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color:
+        rgba(255, 248, 239, 0.22);
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color:
+        rgba(255, 136, 111, 0.55);
+
+    background:
+        rgba(255, 136, 111, 0.025);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 136, 111, 0.05);
+}
+
+
+/* =========================================================
+   10. SELECT
+   ========================================================= */
+
+.form-group select {
+    cursor: pointer;
+
+    appearance: auto;
+}
+
+
+.form-group select option {
+    background: #171717;
+
+    color: var(--text-light);
+}
+
+
+/* =========================================================
+   11. DOS CAMPOS EN UNA FILA
+   ========================================================= */
+
+.form-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 15px;
+}
+
+
+/* =========================================================
+   12. PRECIO
+   ========================================================= */
+
+.price-input {
+    position: relative;
+}
+
+
+.price-input > span {
+    position: absolute;
+
+    top: 50%;
+    left: 14px;
+
+    transform: translateY(-50%);
+
+    color: var(--accent);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    pointer-events: none;
+}
+
+
+.price-input input {
+    padding-left: 28px;
+}
+
+
+/* =========================================================
+   13. CONTADOR DE CARACTERES
+   ========================================================= */
+
+.character-count {
+    color:
+        rgba(255, 248, 239, 0.25);
+
+    font-size: 9px;
+
+    text-align: right;
+}
+
+
+/* =========================================================
+   14. RESUMEN DE PUBLICACIÓN
+   ========================================================= */
+
+.sell-summary {
+    padding: 27px;
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    box-shadow:
+        0 20px 60px
+        rgba(0, 0, 0, 0.22);
+}
+
+
+.sell-summary-heading {
+    margin-bottom: 20px;
+}
+
+
+.sell-summary-heading span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--accent);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+
+.sell-summary-heading h2 {
+    margin: 0;
+
+    color: var(--text-light);
+
+    font-family: "Orbitron", sans-serif;
+
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   15. IMAGEN DEL RESUMEN
+   ========================================================= */
+
+.sell-summary-image {
+    width: 100%;
+    height: 250px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    margin-bottom: 18px;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.04),
+            rgba(255, 255, 255, 0.015)
+        );
+
+    color:
+        rgba(255, 248, 239, 0.18);
+}
+
+
+.sell-summary-image i {
+    font-size: 40px;
+}
+
+
+.sell-summary-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   16. INFORMACIÓN DEL RESUMEN
+   ========================================================= */
+
+.sell-summary-info {
+    padding-bottom: 18px;
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+}
+
+
+.sell-summary-info h3 {
+    margin: 0 0 7px;
+
+    overflow: hidden;
+
+    color: var(--text-light);
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.sell-summary-info p {
+    margin: 0 0 8px;
+
+    color:
+        rgba(255, 248, 239, 0.35);
+
+    font-size: 10px;
+}
+
+
+.sell-summary-info span {
+    display: inline-block;
+
+    padding: 5px 8px;
+
+    border-radius: 4px;
+
+    background:
+        rgba(255, 136, 111, 0.07);
+
+    color: var(--accent);
+
+    font-size: 8px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   17. PRECIO DEL RESUMEN
+   ========================================================= */
+
+.sell-summary-price {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 20px 0;
+}
+
+
+.sell-summary-price small {
+    color:
+        rgba(255, 248, 239, 0.4);
+
+    font-size: 10px;
+}
+
+
+.sell-summary-price strong {
+    color: var(--accent);
+
+    font-family: "Orbitron", sans-serif;
+
+    font-size: 21px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   18. BOTÓN PUBLICAR
+   ========================================================= */
+
+.publish-button {
+    width: 100%;
+
+    min-height: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background: var(--accent);
+
+    color: var(--text-dark);
+
+    font-family: "Montserrat", sans-serif;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+
+.publish-button:hover {
+    transform: translateY(-2px);
+
+    background: #ff987f;
+
+    box-shadow:
+        0 12px 30px
+        rgba(255, 136, 111, 0.25);
+}
+
+
+.publish-button i {
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   19. INFORMACIÓN DE PUBLICACIÓN
+   ========================================================= */
+
+.publish-info {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 7px;
+
+    margin: 15px 0 0;
+
+    color:
+        rgba(255, 248, 239, 0.25);
+
+    font-size: 8px;
+
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+
+.publish-info i {
+    margin-top: 2px;
+
+    color: var(--accent);
+}
+
+
+/* =========================================================
+   20. CONSEJOS
+   ========================================================= */
+
+.sell-tips {
+    padding: 24px;
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.06);
+
+    border-radius: 12px;
+
+    background:
+        rgba(255, 255, 255, 0.018);
+}
+
+
+.sell-tips h3 {
+    margin: 0 0 18px;
+
+    color: var(--text-light);
+
+    font-family: "Orbitron", sans-serif;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   21. TIP INDIVIDUAL
+   ========================================================= */
+
+.tip {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 11px;
+
+    margin-bottom: 16px;
+}
+
+
+.tip:last-child {
+    margin-bottom: 0;
+}
+
+
+.tip > i {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 6px;
+
+    background:
+        rgba(255, 136, 111, 0.06);
+
+    color: var(--accent);
+
+    font-size: 10px;
+}
+
+
+.tip p {
+    margin: 0;
+
+    color:
+        rgba(255, 248, 239, 0.35);
+
+    font-size: 9px;
+
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   22. INPUT FILE
+   ========================================================= */
+
+.image-upload.has-image {
+    display: none;
+}
+
+
+/* =========================================================
+   23. VALIDACIÓN VISUAL
+   ========================================================= */
+
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+    border-color:
+        rgba(255, 80, 80, 0.6);
+}
+
+
+.form-group input.success,
+.form-group select.success,
+.form-group textarea.success {
+    border-color:
+        rgba(100, 220, 150, 0.4);
+}
+
+
+/* =========================================================
+   24. RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+    .sell-form {
+        grid-template-columns: 1fr;
+    }
+
+
+    .sell-right {
+        position: static;
+
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 1fr);
+
+        align-items: start;
+    }
+
+}
+
+
+/* =========================================================
+   25. RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+    .sell-page {
+        padding-top: 35px;
+    }
+
+
+    .sell-container {
+        width: 92%;
+    }
+
+
+    .sell-heading {
+        margin-bottom: 30px;
+    }
+
+
+    .sell-heading h1 {
+        font-size: 32px;
+    }
+
+
+    .sell-card {
+        padding: 20px;
+    }
+
+
+    .sell-card-title {
+        gap: 10px;
+    }
+
+
+    .sell-card-title > i {
+        width: 34px;
+        height: 34px;
+
+        font-size: 13px;
+    }
+
+
+    .sell-card-title h2 {
+        font-size: 14px;
+    }
+
+
+    .form-row {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+
+    .sell-right {
+        display: flex;
+
+        flex-direction: column;
+    }
+
+
+    .sell-summary {
+        padding: 20px;
+    }
+
+
+    .sell-summary-image {
+        height: 220px;
+    }
+
+
+    .image-upload {
+        min-height: 200px;
+    }
+
+}
+/* =========================================================
+   CARGANDO CATÁLOGO
+   ========================================================= */
+
+.catalog-loading {
+    width: 100%;
+    min-height: 280px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.catalog-loading i {
+    color: var(--accent);
+    font-size: 28px;
+
+    animation: catalogSpinner 1s linear infinite;
+}
+
+.catalog-loading p {
+    margin: 0;
+    font-size: 11px;
+}
+
+@keyframes catalogSpinner {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+/* =========================================================
+   CARRUSEL DE RECOMENDADOS
+   ========================================================= */
+
+   .recommended .section-title {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+
+/* =========================================================
+   CONTROLES
+   ========================================================= */
+
+.recommended-controls {
+    display: flex;
+
+    gap: 10px;
+}
+
+
+.recommended-controls button {
+    width: 42px;
+
+    height: 42px;
+
+    border: 1px solid rgba(255,255,255,0.1);
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.04);
+
+    color: #fff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.recommended-controls button:hover {
+
+    background: rgba(255,255,255,0.1);
+
+    transform: translateY(-2px);
+
+}
+
+
+/* =========================================================
+   CONTENEDOR
+   ========================================================= */
+
+.recommended-carousel {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    overflow-y: hidden;
+
+    scroll-behavior: smooth;
+
+    scrollbar-width: none;
+
+    margin-top: 30px;
+
+}
+
+
+.recommended-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.recommended-carousel
+.cards {
+
+    display: flex;
+
+    gap: 20px;
+
+    width: max-content;
+
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.recommended-carousel
+.card {
+
+    flex: 0 0 260px;
+
+    width: 260px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.recommended-carousel
+.card:hover {
+
+    transform: translateY(-6px);
+
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.home-products-error {
+
+    width: 100%;
+
+    padding: 40px;
+
+    text-align: center;
+
+    color: var(--text-secondary);
+
+}
+
 /* =========================================================
    REMANGA - FASE C
    MÁRGENES + TIPOGRAFÍA
    ========================================================= */
-
-/*
- * Base visual global:
- * - unificamos el ancho útil de las secciones
- * - establecemos un ritmo vertical común
- * - refinamos la jerarquía tipográfica sin cambiar la identidad visual
- */
 
 :root {
     --content-max: 1350px;
     --page-gutter: clamp(20px, 5vw, 72px);
     --section-space: clamp(90px, 8vw, 125px);
     --section-space-mobile: 72px;
-
     --font-body: "Montserrat", sans-serif;
     --font-display: "Orbitron", sans-serif;
 }
@@ -5427,14 +6330,12 @@ body {
     line-height: 1.65;
 }
 
-/* Contenedor visual común */
 .benefits,
 .actions,
 .recommended {
     width: min(calc(100% - (var(--page-gutter) * 2)), var(--content-max));
 }
 
-/* Ritmo vertical principal */
 .actions {
     margin-top: var(--section-space);
 }
@@ -5444,7 +6345,6 @@ body {
     margin-bottom: var(--section-space);
 }
 
-/* Jerarquía tipográfica */
 .hero-content h1,
 .action-info h2,
 .section-title h2,
@@ -5474,7 +6374,6 @@ body {
     line-height: 1.7;
 }
 
-/* Catálogo: mismo eje horizontal y ritmo de página */
 .catalog-hero-content,
 .catalog-container {
     width: min(calc(100% - (var(--page-gutter) * 2)), var(--content-max));
@@ -5484,7 +6383,6 @@ body {
     margin-top: 72px;
 }
 
-/* Menor variación tipográfica en textos pequeños */
 nav ul li a,
 .header-icons i,
 .search-box input,
@@ -5495,27 +6393,14 @@ footer > p {
 }
 
 @media (max-width: 768px) {
-    :root {
-        --page-gutter: 20px;
-    }
-
-    body {
-        font-size: 14px;
-    }
-
-    .actions {
-        margin-top: var(--section-space-mobile);
-    }
-
+    :root { --page-gutter: 20px; }
+    body { font-size: 14px; }
+    .actions { margin-top: var(--section-space-mobile); }
     .recommended {
         margin-top: var(--section-space-mobile);
         margin-bottom: var(--section-space-mobile);
     }
-
-    .catalog-container {
-        margin-top: 55px;
-    }
-
+    .catalog-container { margin-top: 55px; }
     .hero-content h1 {
         letter-spacing: -1.2px;
         line-height: 1.08;
@@ -5523,22 +6408,15 @@ footer > p {
 }
 
 @media (max-width: 480px) {
-    :root {
-        --page-gutter: 18px;
-    }
-
-    .hero-content h1 {
-        letter-spacing: -0.8px;
-    }
+    :root { --page-gutter: 18px; }
+    .hero-content h1 { letter-spacing: -0.8px; }
 }
-
 
 /* =========================================================
    FASE C - AJUSTE 2
    JERARQUÍA TIPOGRÁFICA
    ========================================================= */
 
-/* Escala tipográfica base: pocos tamaños, diferencias claras. */
 :root {
     --text-xs: 11px;
     --text-sm: 13px;
@@ -5548,7 +6426,6 @@ footer > p {
     --text-hero: clamp(44px, 5vw, 72px);
 }
 
-/* Hero: título dominante, etiqueta y descripción claramente subordinadas. */
 .hero-content > span {
     font-size: var(--text-xs);
     line-height: 1.4;
@@ -5559,11 +6436,8 @@ footer > p {
     font-weight: 700;
 }
 
-.hero-content p {
-    font-size: var(--text-md);
-}
+.hero-content p { font-size: var(--text-md); }
 
-/* Secciones: título consistente y descripción más liviana. */
 .action-info h2,
 .section-title h2 {
     font-size: var(--text-xl);
@@ -5571,51 +6445,29 @@ footer > p {
 }
 
 .action-info p,
-.section-title p {
-    font-size: var(--text-sm);
-}
+.section-title p { font-size: var(--text-sm); }
 
 .newsletter h2 {
     font-size: 26px;
     font-weight: 700;
 }
 
-.newsletter p {
-    font-size: var(--text-sm);
-}
+.newsletter p { font-size: var(--text-sm); }
 
-/* Tarjetas: nombre > metadato > precio. */
-.card-content h3 {
-    font-size: var(--text-sm);
-}
+.card-content h3 { font-size: var(--text-sm); }
+.card-content span { font-size: var(--text-xs); }
+.card-content h4 { font-size: var(--text-lg); }
 
-.card-content span {
-    font-size: var(--text-xs);
-}
-
-.card-content h4 {
-    font-size: var(--text-lg);
-}
-
-/* Acciones y navegación: compactas, pero legibles. */
 .btn-primary,
-.btn-secondary {
-    font-size: 12px;
-}
+.btn-secondary { font-size: 12px; }
+nav ul li a { font-size: 13px; }
 
-nav ul li a {
-    font-size: 13px;
-}
-
-/* Catálogo: misma lógica de jerarquía que la portada. */
 .catalog-hero h1 {
     font-size: clamp(34px, 4.5vw, 58px);
     line-height: 1.08;
 }
 
-.catalog-hero p {
-    font-size: var(--text-md);
-}
+.catalog-hero p { font-size: var(--text-md); }
 
 .filters-header h2 {
     font-size: 22px;
@@ -5628,15 +6480,9 @@ nav ul li a {
         --text-xl: 26px;
         --text-hero: clamp(38px, 9vw, 52px);
     }
-
     .action-info h2,
-    .section-title h2 {
-        font-size: var(--text-xl);
-    }
-
-    .catalog-hero h1 {
-        font-size: clamp(32px, 9vw, 46px);
-    }
+    .section-title h2 { font-size: var(--text-xl); }
+    .catalog-hero h1 { font-size: clamp(32px, 9vw, 46px); }
 }
 
 @media (max-width: 480px) {
@@ -5644,32 +6490,18 @@ nav ul li a {
         --text-xl: 24px;
         --text-hero: clamp(34px, 10vw, 42px);
     }
-
     .action-info h2,
-    .section-title h2 {
-        font-size: var(--text-xl);
-    }
+    .section-title h2 { font-size: var(--text-xl); }
 }
-
 
 /* =========================================================
    FASE C - AJUSTE 3
    COMPOSICIÓN Y RITMO VISUAL
    ========================================================= */
 
-/* El contenido del hero comparte el mismo eje lateral que los banners inferiores. */
-.hero-content {
-    margin-left: var(--page-gutter);
-}
-
-/* Reducimos los grandes saltos verticales sin eliminar el aire de la composición. */
-.hero {
-    min-height: 740px;
-}
-
-.actions {
-    margin-top: 100px;
-}
+.hero-content { margin-left: var(--page-gutter); }
+.hero { min-height: 740px; }
+.actions { margin-top: 100px; }
 
 .action-info {
     min-height: 150px;
@@ -5678,20 +6510,15 @@ nav ul li a {
     justify-content: flex-end;
 }
 
-.action-info p {
-    min-height: 39px;
-}
+.action-info p { min-height: 39px; }
 
 .recommended {
     margin-top: 95px;
     margin-bottom: 95px;
 }
 
-.newsletter {
-    margin-bottom: 90px;
-}
+.newsletter { margin-bottom: 90px; }
 
-/* En la sección de recomendados, título y controles forman una misma cabecera. */
 .section-title {
     display: flex;
     align-items: flex-end;
@@ -5700,32 +6527,20 @@ nav ul li a {
     margin-bottom: 28px;
 }
 
-.section-title > div:first-child {
-    min-width: 0;
-}
+.section-title > div:first-child { min-width: 0; }
 
 @media (max-width: 768px) {
-    .hero {
-        min-height: 680px;
-    }
-
-    .actions {
-        margin-top: 80px;
-    }
-
+    .hero { min-height: 680px; }
+    .actions { margin-top: 80px; }
     .recommended {
         margin-top: 78px;
         margin-bottom: 78px;
     }
-
     .section-title {
         align-items: flex-start;
         gap: 24px;
     }
-
-    .newsletter {
-        margin-bottom: 72px;
-    }
+    .newsletter { margin-bottom: 72px; }
 }
 
 @media (max-width: 600px) {
@@ -5736,13 +6551,11 @@ nav ul li a {
     }
 }
 
-
 /* =========================================================
    FASE C - AJUSTE 4
    ALINEACIÓN HERO ↔ BANNERS
    ========================================================= */
 
-/* El hero y los banners inferiores comparten el mismo eje horizontal. */
 .hero-content {
     width: min(calc(100% - (var(--page-gutter) * 2)), var(--content-max));
     margin-left: auto;
@@ -5764,14 +6577,8 @@ nav ul li a {
 }
 
 @media (max-width: 768px) {
-    .hero-content {
-        width: calc(100% - 40px);
-    }
-
-    .hero-buttons {
-        gap: 16px;
-    }
-
+    .hero-content { width: calc(100% - 40px); }
+    .hero-buttons { gap: 16px; }
     .hero-buttons .btn-primary,
     .hero-buttons .btn-secondary {
         width: min(170px, 100%);
@@ -5783,19 +6590,16 @@ nav ul li a {
         grid-template-columns: 1fr;
         gap: 12px;
     }
-
     .hero-buttons .btn-primary,
     .hero-buttons .btn-secondary {
         width: min(190px, 100%);
     }
 }
 
-
 /* =========================================================
    FASE C - CONTROL FINAL DE CONSISTENCIA
    ========================================================= */
 
-/* Misma escala base para páginas secundarias. */
 .catalog-container,
 .sell-page,
 .profile-page {
@@ -5810,7 +6614,6 @@ nav ul li a {
     line-height: 1.5;
 }
 
-/* Mantener una lectura cómoda sin agrandar innecesariamente bloques. */
 .catalog-hero-content,
 .sell-page > *,
 .profile-page > * {
