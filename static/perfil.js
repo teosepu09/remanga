@@ -167,3 +167,35 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+
+
+    // =========================================================
+    // Cerrar sesión
+    // =========================================================
+
+    if (logoutButton) {
+        logoutButton.addEventListener("click", async () => {
+            logoutButton.disabled = true;
+            mostrarMensaje("Cerrando sesión...", "info");
+
+            try {
+                const { error } = await supabaseClient.auth.signOut();
+
+                if (error) {
+                    throw error;
+                }
+
+                sessionStorage.removeItem("remangaGuest");
+                localStorage.removeItem("remangaRemember");
+                window.location.replace("./login.html");
+            } catch (error) {
+                console.error("No se pudo cerrar la sesión:", error);
+                logoutButton.disabled = false;
+                mostrarMensaje(
+                    error?.message
+                        ? "No se pudo cerrar la sesión: " + error.message
+                        : "No se pudo cerrar la sesión. Intentá nuevamente."
+                );
+            }
+        });
+    }
