@@ -5650,3 +5650,88 @@ nav ul li a {
         font-size: var(--text-xl);
     }
 }
+
+
+/* =========================================================
+   FASE C - AJUSTE 3
+   COMPOSICIÓN Y RITMO VISUAL
+   ========================================================= */
+
+/* El contenido del hero comparte el mismo eje lateral que los banners inferiores. */
+.hero-content {
+    margin-left: var(--page-gutter);
+}
+
+/* Reducimos los grandes saltos verticales sin eliminar el aire de la composición. */
+.hero {
+    min-height: 740px;
+}
+
+.actions {
+    margin-top: 100px;
+}
+
+.action-info {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.action-info p {
+    min-height: 39px;
+}
+
+.recommended {
+    margin-top: 95px;
+    margin-bottom: 95px;
+}
+
+.newsletter {
+    margin-bottom: 90px;
+}
+
+/* En la sección de recomendados, título y controles forman una misma cabecera. */
+.section-title {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 48px;
+    margin-bottom: 28px;
+}
+
+.section-title > div:first-child {
+    min-width: 0;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        min-height: 680px;
+    }
+
+    .actions {
+        margin-top: 80px;
+    }
+
+    .recommended {
+        margin-top: 78px;
+        margin-bottom: 78px;
+    }
+
+    .section-title {
+        align-items: flex-start;
+        gap: 24px;
+    }
+
+    .newsletter {
+        margin-bottom: 72px;
+    }
+}
+
+@media (max-width: 600px) {
+    .section-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+}
