@@ -60,18 +60,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             return "static/isotipo sin fondo.png";
         }
 
-        if (/^https?:\\/\\//i.test(imagen)) {
+        if (/^https?:\/\//i.test(imagen)) {
             return imagen;
         }
 
-        if (/^(img|static|imagenes)\\//i.test(imagen)) {
+        if (/^(img|static|imagenes)\//i.test(imagen)) {
             return imagen;
         }
 
         var config = window.REMANGA_SUPABASE_CONFIG;
 
         if (config && config.enabled && config.url && config.bucket) {
-            return config.url.replace(/\\/$/, "")
+            return config.url.replace(/\/$/, "")
                 + "/storage/v1/object/public/"
                 + config.bucket
                 + "/"
