@@ -256,7 +256,8 @@ nav ul li a {
 
 nav ul li a:hover {
 
-    color: var(--white);
+    color: var(--accent);
+    text-shadow: 0 0 12px rgba(255, 136, 111, 0.55);
 }
 
 
@@ -1776,6 +1777,7 @@ footer > p {
 
 nav ul li a.active {
     color: var(--accent);
+    text-shadow: 0 0 12px rgba(255, 136, 111, 0.55);
 }
 
 
