@@ -44,6 +44,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (usernameElement) usernameElement.textContent = username;
     if (emailElement) emailElement.textContent = user.email || "Sin correo disponible";
 
+    renderizarPublicacionesPerfil(publicacionesDePrueba);
+
 
     // =========================================================
     // Mis publicaciones - render visual (Paso 2)
