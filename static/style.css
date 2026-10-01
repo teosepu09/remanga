@@ -5789,3 +5789,49 @@ nav ul li a {
         width: min(190px, 100%);
     }
 }
+
+
+/* =========================================================
+   FASE C - CONTROL FINAL DE CONSISTENCIA
+   ========================================================= */
+
+/* Misma escala base para páginas secundarias. */
+.catalog-container,
+.sell-page,
+.profile-page {
+    font-family: var(--font-body);
+}
+
+.catalog-eyebrow,
+.profile-eyebrow,
+.sell-card-title p,
+.publish-info,
+.tip p {
+    line-height: 1.5;
+}
+
+/* Mantener una lectura cómoda sin agrandar innecesariamente bloques. */
+.catalog-hero-content,
+.sell-page > *,
+.profile-page > * {
+    line-height: 1.6;
+}
+
+.catalog-hero h1,
+.sell-page h1,
+.profile-page h1 {
+    letter-spacing: -1px;
+}
+
+.catalog-hero p,
+.profile-page p {
+    line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+    .catalog-hero h1,
+    .sell-page h1,
+    .profile-page h1 {
+        letter-spacing: -0.6px;
+    }
+}
