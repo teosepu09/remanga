@@ -5735,3 +5735,57 @@ nav ul li a {
         gap: 18px;
     }
 }
+
+
+/* =========================================================
+   FASE C - AJUSTE 4
+   ALINEACIÓN HERO ↔ BANNERS
+   ========================================================= */
+
+/* El hero y los banners inferiores comparten el mismo eje horizontal. */
+.hero-content {
+    width: min(calc(100% - (var(--page-gutter) * 2)), var(--content-max));
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-buttons {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin-top: 4px;
+}
+
+.hero-buttons .btn-primary,
+.hero-buttons .btn-secondary {
+    width: min(190px, 100%);
+    justify-self: center;
+}
+
+@media (max-width: 768px) {
+    .hero-content {
+        width: calc(100% - 40px);
+    }
+
+    .hero-buttons {
+        gap: 16px;
+    }
+
+    .hero-buttons .btn-primary,
+    .hero-buttons .btn-secondary {
+        width: min(170px, 100%);
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-buttons {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .hero-buttons .btn-primary,
+    .hero-buttons .btn-secondary {
+        width: min(190px, 100%);
+    }
+}
