@@ -109,6 +109,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     function crearTarjetaPublicacion(producto) {
         var card = document.createElement("article");
         card.className = "profile-product-card";
+        card.setAttribute("role", "link");
+        card.setAttribute("tabindex", "0");
+        card.addEventListener("click", function () {
+            window.location.href = "producto.html?id=" + encodeURIComponent(producto.id);
+        });
+        card.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                window.location.href = "producto.html?id=" + encodeURIComponent(producto.id);
+            }
+        });
 
         var image = document.createElement("img");
         image.className = "profile-product-image";
