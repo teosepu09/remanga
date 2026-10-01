@@ -260,36 +260,7 @@ nav ul li a:hover {
 }
 
 
-/* Línea debajo del enlace */
-
-nav ul li a::after {
-
-    content: "";
-
-    position: absolute;
-
-    left: 50%;
-
-    bottom: -8px;
-
-    width: 0;
-
-    height: 2px;
-
-    background: var(--accent);
-
-    transform: translateX(-50%);
-
-    box-shadow: 0 0 8px rgba(255, 136, 111, 0.65);
-
-    transition: width var(--transition-normal);
-}
-
-nav ul li a:hover::after {
-
-    width: 100%;
-}
-
+/* Estado activo: el enlace se distingue por color, sin marcador inferior. */
 
 /* =========================================================
    HEADER RIGHT
@@ -1804,11 +1775,7 @@ footer > p {
    ========================================================= */
 
 nav ul li a.active {
-    color: var(--white);
-}
-
-nav ul li a.active::after {
-    width: 100%;
+    color: var(--accent);
 }
 
 
