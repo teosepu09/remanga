@@ -3814,17 +3814,29 @@ nav ul li a.active {
    ========================================================= */
 
 .related-products {
-    width: 100vw;
-    margin-left: calc((100% - 100vw) / 2);
+    position: relative;
+    width: 100%;
     margin-top: 72px;
     padding-top: 30px;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
-    overflow: hidden;
+}
+
+.related-products::before {
+    content: "";
+    position: absolute;
+    top: 30px;
+    left: 4%;
+    right: 4%;
+    height: 75%;
+    background: rgba(255, 255, 255, 0.018);
+    filter: blur(28px);
+    pointer-events: none;
 }
 
 .related-products .section-title {
-    width: min(1200px, 90%);
-    margin: 0 auto 4px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 18px;
 }
 
 .related-products .section-title h2 {
@@ -3837,30 +3849,19 @@ nav ul li a.active {
 }
 
 .related-grid {
-    display: flex;
-    align-items: stretch;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 22px;
     width: 100%;
-    max-width: none;
-    padding: 4px max(5vw, 20px) 18px;
+    padding: 4px 0 18px;
     box-sizing: border-box;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-}
-
-.related-grid::-webkit-scrollbar {
-    display: none;
 }
 
 .related-card {
-    flex: 0 0 220px;
-    width: 220px;
+    min-width: 0;
     min-height: 360px;
-    scroll-snap-align: start;
     overflow: hidden;
     border-radius: 16px;
     background: rgba(28, 28, 38, 0.78);
