@@ -1215,7 +1215,7 @@ async function cargarProductosRelacionados(productoActualId) {
         const productos = await apiGetProductos();
         const relacionados = productos
             .filter((producto) => Number(producto.id) !== Number(productoActualId))
-            .slice(0, 3);
+            .slice(0, 8);
 
         mostrarProductosRelacionados(relacionados);
     } catch (error) {
