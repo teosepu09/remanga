@@ -3814,6 +3814,7 @@ nav ul li a.active {
    ========================================================= */
 
 .related-products {
+    width: 100%;
     margin-top: 72px;
     padding-top: 30px;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
@@ -3836,16 +3837,10 @@ nav ul li a.active {
     display: flex;
     align-items: stretch;
     gap: 22px;
-    width: max-content;
+    width: 100%;
+    max-width: 100%;
     padding: 4px 18px 8px;
-}
-
-.related-products {
-    overflow: hidden;
-}
-
-.related-grid {
-    max-width: none;
+    box-sizing: border-box;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
