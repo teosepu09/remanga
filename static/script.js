@@ -1200,6 +1200,7 @@ function iniciarControlesProducto(producto) {
         icon.classList.toggle("fa-solid", active);
         icon.classList.toggle("fa-regular", !active);
     });
+}
 
 async function cargarProductosRelacionados(productoActualId) {
     const grid = document.getElementById("relatedGrid");
