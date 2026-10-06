@@ -6550,39 +6550,7 @@ nav ul li a { font-size: 13px; }
     margin-right: auto;
 }
 
-.hero-buttons {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
-    margin-top: 4px;
-}
 
-.hero-buttons .btn-primary,
-.hero-buttons .btn-secondary {
-    width: min(190px, 100%);
-    justify-self: center;
-}
-
-@media (max-width: 768px) {
-    .hero-content { width: calc(100% - 40px); }
-    .hero-buttons { gap: 16px; }
-    .hero-buttons .btn-primary,
-    .hero-buttons .btn-secondary {
-        width: min(170px, 100%);
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-buttons {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-    .hero-buttons .btn-primary,
-    .hero-buttons .btn-secondary {
-        width: min(190px, 100%);
-    }
-}
 
 /* =========================================================
    FASE C - CONTROL FINAL DE CONSISTENCIA
