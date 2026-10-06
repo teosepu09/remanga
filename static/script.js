@@ -1132,10 +1132,6 @@ function mostrarProducto(producto) {
     const availability = document.getElementById("productAvailability");
     const shortDescription = document.getElementById("productShortDescription");
     const description = document.getElementById("productDescription");
-    const dataTitle = document.getElementById("dataTitle");
-    const dataVolume = document.getElementById("dataVolume");
-    const dataState = document.getElementById("dataState");
-
     const estado = normalizarEstado(producto.estado);
     const textoDescripcion = producto.descripcion || "Este producto no tiene una descripción.";
 
@@ -1157,10 +1153,6 @@ function mostrarProducto(producto) {
     if (availability) availability.textContent = "Disponible";
     if (shortDescription) shortDescription.textContent = textoDescripcion;
     if (description) description.textContent = textoDescripcion;
-    if (dataTitle) dataTitle.textContent = producto.titulo || "-";
-    if (dataVolume) dataVolume.textContent = producto.tomo ?? "-";
-    if (dataState) dataState.textContent = producto.estado || "-";
-
     document.title = `${producto.titulo || "Producto"} | ReManga`;
 }
 
@@ -1208,19 +1200,6 @@ function iniciarControlesProducto(producto) {
         icon.classList.toggle("fa-solid", active);
         icon.classList.toggle("fa-regular", !active);
     });
-
-    iniciarPestanasProducto();
-}
-
-function iniciarPestanasProducto() {
-    const tabs = document.querySelectorAll(".product-tab");
-    tabs.forEach((tab) => {
-        tab.addEventListener("click", () => {
-            tabs.forEach((item) => item.classList.remove("active"));
-            tab.classList.add("active");
-        });
-    });
-}
 
 async function cargarProductosRelacionados(productoActualId) {
     const grid = document.getElementById("relatedGrid");
