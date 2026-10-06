@@ -3777,81 +3777,38 @@ nav ul li a.active {
    ========================================================= */
 
 .product-description {
-    position: relative;
     max-width: 900px;
-    margin-top: 4px;
-    padding: 26px 30px 30px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 14px;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 136, 111, 0.055),
-            rgba(255, 255, 255, 0.018) 45%,
-            rgba(255, 255, 255, 0.012)
-        );
-    box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.18);
-}
-
-.product-description::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 3px;
-    height: 100%;
-    background: var(--accent);
-    box-shadow:
-        0 0 18px rgba(255, 136, 111, 0.28);
-}
-
-.product-description::after {
-    content: "";
-    position: absolute;
-    top: -70px;
-    right: -55px;
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: rgba(255, 136, 111, 0.045);
-    filter: blur(2px);
-    pointer-events: none;
+    padding: 24px 0 18px;
 }
 
 .product-description h2 {
-    position: relative;
-    z-index: 1;
     display: flex;
     align-items: center;
-    gap: 11px;
-    margin: 0 0 15px;
+    gap: 12px;
+    margin: 0 0 16px;
     color: var(--text-light);
     font-family: "Orbitron", sans-serif;
     font-size: 17px;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.2px;
 }
 
 .product-description h2::after {
     content: "";
-    width: 34px;
-    height: 2px;
-    border-radius: 999px;
+    width: 42px;
+    height: 1px;
     background: var(--accent);
     box-shadow:
-        0 0 10px rgba(255, 136, 111, 0.35);
+        0 0 8px rgba(255, 136, 111, 0.25);
 }
 
 .product-description p {
-    position: relative;
-    z-index: 1;
     max-width: 820px;
     margin: 0;
-    color: rgba(255, 248, 239, 0.66);
+    padding-left: 1px;
+    color: rgba(255, 248, 239, 0.58);
     font-size: 13px;
     line-height: 1.85;
-    letter-spacing: 0.1px;
+    letter-spacing: 0.05px;
 }
 
 
