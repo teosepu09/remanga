@@ -3713,98 +3713,41 @@ nav ul li a.active {
    ========================================================= */
 
 .product-information {
+    width: 100%;
     margin-top: 55px;
-
-    padding-top: 28px;
-
-    border-top: 1px solid
-        rgba(255, 255, 255, 0.07);
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
-
-
-.product-tabs {
-    display: flex;
-
-    gap: 35px;
-
-    border-bottom: 1px solid
-        rgba(255, 255, 255, 0.07);
-}
-
-
-.product-tab {
-    position: relative;
-
-    padding: 0 0 17px;
-
-    border: 0;
-
-    background: transparent;
-
-    color:
-        rgba(255, 248, 239, 0.42);
-
-    font-size: 12px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-}
-
-
-.product-tab.active {
-    color: var(--text-light);
-}
-
-
-.product-tab.active::after {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    right: 0;
-    bottom: -1px;
-
-    height: 2px;
-
-    background: var(--accent);
-}
-
-
-/* =========================================================
-   19. DESCRIPCIÓN
-   ========================================================= */
 
 .product-description {
-    max-width: 900px;
-    padding: 24px 0 18px;
+    width: 100%;
+    max-width: none;
+    padding: 0 0 22px;
 }
 
 .product-description h2 {
-    display: flex;
-    align-items: center;
-    gap: 12px;
     margin: 0 0 16px;
     color: var(--text-light);
     font-family: "Orbitron", sans-serif;
-    font-size: 17px;
+    font-size: 18px;
     letter-spacing: 0.2px;
 }
 
 .product-description h2::after {
     content: "";
-    width: 42px;
+    display: block;
+    width: 44px;
     height: 1px;
+    margin-top: 10px;
     background: var(--accent);
     box-shadow:
-        0 0 8px rgba(255, 136, 111, 0.25);
+        0 0 8px rgba(255, 136, 111, 0.22);
 }
 
 .product-description p {
-    max-width: 820px;
+    width: 100%;
+    max-width: 1050px;
     margin: 0;
-    padding-left: 1px;
     color: rgba(255, 248, 239, 0.58);
     font-size: 13px;
     line-height: 1.85;
