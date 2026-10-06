@@ -3814,14 +3814,17 @@ nav ul li a.active {
    ========================================================= */
 
 .related-products {
-    width: 100%;
+    width: 100vw;
+    margin-left: calc((100% - 100vw) / 2);
     margin-top: 72px;
     padding-top: 30px;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
+    overflow: hidden;
 }
 
 .related-products .section-title {
-    margin-bottom: 4px;
+    width: min(1200px, 90%);
+    margin: 0 auto 4px;
 }
 
 .related-products .section-title h2 {
@@ -3838,8 +3841,8 @@ nav ul li a.active {
     align-items: stretch;
     gap: 22px;
     width: 100%;
-    max-width: 100%;
-    padding: 4px 18px 8px;
+    max-width: none;
+    padding: 4px max(5vw, 20px) 18px;
     box-sizing: border-box;
     overflow-x: auto;
     overflow-y: hidden;
