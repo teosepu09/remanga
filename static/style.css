@@ -3138,6 +3138,7 @@ nav ul li a.active {
     display: flex;
 
     justify-content: center;
+    padding-top: 25px;
 }
 
 
@@ -3321,7 +3322,7 @@ nav ul li a.active {
 
     font-family: "Orbitron", sans-serif;
 
-    font-size: clamp(32px, 4vw, 52px);
+    font-size: clamp(30px, 3.5vw, 48px);
 
     line-height: 1.1;
 
@@ -3334,7 +3335,7 @@ nav ul li a.active {
 
     color: rgba(255, 248, 239, 0.55);
 
-    font-size: 14px;
+    font-size: 13px;
 
     font-weight: 500;
 }
@@ -3452,9 +3453,9 @@ nav ul li a.active {
 
     color: rgba(255, 248, 239, 0.62);
 
-    font-size: 14px;
+    font-size: 13px;
 
-    line-height: 1.8;
+    line-height: 1.75;
 }
 
 
