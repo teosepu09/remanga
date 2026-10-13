@@ -115,7 +115,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // ===== VALIDAR Y GUARDAR LA NUEVA CONTRASEÑA =====
-        const password = passwordInput?.value || "";
+        // Contraseña nueva leída del formulario; antes de enviarla se comprueban los requisitos y coincidencias.
+const password = passwordInput?.value || "";
         const confirm = confirmInput?.value || "";
 
         if (password.length < 6) {
