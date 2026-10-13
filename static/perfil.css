@@ -1,7 +1,10 @@
+/* ReManga - estilos del perfil. Agrupa tarjeta de cuenta, indicadores, publicaciones, favoritos, acciones y adaptación responsive. */
+
 /* =========================================================
    ReManga - Mi cuenta
    ========================================================= */
 
+/* ===== CONTENEDOR Y CABECERA DEL PERFIL ===== */
 .profile-page {
     min-height: calc(100vh - 180px);
     padding: 70px 7% 90px;
@@ -70,6 +73,7 @@
 
 /* Dashboard */
 
+/* ===== TARJETAS RESUMEN DEL PERFIL ===== */
 .profile-dashboard {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -126,6 +130,7 @@
 
 /* Mis publicaciones */
 
+/* ===== CUADRÍCULA DE PUBLICACIONES PROPIAS ===== */
 .profile-products-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -197,6 +202,7 @@
 
 /* Secciones */
 
+/* ===== SECCIONES Y TARJETAS DE FAVORITOS ===== */
 .profile-section {
     padding: 30px;
     border-radius: 20px;
@@ -384,6 +390,7 @@
     align-items: center;
 }
 
+/* ===== INFORMACIÓN DE LA CUENTA Y CIERRE DE SESIÓN ===== */
 .profile-info-card {
     width: 100%;
     display: flex;
@@ -456,6 +463,7 @@
 
 .back-home:hover { opacity: 1; }
 
+/* ===== ADAPTACIÓN DEL PERFIL A TABLETS ===== */
 @media (max-width: 900px) {
     .profile-dashboard {
         grid-template-columns: repeat(2, 1fr);
@@ -467,6 +475,7 @@
     }
 }
 
+/* ===== ADAPTACIÓN DEL PERFIL A MÓVILES ===== */
 @media (max-width: 650px) {
     .profile-page {
         padding: 50px 20px 70px;
