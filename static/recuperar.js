@@ -22,6 +22,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         : null;
 
     // ===== MENSAJES PARA EL USUARIO =====
+    /**
+     * Muestra el resultado de solicitar un correo de recuperación.
+     * - texto: mensaje; tipo: clase visual.
+     * - No devuelve valor.
+     */
     function mostrarMensaje(texto, tipo = "error") {
         if (!message) return;
         message.textContent = texto;
