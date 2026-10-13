@@ -2,6 +2,7 @@
 // ReManga - Autenticación con Supabase
 // =========================================================
 
+// Espera el DOM antes de buscar los campos del formulario y conectar sus eventos.
 document.addEventListener("DOMContentLoaded", async () => {
     const loginForm = document.getElementById("loginForm");
     const passwordInput = document.getElementById("password");
@@ -10,6 +11,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const rememberInput = document.getElementById("remember");
     const authMessage = document.getElementById("authMessage");
 
+    // ===== CLIENTE DE SUPABASE AUTH =====
+    // Auth administra la sesión y valida las credenciales; este archivo solo coordina la interfaz.
     const config = window.REMANGA_SUPABASE_CONFIG;
     let supabaseClient = null;
 
@@ -27,6 +30,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error creando el cliente de Supabase:", error);
     }
 
+    // ===== MENSAJES DE ESTADO =====
+    // Centraliza el texto y la clase visual del aviso para evitar repetir ese código.
     function mostrarMensaje(mensaje, tipo = "error") {
         if (!authMessage) return;
         authMessage.textContent = mensaje;
@@ -65,6 +70,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // El enlace de recuperación es un link normal hacia recuperar.html.
     // No se intercepta con JavaScript para permitir la navegación.
 
+    // ===== ACCESO COMO INVITADO =====
+    // Esta ruta permite navegar sin iniciar una sesión autenticada.
     // Continuar como invitado.
     if (guestButton) {
         guestButton.addEventListener("click", (event) => {
@@ -75,6 +82,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+    // ===== ENVÍO DEL FORMULARIO =====
+    // El evento de envío evita recargar la página y pasa el correo/contraseña a Supabase Auth.
     // Login real mediante Supabase Auth.
     if (loginForm) {
         loginForm.addEventListener("submit", async (event) => {
