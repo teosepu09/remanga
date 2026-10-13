@@ -6,6 +6,8 @@
 const CART_KEY = "remangaCart";
 
 /* ========================= INICIO ========================= */
+// Espera a que el HTML esté listo y luego inicia solo los módulos presentes en la página actual.
+
 
 document.addEventListener("DOMContentLoaded", () => {
     iniciarHeader();
@@ -21,6 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ========================= GENERALES ========================= */
+// Funciones auxiliares reutilizadas en varias vistas: formato, imágenes, parámetros y mensajes.
+
 
 function normalizarEstado(estado) {
     return String(estado || "").trim().toLowerCase();
@@ -76,6 +80,8 @@ function validarEmail(email) {
 }
 
 /* ========================= HEADER ========================= */
+// Comportamiento compartido de la cabecera; algunas páginas pueden no tener todos sus elementos.
+
 
 function iniciarHeader() {
     const header = document.getElementById("header");
@@ -90,6 +96,8 @@ function iniciarHeader() {
 }
 
 /* ========================= BUSCADOR GLOBAL ========================= */
+// Busca desde la cabecera y redirige al catálogo con el texto como parámetro de URL.
+
 
 function iniciarBuscador() {
     document.querySelectorAll(".search-box").forEach((box) => {
@@ -118,6 +126,8 @@ function iniciarBuscador() {
 }
 
 /* ========================= NEWSLETTER ========================= */
+// Gestiona la interfaz de suscripción del boletín; no confundir con un sistema de mailing externo.
+
 
 function iniciarNewsletter() {
     const form = document.querySelector(".newsletter form");
@@ -146,6 +156,8 @@ function iniciarNewsletter() {
 }
 
 /* ========================= ANIMACIONES ========================= */
+// Activa animaciones cuando los elementos entran en pantalla y respeta el soporte del navegador.
+
 
 function iniciarAnimaciones() {
     const elementos = document.querySelectorAll(
@@ -179,9 +191,13 @@ function iniciarAnimaciones() {
 }
 
 /* ========================= API ========================= */
+// IMPORTANTE: el nombre histórico 'api...' no significa que se esté llamando a Flask.
+// En la versión actual estas operaciones se hacen desde el navegador directamente contra Supabase.
+
 
 let remangaSupabaseClient = null;
 
+// Construye el cliente oficial de Supabase usando la configuración compartida del proyecto.
 function obtenerClienteSupabaseDatos() {
     if (remangaSupabaseClient) return remangaSupabaseClient;
 
@@ -208,6 +224,7 @@ function obtenerClienteSupabaseDatos() {
 
 const CAMPOS_PRODUCTO = "id,titulo,tomo,precio,estado,descripcion,imagen";
 
+// Lee la colección de productos. El resultado se devuelve al resto del frontend para renderizarlo.
 async function apiGetProductos() {
     const supabaseClient = obtenerClienteSupabaseDatos();
 
@@ -228,6 +245,7 @@ async function apiGetProductos() {
     return Array.isArray(data) ? data : [];
 }
 
+// Busca un único producto por su identificador, usado en la página de detalle.
 async function apiGetProducto(id) {
     const supabaseClient = obtenerClienteSupabaseDatos();
 
@@ -254,6 +272,8 @@ async function apiGetProducto(id) {
 }
 
 /* ---------- Publicar un manga ---------- */
+// La publicación requiere sesión, carga la imagen a Storage y luego inserta los datos del producto.
+
 
 async function obtenerSesionActual() {
     const supabaseClient = obtenerClienteSupabaseDatos();
@@ -274,6 +294,7 @@ function nombreImagenUnico(archivo) {
     return `${Date.now()}-${aleatorio}.${extension}`;
 }
 
+// Sube el archivo seleccionado a Supabase Storage y obtiene la ruta que se guardará con el producto.
 async function subirImagenProducto(archivo) {
     const supabaseClient = obtenerClienteSupabaseDatos();
     const config = window.REMANGA_SUPABASE_CONFIG;
@@ -300,6 +321,7 @@ async function subirImagenProducto(archivo) {
     return nombre;
 }
 
+// Comprueba la sesión, prepara la imagen si existe e inserta el producto en la tabla correspondiente.
 async function apiCrearProducto(producto) {
     const supabaseClient = obtenerClienteSupabaseDatos();
 
@@ -348,6 +370,8 @@ async function apiCrearProducto(producto) {
 }
 
 /* ========================= CARRITO: BASE ========================= */
+// El carrito se conserva en localStorage del navegador; aquí no depende de una API Flask ni de Supabase.
+
 
 function migrarCarritoAntiguo() {
     if (localStorage.getItem(CART_KEY)) return;
@@ -365,6 +389,7 @@ function migrarCarritoAntiguo() {
     }
 }
 
+// Convierte el texto JSON del almacenamiento local en un array utilizable por JavaScript.
 function obtenerCarrito() {
     migrarCarritoAntiguo();
     const datos = localStorage.getItem(CART_KEY);
@@ -379,6 +404,7 @@ function obtenerCarrito() {
     }
 }
 
+// Serializa el array del carrito para poder recuperarlo cuando el usuario cambie de página.
 function guardarCarrito(carrito) {
     localStorage.setItem(CART_KEY, JSON.stringify(carrito));
 }
@@ -430,6 +456,8 @@ function agregarProductoAlCarrito(producto, cantidad = 1) {
 }
 
 /* ========================= HOME ========================= */
+// Obtiene y dibuja los productos destacados de la página de inicio.
+
 
 async function iniciarHome() {
 
@@ -787,6 +815,8 @@ function iniciarCarruselRecomendados() {
 }
 
 /* ========================= CATÁLOGO ========================= */
+// Coordina la carga, representación, búsqueda, filtros, orden y mensajes de estado del catálogo.
+
 
 let productosCatalogo = [];
 
@@ -962,6 +992,7 @@ function ordenarProductosCatalogo(productos, orden) {
     return copia;
 }
 
+// Aplica los criterios elegidos por el usuario al conjunto de productos ya cargados.
 function mostrarProductosFiltrados() {
     const texto = obtenerTextoBusquedaCatalogo();
     const maxPrecio = obtenerPrecioMaximoCatalogo();
@@ -1096,6 +1127,8 @@ function mostrarErrorCatalogo() {
 }
 
 /* ========================= PRODUCTO ========================= */
+// Lee el identificador del producto desde la URL y prepara la vista de detalle y productos relacionados.
+
 
 async function iniciarProducto() {
     const detail = document.getElementById("productDetail");
@@ -1303,6 +1336,8 @@ function mostrarErrorProducto(mensaje) {
 }
 
 /* ========================= CARRITO.HTML ========================= */
+// Presenta el contenido guardado en localStorage y conecta los controles de cantidad y eliminación.
+
 
 function iniciarCarrito() {
     const cartItems = document.getElementById("cartItems");
@@ -1447,6 +1482,8 @@ function configurarBotonesCarritoPagina() {
 }
 
 /* ========================= VENDER ========================= */
+// Sincroniza la vista previa del formulario y valida los campos antes de enviar la publicación a Supabase.
+
 
 function iniciarVender() {
     const form = document.getElementById("sellForm");
