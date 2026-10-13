@@ -9,9 +9,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ===== ESTILOS LOCALES DE COMUNIDAD =====
+   Esta página tiene su propio diseño; sus reglas no vienen de static/style.css. ===== */
 :root{--bg-primary:#181820;--bg-secondary:#20202a;--bg-card:#24242f;--accent:#ff886f;--accent-light:#ff9d88;--text:#f7f4f2;--muted:#aaa8b2;--border:rgba(255,255,255,.08)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg-primary);color:var(--text);font-family:Montserrat,Arial,sans-serif}
 body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 75% 10%,rgba(255,136,111,.07),transparent 28%)}
+/* ===== BARRA SUPERIOR FIJA Y NAVEGACIÓN DE COMUNIDAD ===== */
 .header{height:78px;position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;padding:0 6%;background:rgba(24,24,32,.84);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
 .logo{font:700 23px Orbitron,sans-serif;color:var(--text);text-decoration:none;letter-spacing:1px}.logo span{color:var(--accent)}
 .nav{display:flex;gap:10px;margin-left:42px}.nav a{color:var(--muted);text-decoration:none;padding:10px 14px;border-radius:9px;font-weight:600;font-size:14px;transition:.2s}.nav a:hover,.nav a.active{color:var(--accent-light);background:rgba(255,136,111,.07);box-shadow:0 0 18px rgba(255,136,111,.12)}
@@ -61,17 +64,24 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background:rad
 </main>
     <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
     <script>
+// ===== DATOS Y REFERENCIAS DE LA INTERFAZ =====
+// En esta versión las comunidades se definen en un array local; todavía no se consultan a Supabase.
 const communities=[
  {name:"Naruto",count:128},{name:"One Piece",count:96},{name:"Jujutsu Kaisen",count:74},{name:"Berserk",count:51},{name:"Dragon Ball",count:43}
 ];
 const list=document.getElementById("communityList"), search=document.getElementById("communitySearch"), title=document.getElementById("communityTitle"), count=document.getElementById("communityCount"), empty=document.getElementById("empty");
+// ===== FILTRADO Y DIBUJO DEL LISTADO =====
+// Cada cambio de búsqueda vuelve a crear los botones que coinciden con el texto.
 function render(filter=""){
  list.innerHTML="";
  const visible=communities.filter(c=>c.name.toLowerCase().includes(filter.toLowerCase()));
  visible.forEach((c,i)=>{const b=document.createElement("button");b.className="community"+((c.name===title.textContent)?" active":"");b.innerHTML="<span>"+c.name+"</span><span class='count'>"+c.count+"</span>";b.onclick=()=>selectCommunity(c);list.appendChild(b)});
  empty.style.display=visible.length?"none":"block";
 }
+// ===== SELECCIÓN DE UNA COMUNIDAD =====
+// Actualiza el nombre y la cantidad de publicaciones del panel seleccionado.
 function selectCommunity(c){title.textContent=c.name;count.textContent=c.count+" publicaciones";render(search.value)}
+// Reacciona a cada cambio del buscador y hace una primera representación al cargar la página.
 search.addEventListener("input",()=>render(search.value));render();
 </script>
 </body>
