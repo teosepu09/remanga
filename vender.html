@@ -1,38 +1,143 @@
+<!-- DOCTYPE activa el modo estándar HTML5 del navegador. No es un elemento visible; define cómo interpretar el marcado. -->
 <!DOCTYPE html>
+<!-- Elemento raíz que engloba head y body. lang="es" declara el idioma principal del documento
+     para lectores de pantalla, traducción y herramientas que procesan el contenido. -->
 <html lang="es">
 <head>
-    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Vender | ReManga</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"><link rel="stylesheet" href="static/style.css">
+    <!-- HEAD: reúne metadatos, título, fuentes y hojas CSS que el navegador necesita para preparar la presentación.
+         El formulario está en body; aquí todavía no definimos los campos que el usuario completará. -->    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
+<!-- UTF-8 permite mostrar correctamente ñ, vocales acentuadas y otros símbolos del contenido en español. -->
+<meta charset="UTF-8"><!-- Hace que el ancho del documento siga el ancho real del dispositivo y permite que CSS adapte el formulario a móviles. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- Título de la pestaña del navegador; describe la tarea de esta pantalla y no depende de un producto individual. -->
+<title>Vender | ReManga</title>
+<!-- Anticipa la conexión con Google Fonts antes de solicitar las hojas con las fuentes. -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><!-- Dominio desde el que se sirven los archivos de fuentes. crossorigin permite preparar la conexión que requiere ese recurso. -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><!-- Carga Montserrat y Orbitron. Los números son los grosores disponibles; rel="stylesheet" declara que el recurso es CSS. -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet"><!-- Proporciona los iconos de cámara, libro, subida, precio y navegación que aparecen en los botones y tarjetas. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"><!-- Hoja CSS compartida: contiene las reglas generales de la pantalla de publicación y sus controles. -->
+<link rel="stylesheet" href="static/style.css">
+<!-- Reglas reutilizables para presentar el isotipo y el logotipo de ReManga en cabecera y pie. -->
 <link rel="stylesheet" href="static/brand.css">
+<!-- Reglas específicas de esta página para fijar el tamaño de la marca. Complementan el CSS externo,
+     sin reemplazarlo por completo. -->
 <style>
 #header .logo .brand-lockup .brand-mark { width: 34px !important; height: 34px !important; max-width: 34px !important; min-width: 34px !important; flex: 0 0 34px !important; }
 #header .logo .brand-lockup .brand-wordmark { width: 112px !important; max-width: 112px !important; height: auto !important; }
 </style>
-</head><body>
-    <!-- PUBLICAR UN MANGA: formulario para describir una publicación, elegir estado, precio e imagen y ver una vista previa. -->
+</head>
+<!-- BODY contiene la interfaz visible. Los id de sus campos deben coincidir con los selectores de script.js;
+     las class, en cambio, agrupan elementos para aplicar estilos con CSS. -->
+<body></head><body>
+    <!-- PUBLICAR UN MANGA: esta página reúne entrada de datos, vista previa y botón de envío.
+         El HTML define los controles; JavaScript lee sus valores, valida datos y coordina la escritura en Supabase. -->    <!-- PUBLICAR UN MANGA: formulario para describir una publicación, elegir estado, precio e imagen y ver una vista previa. -->
 
     <!-- ENCABEZADO: identidad de ReManga, navegación y accesos comunes. -->
-    <header id="header"><div class="logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div>
-<nav><ul><li><a href="index.html">Inicio</a></li><li><a href="catalogo.html">Catálogo</a></li><li><a href="vender.html" class="active">Vender</a></li></ul></nav>
-<div class="header-right"><div class="search-box"><input type="text" id="sellSearch" placeholder="Buscar manga..."><button type="button" id="sellSearchButton"><i class="fa-solid fa-magnifying-glass"></i></button></div><div class="header-icons"><a href="perfil.html" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-regular fa-user"></i></a><a href="carrito.html" class="cart-icon-container" aria-label="Carrito"><i class="fa-solid fa-cart-shopping"></i><span class="cart-counter" id="cartCounter">0</span></a></div></div></header>
+    <!-- HEADER común. El id header permite que las reglas de estilo y la función iniciarHeader() encuentren el bloque. -->
+<header id="header"><!-- Contenedor de marca en la cabecera; logo aplica estilos y el enlace de dentro permite volver al inicio. -->
+<div class="logo"><!-- href determina el destino; brand-lockup alinea isotipo y logotipo; aria-label da un nombre accesible al enlace. -->
+<a href="index.html" class="brand-lockup" aria-label="ReManga"><!-- Imagen del isotipo. src es su ruta; alt describe el archivo; brand-mark es la clase que CSS usa para dimensionarlo. -->
+<img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><!-- Logotipo por separado del isotipo: al ser dos imágenes, CSS puede controlar la proporción de cada pieza. -->
+<img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div>
+<!-- nav marca semánticamente la navegación; ul contiene la lista de opciones y cada li representa un enlace. -->
+<nav><ul><li><a href="index.html">Inicio</a></li><li><a href="catalogo.html">Catálogo</a></li><!-- active identifica visualmente la sección actual del menú; no cambia el destino indicado por href. -->
+<li><a href="vender.html" class="active">Vender</a></li></ul></nav>
+<div class="header-right"><!-- BUSCADOR GLOBAL:
+     sellSearch es el campo de texto y sellSearchButton es el botón. Ambos están dentro de .search-box,
+     que es la clase que iniciarBuscador() utiliza para asociar el evento de clic y la tecla Enter.
+     El input guarda lo escrito en value; placeholder es solo una guía visual. type="button" evita enviar formularios. -->
+<div class="search-box"><input type="text" id="sellSearch" placeholder="Buscar manga..."><button type="button" id="sellSearchButton"><i class="fa-solid fa-magnifying-glass"></i></button></div><!-- Agrupa los accesos a perfil y carrito como controles separados del buscador. -->
+<div class="header-icons"><!-- Enlace al perfil. aria-label y title describen la acción porque el contenido visible es un icono. -->
+<a href="perfil.html" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-regular fa-user"></i></a><!-- El contador empieza en 0 como marcador. script.js lee el carrito de localStorage y reemplaza ese número;
+     class identifica todos los contadores, mientras id señala este nodo específico. -->
+<a href="carrito.html" class="cart-icon-container" aria-label="Carrito"><i class="fa-solid fa-cart-shopping"></i><span class="cart-counter" id="cartCounter">0</span></a></div></div></header>
 
     <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
-    <main class="sell-page"><div class="sell-container"><section class="sell-heading"><span>REMANGA MARKETPLACE</span><h1>Vendé tu manga</h1><p>Publicá tus mangas usados y encontrá compradores dentro de la comunidad.</p></section>
+    <!-- main identifica el contenido principal. sell-page limita el ámbito de estilos CSS específicos del flujo de venta. -->
+<main class="sell-page"><!-- Contenedor interior para controlar ancho, alineación y espaciado del encabezado y el formulario. -->
+<div class="sell-container"><!-- Encabezado visible de la página. Es texto estático: no forma parte de los datos que se guardan en productos. -->
+<section class="sell-heading"><span>REMANGA MARKETPLACE</span><h1>Vendé tu manga</h1><p>Publicá tus mangas usados y encontrá compradores dentro de la comunidad.</p></section>
 
-    <!-- FORMULARIO DE PUBLICACIÓN: datos que se validan antes de guardar un manga. -->
-    <form class="sell-form" id="sellForm"><div class="sell-left"><div class="sell-card"><div class="sell-card-title"><i class="fa-regular fa-image"></i><div><h2>Fotos del manga</h2><p>Mostrá el estado real del producto.</p></div></div><label for="mangaImage" class="image-upload"><div class="image-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div><strong>Subí una imagen</strong><span>JPG, PNG o WEBP</span></label><input type="file" id="mangaImage" accept="image/png,image/jpeg,image/webp" hidden><div class="image-preview" id="imagePreview"></div></div>
+    <!-- FORMULARIO:
+         id="sellForm" es el selector que script.js usa para conectar el evento submit.
+         class="sell-form" se usa para la distribución visual de la columna del formulario y el resumen.
+         Al enviar, JavaScript intercepta el evento para validar y llamar a Supabase sin recargar la página. -->    <!-- FORMULARIO DE PUBLICACIÓN: datos que se validan antes de guardar un manga. -->
+    <!-- El form agrupa los campos que pertenecen a una sola acción de publicación.
+     id es único en este documento; class puede compartirse con otros elementos para aplicar CSS. -->
+<form class="sell-form" id="sellForm"><!-- Columna de entrada: primero se elige la imagen y luego se completan los datos textuales del manga. -->
+<div class="sell-left"><!-- Primera tarjeta del formulario. Los div agrupan contenido para maquetación; los encabezados describen
+     al usuario qué información va en esa tarjeta. -->
+<div class="sell-card"><div class="sell-card-title"><i class="fa-regular fa-image"></i><div><h2>Fotos del manga</h2><p>Mostrá el estado real del producto.</p></div></div><!-- label convierte la zona de subida en una etiqueta clickeable para el input cuyo id es mangaImage.
+     El atributo for debe coincidir exactamente con ese id; así el usuario puede pulsar el área grande y abrir el selector. -->
+<label for="mangaImage" class="image-upload"><div class="image-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div><!-- Texto destacado dentro del label; forma parte de la indicación visual, no es un dato enviado a la base. -->
+<strong>Subí una imagen</strong><span>JPG, PNG o WEBP</span></label><!-- INPUT DE ARCHIVO:
+     type="file" abre el selector del sistema y su propiedad files contiene objetos File.
+     id="mangaImage" permite que script.js lea el archivo seleccionado; accept limita los tipos ofrecidos por el selector.
+     hidden oculta el input original, porque el label anterior actúa como zona clickeable personalizada.
+     accept ayuda a elegir formatos adecuados, pero JavaScript vuelve a revisar el tipo y valida el tamaño al enviar. -->
+<input type="file" id="mangaImage" accept="image/png,image/jpeg,image/webp" hidden><!-- Zona de vista previa bajo el selector. Al elegir una imagen, script.js crea una URL temporal con
+     URL.createObjectURL(file) y coloca una etiqueta img aquí; no sube todavía el archivo a Supabase. -->
+<div class="image-preview" id="imagePreview"></div></div>
+<!-- Segunda tarjeta: reúne los campos que describen el producto. Sus id son la interfaz entre este HTML y JS. -->
 <div class="sell-card"><div class="sell-card-title"><i class="fa-solid fa-book"></i><div><h2>Información del manga</h2><p>Completá los datos de tu publicación.</p></div></div>
+<!-- TÍTULO:
+     label for="mangaTitle" vincula el texto con el input. id lo usa JavaScript; name="title" es el nombre
+     del campo en un envío HTML tradicional. placeholder es un ejemplo que no se envía como valor.
+     required activa la validación básica del navegador para impedir un envío vacío. -->
 <div class="form-group"><label for="mangaTitle">Título del manga</label><input type="text" id="mangaTitle" name="title" placeholder="Ej: One Piece" required></div>
-<div class="form-row"><div class="form-group"><label for="mangaVolume">Tomo</label><input type="number" id="mangaVolume" name="volume" min="1" placeholder="Ej: 12" required></div><div class="form-group"><label for="mangaState">Estado</label><select id="mangaState" name="state" required><option value="">Seleccionar</option><option value="Nuevo">Nuevo</option><option value="Usado">Usado</option></select></div></div>
+<!-- TOMO:
+     type="number" permite entrada numérica; min="1" indica que no debería ser menor que uno;
+     required obliga a completarlo según la validación HTML. JS además usa Number() y hace su propia comprobación.
+     form-row agrupa tomo y estado en una misma fila visual. -->
+<div class="form-row"><div class="form-group"><label for="mangaVolume">Tomo</label><input type="number" id="mangaVolume" name="volume" min="1" placeholder="Ej: 12" required></div><!-- ESTADO:
+     select presenta opciones predeterminadas en lugar de texto libre, por lo que los valores guardados quedan uniformes.
+     id es el selector usado por JS y name es el nombre tradicional del campo. required exige elegir una opción no vacía. -->
+<div class="form-group"><label for="mangaState">Estado</label><select id="mangaState" name="state" required><!-- Opción inicial sin estado real. Como value="" está vacío, required la considera una selección incompleta. -->
+<option value="">Seleccionar</option><!-- value es el dato que leerá JavaScript; el texto entre las etiquetas es lo que ve el usuario. Ambos dicen Nuevo. -->
+<option value="Nuevo">Nuevo</option><!-- Segunda opción válida. La mayúscula coincide con los valores previstos por el formulario y la base de datos. -->
+<option value="Usado">Usado</option></select></div></div>
+<!-- PRECIO:
+     el símbolo $ es solo decoración HTML, no forma parte de input.value.
+     type=number entrega texto que JS convierte mediante Number(); min=1 y required añaden validación de navegador.
+     El código JavaScript valida también que el precio sea mayor a cero antes de crear la publicación. -->
 <div class="form-group"><label for="mangaPrice">Precio</label><div class="price-input"><span>$</span><input type="number" id="mangaPrice" name="price" min="1" placeholder="Ej: 12500" required></div></div>
-<div class="form-group"><label for="mangaDescription">Descripción</label><textarea id="mangaDescription" name="description" rows="5" maxlength="500" placeholder="Contale a los compradores en qué estado se encuentra el manga..."></textarea><span class="character-count">Máximo 500 caracteres</span></div>
+<!-- DESCRIPCIÓN:
+     textarea permite escribir varias líneas. rows="5" define la altura inicial en filas y maxlength="500" limita
+     la longitud del texto en el navegador. No tiene required, así que actualmente puede quedar vacía.
+     script.js lee value.trim() y actualiza el contador de caracteres mientras se escribe. -->
+<div class="form-group"><label for="mangaDescription">Descripción</label><textarea id="mangaDescription" name="description" rows="5" maxlength="500" placeholder="Contale a los compradores en qué estado se encuentra el manga..."></textarea><!-- Contador visual de caracteres. script.js busca esta clase dentro del contenedor de la descripción y la cambia
+     por valores como 37/500; la clase se usa porque es un elemento auxiliar sin id propio. -->
+<span class="character-count">Máximo 500 caracteres</span></div>
 </div></div>
-<aside class="sell-right"><div class="sell-summary"><div class="sell-summary-heading"><span>PUBLICACIÓN</span><h2>Revisá tu manga</h2></div><div class="sell-summary-image" id="summaryImage"><i class="fa-solid fa-book-open"></i></div><div class="sell-summary-info"><h3 id="summaryTitle">Nombre del manga</h3><p id="summaryVolume">Tomo -</p><span id="summaryState">Estado -</span></div><div class="sell-summary-price"><small>Precio</small><strong id="summaryPrice">$0</strong></div><button type="submit" class="publish-button">Publicar manga <i class="fa-solid fa-arrow-right"></i></button><p class="publish-info"><i class="fa-solid fa-circle-info"></i> Tu publicación podrá ser vista por otros usuarios.</p></div>
-<div class="sell-tips"><h3>Consejos para vender</h3><div class="tip"><i class="fa-solid fa-camera"></i><p>Usá fotos claras y mostrale al comprador el estado real.</p></div><div class="tip"><i class="fa-solid fa-tag"></i><p>Compará precios para publicar una oferta atractiva.</p></div><div class="tip"><i class="fa-solid fa-star"></i><p>Una buena descripción genera más confianza.</p></div></div></aside></form></div></main>
+<!-- Columna complementaria: vista previa de cómo quedarían los datos de la publicación y consejos de venta. -->
+<aside class="sell-right"><!-- VISTA PREVIA:
+     esta tarjeta no vuelve a consultar la base de datos. JavaScript copia aquí los valores que el usuario escribe
+     para que pueda revisarlos antes de pulsar Publicar manga. -->
+<div class="sell-summary"><div class="sell-summary-heading"><span>PUBLICACIÓN</span><h2>Revisá tu manga</h2></div><!-- Contenedor de imagen de resumen. Empieza con un icono provisional; luego se reemplaza por una img temporal
+     cuando se selecciona un archivo válido. summaryImage es el id que busca script.js. -->
+<div class="sell-summary-image" id="summaryImage"><i class="fa-solid fa-book-open"></i></div><!-- summaryTitle empieza con texto de muestra y se actualiza en el evento input del campo mangaTitle. -->
+<div class="sell-summary-info"><h3 id="summaryTitle">Nombre del manga</h3><!-- summaryVolume muestra el texto del tomo seleccionado; script.js le antepone la palabra Tomo. -->
+<p id="summaryVolume">Tomo -</p><!-- summaryState refleja la opción elegida en el select de estado. -->
+<span id="summaryState">Estado -</span></div><!-- summaryPrice presenta el precio formateado. $0 es el valor inicial y no un precio que se haya guardado. -->
+<div class="sell-summary-price"><small>Precio</small><strong id="summaryPrice">$0</strong></div><!-- type="submit" dispara el evento submit del form sellForm. Ese evento es interceptado por script.js,
+     que valida los campos, comprueba la sesión, sube la imagen si existe y luego inserta el producto en Supabase. -->
+<button type="submit" class="publish-button">Publicar manga <i class="fa-solid fa-arrow-right"></i></button><!-- Mensaje informativo estático. No confirma que la publicación ya se haya guardado; eso depende del resultado del envío. -->
+<p class="publish-info"><i class="fa-solid fa-circle-info"></i> Tu publicación podrá ser vista por otros usuarios.</p></div>
+<!-- Consejos de uso, independientes del objeto producto y no enviados a la base de datos. -->
+<div class="sell-tips"><h3>Consejos para vender</h3><!-- Cada .tip agrupa un icono y una sugerencia. La clase permite repetir el mismo formato visual sin IDs distintos. -->
+<div class="tip"><i class="fa-solid fa-camera"></i><p>Usá fotos claras y mostrale al comprador el estado real.</p></div><div class="tip"><i class="fa-solid fa-tag"></i><p>Compará precios para publicar una oferta atractiva.</p></div><div class="tip"><i class="fa-solid fa-star"></i><p>Una buena descripción genera más confianza.</p></div></div></aside></form></div></main>
 
     <!-- PIE DE PÁGINA: enlaces secundarios, redes e información legal. -->
-    <footer><div class="footer-logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div><div class="footer-links"><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a></div><div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div><p>© 2026 ReManga - Todos los derechos reservados.</p></footer>
+    <!-- FOOTER semántico de la página, con enlaces a secciones principales e información de marca. -->
+<footer><!-- Marca repetida al final; su enlace permite volver al inicio desde cualquier parte de la página. -->
+<div class="footer-logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div><!-- Enlaces secundarios a páginas HTML del mismo sitio. href define el archivo de destino. -->
+<div class="footer-links"><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a></div><!-- Iconos decorativos de redes sociales: al no estar dentro de enlaces <a>, no abren perfiles externos. -->
+<div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div><p>© 2026 ReManga - Todos los derechos reservados.</p></footer>
     <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
-    <script src="config.js"></script><script src="static/script.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="static/favoritos.js"></script>
+    <!-- Expone la configuración pública de Supabase en window para que los módulos puedan leer URL, clave y bucket. -->
+<script src="config.js"></script><!-- Incluye la lógica común y el evento de envío de sellForm. El listener se registra para DOMContentLoaded,
+     así que espera a que el HTML haya sido interpretado antes de localizar los campos. -->
+<script src="static/script.js"></script><!-- SDK necesario para crear el cliente de Supabase. Aunque aparece después de script.js, el callback
+     de DOMContentLoaded se ejecutará después de procesar los scripts clásicos del documento si el SDK cargó bien. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><!-- Carga el módulo compartido de favoritos, usado en las tarjetas y botones que aparecen por la web. -->
+<script src="static/favoritos.js"></script>
 </body></html>
