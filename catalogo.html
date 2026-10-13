@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Catálogo | ReManga</title>
@@ -16,7 +17,10 @@
 </style>
 </head>
 <body>
-<header id="header">
+    <!-- CATÁLOGO: listado de mangas, buscador, filtros y ordenamiento para explorar publicaciones. -->
+
+    <!-- ENCABEZADO: identidad de ReManga, navegación y accesos comunes. -->
+    <header id="header">
 <div class="logo">
 <a href="index.html" class="brand-lockup" aria-label="ReManga">
 <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
@@ -35,7 +39,9 @@
 <a href="carrito.html" class="cart-icon-container" aria-label="Carrito"><i class="fa-solid fa-cart-shopping"></i><span class="cart-counter" id="cartCounter">0</span></a>
 </div></div>
 </header>
-<main class="catalog-page">
+
+    <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
+    <main class="catalog-page">
 <section class="catalog-hero"><div class="catalog-hero-content"><span class="catalog-eyebrow">REMANGA STORE</span><h1>Catálogo</h1><p>Encontrá tu próximo manga entre nuestra selección de títulos nuevos y usados.</p></div></section>
 <section class="catalog-container">
 <aside class="filters" id="filters">
@@ -51,12 +57,17 @@
 <div class="catalog-loading" id="catalogLoading"><i class="fa-solid fa-spinner"></i><p>Cargando mangas...</p></div>
 <div class="no-results" id="noResults"><i class="fa-solid fa-book-open"></i><h2>No encontramos mangas</h2><p>Probá modificando los filtros o buscando otro título.</p><button type="button" id="resetSearch">Ver todos los mangas</button></div>
 </div></section></main>
-<section class="newsletter"><h2>Enterate antes que nadie de las novedades</h2><p>Recibí lanzamientos y ofertas exclusivas.</p><form><input type="email" placeholder="Tu correo electrónico"><button type="submit">Suscribirme</button></form></section>
-<footer>
+<section class="newsletter"><h2>Enterate antes que nadie de las novedades</h2><p>Recibí lanzamientos y ofertas exclusivas.</p>
+    <!-- BÚSQUEDA: controles que permiten localizar publicaciones del catálogo. -->
+    <form><input type="email" placeholder="Tu correo electrónico"><button type="submit">Suscribirme</button></form></section>
+
+    <!-- PIE DE PÁGINA: enlaces secundarios, redes e información legal. -->
+    <footer>
 <div class="footer-logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div>
 <div class="footer-links"><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a></div>
 <div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div>
 <p>© 2026 ReManga - Todos los derechos reservados.</p>
 </footer>
-<script src="config.js"></script><script src="static/script.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="static/favoritos.js"></script>
+    <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
+    <script src="config.js"></script><script src="static/script.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="static/favoritos.js"></script>
 </body></html>
