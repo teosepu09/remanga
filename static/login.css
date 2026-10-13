@@ -1,3 +1,5 @@
+/* ReManga - estilos de las pantallas de acceso y registro. Incluye el fondo visual, marca, panel, campos, botones y ajustes para pantallas pequeñas. */
+
 /* =========================================================
    RESET
 ========================================================= */
@@ -35,6 +37,7 @@ img {
    FONDO
 ========================================================= */
 
+/* ===== FONDO Y CAPA DECORATIVA ===== */
 .login-background {
     position: fixed;
     inset: 0;
@@ -82,6 +85,7 @@ img {
    BRANDING
 ========================================================= */
 
+/* ===== IDENTIDAD VISUAL Y TEXTO DE PRESENTACIÓN ===== */
 .branding {
     padding-left: 4%;
     max-width: 760px;
@@ -112,6 +116,7 @@ img {
    PANEL LOGIN
 ========================================================= */
 
+/* ===== PANEL DEL FORMULARIO ===== */
 .login-panel {
     width: 100%;
     padding: 30px 30px;
@@ -158,6 +163,7 @@ img {
    INPUTS
 ========================================================= */
 
+/* ===== CAMPOS DE ENTRADA Y ESTADOS DE FOCO ===== */
 .input-group {
     margin-bottom: 14px;
 }
@@ -265,6 +271,7 @@ img {
    BOTÓN LOGIN
 ========================================================= */
 
+/* ===== ACCIONES PRINCIPALES Y ACCESO COMO INVITADO ===== */
 .login-button {
     width: 100%;
     height: 46px;
@@ -340,6 +347,7 @@ img {
    RESPONSIVE
 ========================================================= */
 
+/* ===== DISTRIBUCIÓN EN PANTALLAS MEDIANAS ===== */
 @media (max-width: 1000px) {
     .login-container {
         grid-template-columns: 1fr;
@@ -359,6 +367,7 @@ img {
     }
 }
 
+/* ===== DISTRIBUCIÓN EN MÓVILES ===== */
 @media (max-width: 600px) {
     .login-container {
         padding: 20px;
