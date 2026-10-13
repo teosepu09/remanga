@@ -56,9 +56,12 @@ function formatearPrecio(precio) {
 function obtenerRutaImagen(imagen) {
     // El campo de imagen puede guardar tres formatos: vacío, una URL completa, una ruta local
     // del repositorio o el nombre de un objeto dentro de Supabase Storage.
+    // imagen puede ser una URL completa, una ruta local o el nombre de un archivo en Storage.
+    // Si falta, devolvemos una portada de reserva en lugar de construir una dirección inválida.
     if (!imagen) return "static/isotipo sin fondo.png";
 
     // Una URL que empieza con http:// o https:// ya contiene el host y la ruta completos.
+    // test() verifica el patrón http:// o https:// al comienzo. La i final hace que la coincidencia ignore mayúsculas.
     if (/^https?:\/\//i.test(imagen)) {
         return imagen;
     }
@@ -70,6 +73,7 @@ function obtenerRutaImagen(imagen) {
 
     // Si solo quedó el nombre (por ejemplo "naruto1.webp"), construimos la URL pública de Storage.
     // encodeURIComponent evita que espacios y otros caracteres rompan el último segmento de la URL.
+    // config contiene la URL del proyecto y el bucket publicados por config.js; se usa para formar la URL pública de la imagen.
     const config = window.REMANGA_SUPABASE_CONFIG;
     if (config?.enabled && config.url && config.bucket) {
         return config.url.replace(/\/$/, "") + "/storage/v1/object/public/" + config.bucket + "/" + encodeURIComponent(imagen);
@@ -98,7 +102,9 @@ function mostrarMensaje(texto, tipo = "success") {
     // El ?. permite ejecutar remove() solo si el selector encontró un elemento.
     document.querySelector(".remanga-message")?.remove();
 
+    // Crea un nodo para la notificación porque aparece solo después de una acción y no hace falta dejarlo fijo en el HTML.
     const mensaje = document.createElement("div");
+    // La clase remanga-message aplica el estilo común; tipo añade una variante como success o warning.
     mensaje.className = `remanga-message ${tipo}`;
     // textContent inserta el mensaje como texto, sin interpretar etiquetas HTML.
     mensaje.textContent = texto;
@@ -107,6 +113,7 @@ function mostrarMensaje(texto, tipo = "success") {
     // Aplicamos "show" en el siguiente ciclo de pintura para que el navegador pueda animar
     // desde el estado inicial hasta el estado visible.
     requestAnimationFrame(() => mensaje.classList.add("show"));
+    // El temporizador exterior decide cuándo ocultar el aviso; el interior espera a que termine la transición CSS antes de quitarlo del DOM.
     setTimeout(() => {
         mensaje.classList.remove("show");
         setTimeout(() => mensaje.remove(), 300);
@@ -154,11 +161,14 @@ function iniciarHeader() {
  */
 function iniciarBuscador() {
     document.querySelectorAll(".search-box").forEach((box) => {
+        // Busca el campo dentro de esta .search-box particular, porque puede haber buscadores en varias páginas.
         const input = box.querySelector("input");
+        // Guarda el botón de la caja actual para ejecutar la búsqueda cuando el usuario hace clic.
         const button = box.querySelector("button");
         if (!input || !button) return;
 
         const buscar = () => {
+            // Lee el texto ingresado y elimina espacios externos para que una búsqueda formada solo por espacios cuente como vacía.
             const texto = input.value.trim();
             if (!texto) {
                 mostrarMensaje("Escribí el nombre de un manga para buscar.", "warning");
@@ -274,6 +284,7 @@ function obtenerClienteSupabaseDatos() {
     // Evita crear repetidamente clientes con la misma URL y la misma sesión.
     if (remangaSupabaseClient) return remangaSupabaseClient;
 
+    // Lee la configuración pública compartida por config.js.
     const config = window.REMANGA_SUPABASE_CONFIG;
 
     // Necesitamos tres piezas: configuración habilitada, librería cargada y URL/clave publicable.
@@ -283,6 +294,7 @@ function obtenerClienteSupabaseDatos() {
     }
 
     try {
+        // Guarda la instancia creada en una variable común para reutilizar cliente y sesión en las siguientes consultas.
         remangaSupabaseClient = window.supabase.createClient(config.url, config.publishableKey, {
             auth: {
                 persistSession: true,
@@ -307,6 +319,7 @@ const CAMPOS_PRODUCTO = "id,titulo,tomo,precio,estado,descripcion,imagen";
  * - Array de productos; lanza un Error si no puede consultar Supabase.
  */
 async function apiGetProductos() {
+    // Obtiene el cliente reutilizable; si devuelve null, no hay cliente disponible para hacer la consulta.
     const supabaseClient = obtenerClienteSupabaseDatos();
 
     if (!supabaseClient) {
@@ -317,6 +330,7 @@ async function apiGetProductos() {
     // ascending:false quiere decir que los id más altos aparecen primero.
     // await espera la respuesta de Supabase sin congelar toda la interfaz; data y error se separan
     // mediante desestructuración del objeto de respuesta.
+    // data contiene los registros si la consulta funciona; error informa un problema. await espera la respuesta de red sin bloquear toda la página.
     const { data, error } = await supabaseClient
         .from("productos")
         .select(CAMPOS_PRODUCTO)
@@ -337,6 +351,7 @@ async function apiGetProductos() {
  * - Objeto producto; lanza un Error si hay un problema o el registro no existe.
  */
 async function apiGetProducto(id) {
+    // Reutiliza el cliente común para consultar la tabla productos.
     const supabaseClient = obtenerClienteSupabaseDatos();
 
     if (!supabaseClient) {
@@ -346,6 +361,7 @@ async function apiGetProducto(id) {
     // eq("id", id) agrega el filtro equivalente a WHERE id = idBuscado.
     // maybeSingle espera cero o una fila: si no existe, data queda vacío y podemos mostrar
     // un mensaje propio; si hubiera más de una fila para un id, Supabase devolvería un error.
+    // maybeSingle() produce un registro o null en data, porque la consulta está buscando un ID único.
     const { data, error } = await supabaseClient
         .from("productos")
         .select(CAMPOS_PRODUCTO)
@@ -374,10 +390,12 @@ async function apiGetProducto(id) {
  * - Sesión actual o null si no se puede leer o no hay sesión.
  */
 async function obtenerSesionActual() {
+    // Necesita el cliente de Supabase para consultar la sesión administrada por Auth.
     const supabaseClient = obtenerClienteSupabaseDatos();
     if (!supabaseClient) return null;
 
     try {
+        // getSession() devuelve un objeto con data y error; aquí solo se extrae data para consultar data.session.
         const { data } = await supabaseClient.auth.getSession();
         return data?.session || null;
     } catch (error) {
@@ -395,7 +413,9 @@ function nombreImagenUnico(archivo) {
     // split(".") separa el nombre por puntos y pop() toma la última parte como extensión.
     // Sumamos milisegundos actuales y una cadena aleatoria para reducir choques de nombres.
     // La aleatoriedad solo ayuda a distinguir archivos; no es criptográfica ni un mecanismo de seguridad.
+    // archivo es un objeto File. split separa el nombre por puntos y pop toma el último segmento como extensión.
     const extension = (archivo.name.split(".").pop() || "jpg").toLowerCase();
+    // Pasa un decimal aleatorio a una cadena base 36 y toma una parte para diferenciar nombres. No sirve como mecanismo de seguridad.
     const aleatorio = Math.random().toString(36).slice(2, 10);
     return `${Date.now()}-${aleatorio}.${extension}`;
 }
@@ -407,17 +427,21 @@ function nombreImagenUnico(archivo) {
  * - Nombre del objeto almacenado; lanza un Error si la carga falla.
  */
 async function subirImagenProducto(archivo) {
+    // Cliente que expone el método storage.
     const supabaseClient = obtenerClienteSupabaseDatos();
+    // La propiedad bucket indica el contenedor en el que se guardarán las portadas.
     const config = window.REMANGA_SUPABASE_CONFIG;
 
     if (!supabaseClient || !config?.bucket) {
         throw new Error("No se pudo conectar con el almacenamiento de imágenes.");
     }
 
+    // Clave/ruta que Storage asignará al objeto de imagen dentro del bucket.
     const nombre = nombreImagenUnico(archivo);
 
     // storage.from(bucket) selecciona el bucket; upload(nombre, archivo) envía el archivo binario.
     // contentType comunica su formato MIME. upsert:false impide reemplazar otro archivo del mismo nombre.
+    // En esta operación se comprueba error: upload comunica si Storage aceptó o rechazó el archivo.
     const { error } = await supabaseClient
         .storage
         .from(config.bucket)
@@ -441,6 +465,7 @@ async function subirImagenProducto(archivo) {
  * - Registro insertado devuelto por Supabase; lanza un Error si falta sesión, falla Storage o falla la inserción.
  */
 async function apiCrearProducto(producto) {
+    // Cliente utilizado para comprobar autenticación e insertar la publicación.
     const supabaseClient = obtenerClienteSupabaseDatos();
 
     if (!supabaseClient) {
@@ -450,6 +475,7 @@ async function apiCrearProducto(producto) {
     // Primero comprobamos quién publica. Esta validación mejora la experiencia, pero no es una
     // barrera de seguridad suficiente por sí sola: las políticas RLS de Supabase también deben
     // impedir inserciones no autorizadas.
+    // Obtiene la sesión para asociar el manga a la cuenta que lo publica.
     const sesion = await obtenerSesionActual();
 
     if (!sesion?.user) {
@@ -458,7 +484,9 @@ async function apiCrearProducto(producto) {
         throw aviso;
     }
 
+    // Empieza vacío porque la imagen es opcional; después puede contener el nombre del archivo subido.
     let nombreImagen = "";
+    // Puede ser el objeto File del formulario o null si el usuario no adjuntó portada.
     const archivo = producto.imagen;
 
     if (archivo && archivo.size > 0) {
@@ -472,6 +500,7 @@ async function apiCrearProducto(producto) {
 
     // Guardamos datos del manga más vendedor_id, el UUID del usuario autenticado.
     // select(...).single() pide que la respuesta incluya el registro recién creado como un objeto.
+    // data recibe el registro creado; error informa el fallo si no se pudo insertar.
     const { data, error } = await supabaseClient
         .from("productos")
         .insert({
@@ -531,10 +560,12 @@ function migrarCarritoAntiguo() {
  */
 function obtenerCarrito() {
     migrarCarritoAntiguo();
+    // localStorage devuelve texto o null, no un array. JSON.parse convertirá esa cadena a un valor JavaScript.
     const datos = localStorage.getItem(CART_KEY);
     if (!datos) return [];
 
     try {
+        // Reconstruye el valor guardado y luego Array.isArray verifica que tenga forma de lista.
         const carrito = JSON.parse(datos);
         return Array.isArray(carrito) ? carrito : [];
     } catch (error) {
@@ -573,10 +604,13 @@ function cantidadTotalCarrito(carrito) {
  * - No devuelve un valor; actualiza texto y visibilidad de los contadores.
  */
 function actualizarContadorCarrito() {
+    // Obtiene todos los contadores de la página para que todos muestren el mismo total.
     const contadores = document.querySelectorAll(".cart-counter");
     if (!contadores.length) return;
 
+    // Primero lee el estado guardado y después calcula la suma de unidades.
     const total = cantidadTotalCarrito(obtenerCarrito());
+    // Recorre cada nodo encontrado y actualiza su número y visibilidad.
     contadores.forEach((contador) => {
         contador.textContent = total;
         contador.style.display = total > 0 ? "flex" : "none";
@@ -590,17 +624,21 @@ function actualizarContadorCarrito() {
  * - No devuelve un valor; guarda el carrito y refresca su contador.
  */
 function agregarProductoAlCarrito(producto, cantidad = 1) {
+    // Lee la lista ya guardada para no perder los productos agregados previamente.
     const carrito = obtenerCarrito();
+    // Normaliza el ID a número para que "12" y 12 coincidan al comparar.
     const id = Number(producto.id);
 
     // find devuelve la primera fila cuyo id coincide; si no encuentra ninguna, devuelve undefined.
     // Convertimos ambos id a Number para que "12" y 12 se consideren el mismo producto.
+    // Busca una fila del mismo manga; find devuelve el primer objeto coincidente o undefined.
     const existente = carrito.find(
         (item) => Number(item.id) === id
     );
 
     // Las páginas pueden entregar nombres de propiedades distintos: titulo/tomo/precio o
     // title/volume/price. Este objeto traduce las variantes a un único formato interno del carrito.
+    // Crea un formato común de carrito aunque el producto venga con propiedades como titulo/tomo o title/volume.
     const normalizado = {
         id: producto.id,
         title: producto.titulo ?? producto.title ?? "Manga",
