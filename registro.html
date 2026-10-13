@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear cuenta | ReManga</title>
@@ -21,11 +22,14 @@
     </style>
 </head>
 <body>
+    <!-- REGISTRO: recoge los datos necesarios para crear una cuenta mediante Supabase Auth. -->
     <div class="login-background" aria-hidden="true">
         <img class="login-background-image" src="static/fotologin.jpeg" alt="">
         <div class="login-background-glow"></div>
     </div>
 
+    
+    <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
     <main class="login-container">
         <section class="branding">
             <div class="login-brand">
@@ -43,7 +47,9 @@
                 <p>Unite a ReManga</p>
             </div>
 
-            <form id="registerForm" novalidate>
+            
+    <!-- FORMULARIO DE AUTENTICACIÓN: campos que utiliza el script de esta página. -->
+    <form id="registerForm" novalidate>
                 <div class="input-group">
                     <label for="username">Nombre de usuario</label>
                     <input type="text" id="username" name="username" placeholder="Elegí tu nombre de usuario" autocomplete="username" minlength="3" maxlength="30" required>
@@ -78,6 +84,7 @@
         </section>
     </main>
 
+        <!-- JAVASCRIPT: librería de Supabase, configuración y lógica de esta pantalla. -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="config.js"></script>
     <script src="static/registro.js"></script>
