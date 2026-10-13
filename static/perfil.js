@@ -22,6 +22,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
         : null;
 
+    /**
+     * Muestra un aviso dentro del perfil del usuario.
+     * - texto: mensaje; tipo: clase visual.
+     * - No devuelve valor.
+     */
     function mostrarMensaje(texto, tipo = "error") {
         if (!messageElement) return;
         messageElement.textContent = texto;
@@ -56,6 +61,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ===== PUBLICACIONES DEL USUARIO =====
     // Filtra en Supabase las publicaciones creadas por la cuenta actual.
+    /**
+     * Consulta los productos publicados por el usuario autenticado.
+     * - No recibe parámetros.
+     * - Actualiza la sección de publicaciones propias.
+     */
     async function cargarMisPublicaciones() {
         if (!supabaseClient || !user) {
             renderizarPublicacionesPerfil([]);
@@ -81,10 +91,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    /**
+     * Formatea el precio de una publicación para presentarlo en el perfil.
+     * - precio: valor numérico o texto numérico.
+     * - Devuelve texto de precio.
+     */
     function obtenerPrecioPublicacion(precio) {
         return "$" + (Number(precio) || 0).toLocaleString("es-AR");
     }
 
+    /**
+     * Resuelve la ruta de imagen de una publicación para mostrarla en el perfil.
+     * - imagen: URL, ruta local o nombre de archivo.
+     * - Devuelve URL o ruta.
+     */
     function obtenerRutaImagenPublicacion(imagen) {
         if (!imagen) {
             return "static/isotipo sin fondo.png";
@@ -111,6 +131,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         return "static/isotipo sin fondo.png";
     }
 
+    /**
+     * Crea la tarjeta visual de una publicación del usuario.
+     * - producto: registro del manga.
+     * - Devuelve un elemento article.
+     */
     function crearTarjetaPublicacion(producto) {
         var card = document.createElement("article");
         card.className = "profile-product-card";
@@ -153,11 +178,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         return card;
     }
 
+    /**
+     * Actualiza el número de publicaciones que se muestra en el perfil.
+     * - cantidad: número de publicaciones.
+     * - No devuelve valor.
+     */
     function actualizarContadorPublicaciones(cantidad) {
         var count = document.getElementById("publicationCount");
         if (count) count.textContent = cantidad;
     }
 
+    /**
+     * Dibuja la lista de publicaciones recibida o muestra el estado vacío.
+     * - productos: array de productos.
+     * - No devuelve valor.
+     */
     function renderizarPublicacionesPerfil(productos) {
         var grid = document.getElementById("myProductsGrid");
         var empty = document.getElementById("publicationEmpty");
