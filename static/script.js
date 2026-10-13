@@ -9,6 +9,10 @@ const CART_KEY = "remangaCart";
 // Espera a que el HTML esté listo y luego inicia solo los módulos presentes en la página actual.
 
 
+// DOMContentLoaded se dispara cuando el navegador ya interpretó el HTML. Por eso los selectores
+// de abajo pueden encontrar los controles de la página.
+// Se llaman todos los inicializadores en todas las páginas, pero cada uno se protege comprobando
+// si existe su elemento raíz: iniciarCarrito, por ejemplo, no hace nada si no hay carrito.html.
 document.addEventListener("DOMContentLoaded", () => {
     iniciarHeader();
     iniciarBuscador();
@@ -35,19 +39,22 @@ function formatearPrecio(precio) {
 }
 
 function obtenerRutaImagen(imagen) {
+    // El campo de imagen puede guardar tres formatos: vacío, una URL completa, una ruta local
+    // del repositorio o el nombre de un objeto dentro de Supabase Storage.
     if (!imagen) return "static/isotipo sin fondo.png";
 
-    // URL absoluta
+    // Una URL que empieza con http:// o https:// ya contiene el host y la ruta completos.
     if (/^https?:\/\//i.test(imagen)) {
         return imagen;
     }
 
-    // Ruta relativa dentro del repositorio
+    // Si comienza con img/, static/ o imagenes/, se considera una ruta del propio sitio.
     if (/^(img|static|imagenes)\//i.test(imagen)) {
         return imagen;
     }
 
-    // Las portadas viven en Supabase Storage.
+    // Si solo quedó el nombre (por ejemplo "naruto1.webp"), construimos la URL pública de Storage.
+    // encodeURIComponent evita que espacios y otros caracteres rompan el último segmento de la URL.
     const config = window.REMANGA_SUPABASE_CONFIG;
     if (config?.enabled && config.url && config.bucket) {
         return config.url.replace(/\/$/, "") + "/storage/v1/object/public/" + config.bucket + "/" + encodeURIComponent(imagen);
@@ -61,13 +68,18 @@ function obtenerParam(nombre) {
 }
 
 function mostrarMensaje(texto, tipo = "success") {
+    // Se quita el aviso anterior antes de crear otro, para que no se apilen notificaciones.
+    // El ?. permite ejecutar remove() solo si el selector encontró un elemento.
     document.querySelector(".remanga-message")?.remove();
 
     const mensaje = document.createElement("div");
     mensaje.className = `remanga-message ${tipo}`;
+    // textContent inserta el mensaje como texto, sin interpretar etiquetas HTML.
     mensaje.textContent = texto;
     document.body.appendChild(mensaje);
 
+    // Aplicamos "show" en el siguiente ciclo de pintura para que el navegador pueda animar
+    // desde el estado inicial hasta el estado visible.
     requestAnimationFrame(() => mensaje.classList.add("show"));
     setTimeout(() => {
         mensaje.classList.remove("show");
@@ -178,11 +190,14 @@ function iniciarAnimaciones() {
         elemento.style.transition = "opacity .7s ease, transform .7s ease";
     });
 
+    // IntersectionObserver avisa cuando un elemento cruza el límite visible de la pantalla.
+    // El threshold: 0.15 configurado más abajo significa que basta con ver aproximadamente el 15 %.
     const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
             entry.target.style.opacity = "1";
             entry.target.style.transform = "translateY(0)";
+            // Ya animado, dejamos de observarlo para no repetir la animación cada vez que se desplaza.
             obs.unobserve(entry.target);
         });
     }, { threshold: 0.15 });
@@ -199,10 +214,14 @@ let remangaSupabaseClient = null;
 
 // Construye el cliente oficial de Supabase usando la configuración compartida del proyecto.
 function obtenerClienteSupabaseDatos() {
+    // Guardamos el cliente en una variable compartida y lo reutilizamos durante esta carga de página.
+    // Evita crear repetidamente clientes con la misma URL y la misma sesión.
     if (remangaSupabaseClient) return remangaSupabaseClient;
 
     const config = window.REMANGA_SUPABASE_CONFIG;
 
+    // Necesitamos tres piezas: configuración habilitada, librería cargada y URL/clave publicable.
+    // La clave del navegador nunca debe ser una service_role key ni otro secreto del servidor.
     if (!(config?.enabled && window.supabase && config.url && config.publishableKey)) {
         return null;
     }
@@ -222,6 +241,7 @@ function obtenerClienteSupabaseDatos() {
     }
 }
 
+// Lista centralizada de columnas para que catálogo, detalle y favoritos usen el mismo esquema.
 const CAMPOS_PRODUCTO = "id,titulo,tomo,precio,estado,descripcion,imagen";
 
 // Lee la colección de productos. El resultado se devuelve al resto del frontend para renderizarlo.
@@ -232,6 +252,10 @@ async function apiGetProductos() {
         throw new Error("No se pudo conectar con Supabase.");
     }
 
+    // Consulta encadenada: tabla productos -> columnas necesarias -> ordenar por id descendente.
+    // ascending:false quiere decir que los id más altos aparecen primero.
+    // await espera la respuesta de Supabase sin congelar toda la interfaz; data y error se separan
+    // mediante desestructuración del objeto de respuesta.
     const { data, error } = await supabaseClient
         .from("productos")
         .select(CAMPOS_PRODUCTO)
@@ -253,6 +277,9 @@ async function apiGetProducto(id) {
         throw new Error("No se pudo conectar con Supabase.");
     }
 
+    // eq("id", id) agrega el filtro equivalente a WHERE id = idBuscado.
+    // maybeSingle espera cero o una fila: si no existe, data queda vacío y podemos mostrar
+    // un mensaje propio; si hubiera más de una fila para un id, Supabase devolvería un error.
     const { data, error } = await supabaseClient
         .from("productos")
         .select(CAMPOS_PRODUCTO)
@@ -289,6 +316,9 @@ async function obtenerSesionActual() {
 }
 
 function nombreImagenUnico(archivo) {
+    // split(".") separa el nombre por puntos y pop() toma la última parte como extensión.
+    // Sumamos milisegundos actuales y una cadena aleatoria para reducir choques de nombres.
+    // La aleatoriedad solo ayuda a distinguir archivos; no es criptográfica ni un mecanismo de seguridad.
     const extension = (archivo.name.split(".").pop() || "jpg").toLowerCase();
     const aleatorio = Math.random().toString(36).slice(2, 10);
     return `${Date.now()}-${aleatorio}.${extension}`;
@@ -305,6 +335,8 @@ async function subirImagenProducto(archivo) {
 
     const nombre = nombreImagenUnico(archivo);
 
+    // storage.from(bucket) selecciona el bucket; upload(nombre, archivo) envía el archivo binario.
+    // contentType comunica su formato MIME. upsert:false impide reemplazar otro archivo del mismo nombre.
     const { error } = await supabaseClient
         .storage
         .from(config.bucket)
@@ -329,6 +361,9 @@ async function apiCrearProducto(producto) {
         throw new Error("No se pudo conectar con Supabase.");
     }
 
+    // Primero comprobamos quién publica. Esta validación mejora la experiencia, pero no es una
+    // barrera de seguridad suficiente por sí sola: las políticas RLS de Supabase también deben
+    // impedir inserciones no autorizadas.
     const sesion = await obtenerSesionActual();
 
     if (!sesion?.user) {
@@ -344,9 +379,13 @@ async function apiCrearProducto(producto) {
         if (archivo.size > 5 * 1024 * 1024) {
             throw new Error("La imagen no puede superar los 5 MB.");
         }
+        // La carga de imagen ocurre antes del INSERT. Si Storage funciona pero la inserción falla,
+        // puede quedar un archivo sin producto asociado; esto podría limpiarse en una mejora futura.
         nombreImagen = await subirImagenProducto(archivo);
     }
 
+    // Guardamos datos del manga más vendedor_id, el UUID del usuario autenticado.
+    // select(...).single() pide que la respuesta incluya el registro recién creado como un objeto.
     const { data, error } = await supabaseClient
         .from("productos")
         .insert({
@@ -374,12 +413,16 @@ async function apiCrearProducto(producto) {
 
 
 function migrarCarritoAntiguo() {
+    // Migración de compatibilidad: si ya existe la clave nueva, no se pisa con datos antiguos.
+    // Solo se busca "remanga_carrito" cuando la clave actual todavía no existe.
     if (localStorage.getItem(CART_KEY)) return;
 
     const antiguo = localStorage.getItem("remanga_carrito");
     if (!antiguo) return;
 
     try {
+        // localStorage guarda cadenas. JSON.parse reconstruye el valor y Array.isArray verifica
+        // que realmente tenga la forma de lista que espera el carrito.
         const datos = JSON.parse(antiguo);
         if (Array.isArray(datos)) {
             localStorage.setItem(CART_KEY, JSON.stringify(datos));
@@ -410,6 +453,8 @@ function guardarCarrito(carrito) {
 }
 
 function cantidadTotalCarrito(carrito) {
+    // reduce recorre cada fila y acumula las unidades. Ejemplo: cantidades 2 + 1 + 3 = 6.
+    // El 0 del final es el valor inicial del acumulador "total".
     return carrito.reduce(
         (total, item) => total + Number(item.quantity || 0),
         0
@@ -431,10 +476,14 @@ function agregarProductoAlCarrito(producto, cantidad = 1) {
     const carrito = obtenerCarrito();
     const id = Number(producto.id);
 
+    // find devuelve la primera fila cuyo id coincide; si no encuentra ninguna, devuelve undefined.
+    // Convertimos ambos id a Number para que "12" y 12 se consideren el mismo producto.
     const existente = carrito.find(
         (item) => Number(item.id) === id
     );
 
+    // Las páginas pueden entregar nombres de propiedades distintos: titulo/tomo/precio o
+    // title/volume/price. Este objeto traduce las variantes a un único formato interno del carrito.
     const normalizado = {
         id: producto.id,
         title: producto.titulo ?? producto.title ?? "Manga",
@@ -445,6 +494,8 @@ function agregarProductoAlCarrito(producto, cantidad = 1) {
         quantity: Number(cantidad) || 1
     };
 
+    // Si existe, sumamos unidades en la misma fila; si no, incorporamos una nueva fila.
+    // Luego guardamos el array actualizado en localStorage y sincronizamos el contador visual.
     if (existente) {
         existente.quantity = Number(existente.quantity || 0) + normalizado.quantity;
     } else {
@@ -969,6 +1020,8 @@ function obtenerEstadosCatalogo() {
 }
 
 function ordenarProductosCatalogo(productos, orden) {
+    // sort modifica el array recibido. El spread [...productos] crea una copia para no alterar
+    // productosCatalogo, que se necesita intacto para volver a filtrar desde el conjunto completo.
     const copia = [...productos];
 
     if (orden === "price-low") {
@@ -998,11 +1051,15 @@ function mostrarProductosFiltrados() {
     const maxPrecio = obtenerPrecioMaximoCatalogo();
     const estados = obtenerEstadosCatalogo();
 
+    // filter crea una lista nueva con los productos que cumplan los tres grupos de condiciones.
+    // Si no hay texto o no se marcó ningún estado, ese criterio queda abierto y no restringe.
     let productos = productosCatalogo.filter((producto) => {
         const nombre = String(producto.titulo || "").trim().toLowerCase();
         const estado = normalizarEstado(producto.estado);
         const precio = Number(producto.precio) || 0;
 
+        // Cada expresión "(!filtro || cumple)" significa: si no se pidió ese filtro, pasa;
+        // si se pidió, solo pasa cuando coincide. Los && exigen cumplir todos los criterios activos.
         return (
             (!texto || nombre.includes(texto)) &&
             (!estados.length || estados.includes(estado)) &&
@@ -1131,9 +1188,13 @@ function mostrarErrorCatalogo() {
 
 
 async function iniciarProducto() {
+    // Este inicializador corre en cualquier página, pero solo sigue si existe el contenedor del detalle.
+    // El identificador de la URL indica a Supabase qué producto debe devolver.
     const detail = document.getElementById("productDetail");
     if (!detail) return;
 
+    // URLSearchParams lee el valor de ?id=... como texto; Number lo convierte a número.
+    // Validamos que sea entero positivo antes de enviar una consulta a Supabase.
     const id = Number(obtenerParam("id"));
     if (!Number.isInteger(id) || id <= 0) {
         mostrarErrorProducto("No se recibió un ID de producto válido.");
@@ -1151,6 +1212,8 @@ async function iniciarProducto() {
         console.error("Error al cargar producto:", error);
         mostrarErrorProducto(error.message);
     } finally {
+        // finally ocurre tanto si la consulta termina bien como si falla, así que apagamos
+        // el estado de carga en ambos casos y evitamos dejar la pantalla semitransparente.
         mostrarCargaProducto(false);
     }
 }
@@ -1246,6 +1309,8 @@ async function cargarProductosRelacionados(productoActualId) {
 
     try {
         const productos = await apiGetProductos();
+        // Primero excluimos el producto que ya está abierto. Después slice(0, 5) toma hasta
+        // cinco resultados. Hoy no hay relación por autor o género: son otros productos recientes.
         const relacionados = productos
             .filter((producto) => Number(producto.id) !== Number(productoActualId))
             .slice(0, 5);
@@ -1396,6 +1461,9 @@ function renderCarrito() {
     container.style.display = "flex";
     if (empty) empty.style.display = "none";
 
+    // map transforma cada objeto del carrito en un fragmento HTML; join("") concatena los fragmentos.
+    // IMPORTANTE: los campos se insertan dentro de HTML. Como localStorage puede modificarse desde
+    // el navegador, conviene escapar los datos o crear nodos con textContent para evitar inyección XSS.
     container.innerHTML = carrito
         .map((item, index) => crearItemCarrito(item, index))
         .join("");
@@ -1448,8 +1516,12 @@ function crearItemCarrito(item, index) {
 }
 
 function configurarBotonesCarritoPagina() {
+    // renderCarrito reemplaza las tarjetas al cambiar cantidades; por eso los botones nuevos necesitan
+    // que sus eventos se conecten otra vez después de cada representación.
     document.querySelectorAll(".quantity-minus").forEach((button) => {
         button.addEventListener("click", () => {
+            // data-index enlaza el botón con la posición de su fila en el array del carrito.
+            // Volvemos a leer el estado antes de cambiarlo y verificamos que esa posición siga existiendo.
             const index = Number(button.dataset.index);
             const carrito = obtenerCarrito();
             if (!carrito[index]) return;
@@ -1533,7 +1605,9 @@ function iniciarVender() {
             return;
         }
 
-        const url = URL.createObjectURL(file);
+        // Crea una URL temporal local para mostrar una vista previa antes de subir el archivo.
+    // No es la URL pública de Storage y no se debe guardar en la columna imagen.
+    const url = URL.createObjectURL(file);
 
         if (imagePreview) {
             imagePreview.innerHTML = `<img src="${url}" alt="Vista previa del manga">`;
@@ -1551,6 +1625,7 @@ function iniciarVender() {
     });
 
     form.addEventListener("submit", async (event) => {
+        // Evita la recarga tradicional del formulario: la publicación se hará con JavaScript y await.
         event.preventDefault();
 
         const titulo = title.value.trim();
@@ -1583,6 +1658,8 @@ function iniciarVender() {
             return;
         }
 
+        // Creamos un objeto con los datos ya normalizados y validados. La imagen sigue siendo un File,
+        // porque primero debe subirse como archivo a Storage y después se guarda su nombre en la tabla.
         const producto = {
             titulo: titulo,
             tomo: tomo,
