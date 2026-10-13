@@ -10,12 +10,14 @@
 // Esta configuración se carga desde el navegador; no coloques aquí claves secretas de servidor.
 const REMANGA_SUPABASE_CONFIG = {
     url: 'https://hhssfhcxlehuojuwacyy.supabase.co',
-    publishableKey: 'sb_publishable_lM2qbj2jBEVgLboweAI_Xw_fxhcw-dM',
+    // Clave publicable: puede estar en el frontend, pero el acceso a datos debe protegerse con políticas RLS.
+publishableKey: 'sb_publishable_lM2qbj2jBEVgLboweAI_Xw_fxhcw-dM',
     bucket: 'imagenes',
     enabled: true
 };
 
 // Publicamos la configuración en window para que los demás scripts puedan leerla.
+// Publica la configuración para que los demás scripts la lean desde window sin importar su ámbito local.
 window.REMANGA_SUPABASE_CONFIG = REMANGA_SUPABASE_CONFIG;
 
 // Sistema de marca global para las pantallas que utilizan esta configuración.
