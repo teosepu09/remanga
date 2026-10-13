@@ -2,11 +2,14 @@
 // ReManga - Recuperación de contraseña
 // =========================================================
 
+// Espera a que el formulario exista para conectar la solicitud de recuperación.
 document.addEventListener("DOMContentLoaded", async () => {
     const form = document.getElementById("recoveryForm");
     const emailInput = document.getElementById("email");
     const message = document.getElementById("authMessage");
 
+    // ===== CONFIGURACIÓN DE AUTENTICACIÓN =====
+    // Se necesita un cliente de Supabase para enviar el correo de recuperación.
     const config = window.REMANGA_SUPABASE_CONFIG;
     const supabaseClient = (config?.enabled && window.supabase && config.url && config.publishableKey)
         ? window.supabase.createClient(config.url, config.publishableKey, {
@@ -18,6 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
         : null;
 
+    // ===== MENSAJES PARA EL USUARIO =====
     function mostrarMensaje(texto, tipo = "error") {
         if (!message) return;
         message.textContent = texto;
@@ -31,7 +35,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!form) return;
 
-    form.addEventListener("submit", async (event) => {
+    // ===== SOLICITAR EL ENLACE =====
+        // El correo contiene el enlace que devolverá al usuario a restablecer.html.
+        form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const email = emailInput?.value.trim() || "";
