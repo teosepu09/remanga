@@ -28,12 +28,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ===== FUNCIONES AUXILIARES DE INTERFAZ =====
     // Muestra errores o confirmaciones sin modificar la estructura de la página.
+    /**
+     * Muestra errores o confirmaciones en el formulario de registro.
+     * - texto: mensaje; tipo: clase visual.
+     * - No devuelve valor.
+     */
     function mostrarMensaje(texto, tipo = "error") {
         if (!message) return;
         message.textContent = texto;
         message.className = `auth-message ${tipo}`;
     }
 
+    /**
+     * Conecta el botón que permite alternar la contraseña entre visible y oculta.
+     * - button: botón de alternancia; input: campo de contraseña.
+     * - No devuelve valor.
+     */
     function configurarToggle(button, input) {
         if (!button || !input) return;
         button.addEventListener("click", () => {
