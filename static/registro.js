@@ -2,6 +2,7 @@
 // ReManga - Registro real con Supabase Auth
 // =========================================================
 
+// Inicializa los campos y sus eventos cuando el formulario ya existe en el documento.
 document.addEventListener("DOMContentLoaded", async () => {
     const form = document.getElementById("registerForm");
     const usernameInput = document.getElementById("username");
@@ -12,6 +13,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const togglePasswordConfirm = document.getElementById("togglePasswordConfirm");
     const message = document.getElementById("authMessage");
 
+    // ===== CLIENTE DE SUPABASE AUTH =====
+    // El registro crea la cuenta en el servicio de autenticación, no en una API Flask.
     const config = window.REMANGA_SUPABASE_CONFIG;
     const supabaseClient = (config?.enabled && window.supabase && config.url && config.publishableKey)
         ? window.supabase.createClient(config.url, config.publishableKey, {
@@ -23,6 +26,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
         : null;
 
+    // ===== FUNCIONES AUXILIARES DE INTERFAZ =====
+    // Muestra errores o confirmaciones sin modificar la estructura de la página.
     function mostrarMensaje(texto, tipo = "error") {
         if (!message) return;
         message.textContent = texto;
@@ -55,7 +60,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!form) return;
 
-    form.addEventListener("submit", async (event) => {
+    // ===== VALIDACIÓN Y CREACIÓN DE CUENTA =====
+        // Primero se validan los campos; después se solicita a Supabase registrar al usuario.
+        form.addEventListener("submit", async (event) => {
         event.preventDefault();
         mostrarMensaje("", "info");
 
