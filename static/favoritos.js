@@ -284,6 +284,7 @@ async function migrarFavoritosLocales() {
         return String(producto.id);
     }
 
+    // INSERT en favoritos: user_id y producto_id forman la asociación entre cuenta y manga.
     async function agregarFavoritoSupabase(id) {
         var resultado = await supabaseClient
             .from(TABLE)
@@ -297,6 +298,7 @@ async function migrarFavoritosLocales() {
         }
     }
 
+    // DELETE solo elimina la fila que coincide con ambos campos; así no se quita el favorito de otra cuenta.
     async function eliminarFavoritoSupabase(id) {
         var resultado = await supabaseClient
             .from(TABLE)
@@ -580,6 +582,7 @@ async function inicializar() {
         if (document.body) {
             // MutationObserver detecta tarjetas que otros scripts agregan o reemplazan en el DOM.
             // Cuando cambian, volvemos a asignar IDs y clases visuales a los botones de favorito.
+            // Observa cambios del DOM para reconocer botones en tarjetas generadas dinámicamente.
             var observer = new MutationObserver(function () {
                 prepararTarjetasCatalogo();
                 prepararTarjetasHome();
@@ -596,6 +599,7 @@ async function inicializar() {
         if (supabaseClient) {
             // Escucha login/logout y otros cambios de sesión. Al cambiar el usuario, se vuelve a
             // cargar la lista correcta para no mezclar favoritos de cuentas diferentes.
+            // Al entrar o salir de una cuenta, vuelve a seleccionar el conjunto de favoritos correspondiente.
             supabaseClient.auth.onAuthStateChange(async function (event, session) {
                 var nuevoUserId = session && session.user ? session.user.id : null;
                 var actualUserId = currentUser ? currentUser.id : null;
