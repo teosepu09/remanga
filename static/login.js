@@ -34,6 +34,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ===== MENSAJES DE ESTADO =====
     // Centraliza el texto y la clase visual del aviso para evitar repetir ese código.
+    /**
+     * Muestra un aviso dentro de la pantalla de acceso.
+     * - mensaje: texto visible; tipo: clase visual.
+     * - No devuelve valor.
+     */
     function mostrarMensaje(mensaje, tipo = "error") {
         if (!authMessage) return;
         authMessage.textContent = mensaje;
