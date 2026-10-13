@@ -4,7 +4,8 @@
 
 // Inicializa los campos y sus eventos cuando el formulario ya existe en el documento.
 document.addEventListener("DOMContentLoaded", async () => {
-    const form = document.getElementById("registerForm");
+    // Referencia al formulario que agrupa los campos y el evento submit.
+const form = document.getElementById("registerForm");
     const usernameInput = document.getElementById("username");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
