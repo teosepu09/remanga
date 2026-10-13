@@ -1,30 +1,130 @@
+<!-- DOCTYPE le indica al navegador que debe interpretar el documento con las reglas estándar de HTML5.
+     No genera contenido visible: define el modo de interpretación del documento. -->
 <!DOCTYPE html>
+<!-- html es la raíz del documento y contiene head y body. lang="es" declara el idioma principal,
+     dato útil para lectores de pantalla, traducción automática y otros programas que procesan el texto. -->
 <html lang="es">
 <head>
-    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Producto | ReManga</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"><link rel="stylesheet" href="static/style.css">
+    <!-- HEAD: contiene información y recursos previos al contenido visible: codificación, título, fuentes y CSS.
+         Aquí se cargan reglas generales más algunas reglas locales para el tamaño de la marca. -->
+<!-- UTF-8 permite representar ñ, tildes y símbolos correctamente. -->
+<meta charset="UTF-8"><!-- Adapta el ancho de la página al ancho real de la pantalla; es fundamental para el diseño móvil. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- Título inicial de la pestaña. JavaScript después lo cambia al nombre concreto del manga cargado. -->
+<title>Producto | ReManga</title>
+<!-- Anticipa la conexión con Google Fonts para reducir la espera cuando se soliciten las fuentes. -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><!-- Dominio que distribuye los archivos de fuentes. crossorigin permite realizar esta conexión anticipada. -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><!-- Carga Montserrat y Orbitron con sus variantes de grosor. rel="stylesheet" indica que el recurso es CSS;
+     display=swap permite usar temporalmente una fuente de reserva mientras se descarga la elegida. -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet"><!-- Font Awesome proporciona las clases de iconos usadas abajo: flechas, corazón, carrito y estrellas. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"><!-- CSS general compartido: define el diseño base de la cabecera, el detalle, los botones y el pie. -->
+<link rel="stylesheet" href="static/style.css">
+<!-- Estilos comunes de la marca, que controlan la composición y el tamaño del isotipo junto al logotipo. -->
 <link rel="stylesheet" href="static/brand.css">
+<!-- Estilos locales de producto.html. Ajustan la marca específicamente en la cabecera de esta página;
+     se mantienen aquí sin alterar las reglas generales de las hojas externas. -->
 <style>
 #header .logo .brand-lockup .brand-mark { width: 34px !important; height: 34px !important; max-width: 34px !important; min-width: 34px !important; flex: 0 0 34px !important; }
 #header .logo .brand-lockup .brand-wordmark { width: 112px !important; max-width: 112px !important; height: auto !important; }
 </style>
-</head><body>
-    <!-- DETALLE DEL PRODUCTO: muestra la información de un manga seleccionado y permite controlar la cantidad y añadirlo al carrito. -->
+</head>
+<!-- BODY: contenido visual de la página. Sus id son contratos con JavaScript: si el script busca
+     #productTitle, por ejemplo, ese elemento debe existir para que pueda insertar el título recibido. -->
+<body></head><body>
+    <!-- DETALLE DEL PRODUCTO: plantilla que JavaScript completará a partir del parámetro ?id= de la URL.
+         El HTML contiene la estructura y valores provisionales; no determina por sí mismo qué manga mostrar. -->
 
     <!-- ENCABEZADO: identidad de ReManga, navegación y accesos comunes. -->
-    <header id="header"><div class="logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div>
+    <!-- HEADER compartido. id="header" debe ser único y permite que script.js y CSS localicen esta cabecera. -->
+<header id="header"><!-- Bloque de marca. class="logo" aplica estilos; el enlace interno devuelve al inicio. -->
+<div class="logo"><!-- href define el destino del enlace; brand-lockup dispone las dos piezas de marca juntas;
+     aria-label da al enlace un nombre accesible porque no contiene texto visible. -->
+<a href="index.html" class="brand-lockup" aria-label="ReManga"><!-- Imagen del isotipo. src es la ruta al archivo, alt describe la imagen y brand-mark permite dimensionarla por CSS. -->
+<img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><!-- Logotipo textual por separado: al ser otra imagen, CSS puede ajustar su proporción de forma independiente. -->
+<img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div>
+<!-- nav identifica la navegación principal; ul agrupa los enlaces como lista y li representa cada opción. -->
 <nav><ul><li><a href="index.html">Inicio</a></li><li><a href="catalogo.html" class="active">Catálogo</a></li><li><a href="vender.html">Vender</a></li></ul></nav>
-<div class="header-right"><div class="search-box"><input type="text" id="productSearch" placeholder="Buscar manga..." autocomplete="off"><button type="button" id="productSearchButton" aria-label="Buscar"><i class="fa-solid fa-magnifying-glass"></i></button></div><div class="header-icons"><a href="perfil.html" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-regular fa-user"></i></a><a href="carrito.html" class="cart-icon-container" aria-label="Carrito"><i class="fa-solid fa-cart-shopping"></i><span class="cart-counter" id="cartCounter">0</span></a></div></div></header>
+<!-- Contenedor de acciones en el extremo derecho: búsqueda, cuenta y carrito. -->
+<div class="header-right"><!-- BUSCADOR DE CABECERA:
+     productSearch y productSearchButton identifican el campo y el botón en esta página.
+     input.value contiene lo escrito; placeholder es solo la indicación que desaparece al escribir.
+     autocomplete="off" pide al navegador que no sugiera entradas anteriores.
+     Ojo: el buscador global de script.js busca cajas .search-box, pero el HTML usa estos IDs propios. -->
+<div class="search-box"><input type="text" id="productSearch" placeholder="Buscar manga..." autocomplete="off"><button type="button" id="productSearchButton" aria-label="Buscar"><i class="fa-solid fa-magnifying-glass"></i></button></div><!-- Accesos rápidos mediante iconos a cuenta y carrito. -->
+<div class="header-icons"><!-- Enlace al perfil. aria-label y title describen el propósito del icono a tecnologías de asistencia y al pasar el cursor. -->
+<a href="perfil.html" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-regular fa-user"></i></a><!-- El contador se inicia con 0 como valor de reserva. actualizarContadorCarrito() en script.js
+     reemplaza el número según las unidades guardadas en localStorage. La clase permite actualizar contadores
+     de distintas páginas; el id identifica este nodo concreto. -->
+<a href="carrito.html" class="cart-icon-container" aria-label="Carrito"><i class="fa-solid fa-cart-shopping"></i><span class="cart-counter" id="cartCounter">0</span></a></div></div></header>
 
     <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
-    <main class="product-page"><div class="product-container"><a href="catalogo.html" class="back-catalog"><i class="fa-solid fa-arrow-left"></i> Volver al catálogo</a><section class="product-detail" id="productDetail"><div class="product-gallery"><div class="product-main-image"><img id="productImage" src="static/isotipo sin fondo.png" alt="Portada del manga"><span class="product-state new" id="productState">NUEVO</span><button class="product-favorite" id="productFavorite" type="button" aria-label="Agregar a favoritos"><i class="fa-regular fa-heart"></i></button></div></div><div class="product-info"><span class="product-category" id="productCategory">MANGA</span><h1 id="productTitle">Cargando producto...</h1><p class="product-volume" id="productVolume">Tomo -</p><div class="product-rating"><div class="stars" aria-label="Sin valoración"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div><span>Producto disponible</span></div><div class="product-price"><span id="productPrice">$0</span></div><div class="product-availability"><span class="availability-dot"></span><span id="productAvailability">Disponible</span></div><div class="product-divider"></div><p class="product-short-description" id="productShortDescription">Cargando descripción...</p><div class="product-actions"><div class="quantity-selector"><button type="button" id="quantityMinus" aria-label="Disminuir cantidad"><i class="fa-solid fa-minus"></i></button><span id="productQuantity">1</span><button type="button" id="quantityPlus" aria-label="Aumentar cantidad"><i class="fa-solid fa-plus"></i></button></div><button type="button" class="product-cart-button" id="addProductToCart"><i class="fa-solid fa-cart-plus"></i> Agregar al carrito</button></div><button type="button" class="buy-now-button" id="buyNow"><i class="fa-solid fa-bolt"></i> Comprar ahora</button><div class="product-benefits"><div class="product-benefit"><i class="fa-solid fa-shield-halved"></i><div><strong>Compra segura</strong><span>Datos protegidos durante el proceso.</span></div></div><div class="product-benefit"><i class="fa-solid fa-box-open"></i><div><strong>Producto verificado</strong><span>Información tomada de la publicación.</span></div></div><div class="product-benefit"><i class="fa-solid fa-truck-fast"></i><div><strong>Envío</strong><span>Costos y disponibilidad a confirmar.</span></div></div></div></div></section>
-<section class="product-information"><div class="product-description"><h2>Descripción</h2><p id="productDescription">Cargando descripción...</p></div></section>
-<section class="related-products"><div class="section-title"><h2>También te puede interesar</h2><p>Otros mangas disponibles en ReManga.</p></div><div class="related-grid" id="relatedGrid"></div><div id="relatedLoading" style="display:none; text-align:center; padding:30px; color:var(--text-secondary);"><i class="fa-solid fa-spinner fa-spin"></i><p>Cargando productos...</p></div><div id="relatedEmpty" style="display:none; text-align:center; padding:30px; color:var(--text-secondary);"><p>No hay productos relacionados.</p></div></section>
-</div></main>
+    <!-- main señala el contenido principal. product-page aporta el ámbito de estilos CSS para toda esta vista. -->
+<main class="product-page"><!-- Contenedor interior que agrupa navegación de regreso, detalle, descripción y recomendaciones,
+     permitiendo controlar el ancho y la separación general desde CSS. -->
+<div class="product-container"><!-- Enlace estático de regreso al listado. No necesita JavaScript porque el destino siempre es catálogo.html. -->
+<a href="catalogo.html" class="back-catalog"><i class="fa-solid fa-arrow-left"></i> Volver al catálogo</a><!-- RAÍZ DEL DETALLE:
+     id="productDetail" es la señal que iniciarProducto() usa para comprobar que está en esta página.
+     JavaScript también utiliza este contenedor para mostrar errores o cambiar su opacidad durante la carga. -->
+<section class="product-detail" id="productDetail"><!-- Columna visual destinada a la galería/portada del manga. -->
+<div class="product-gallery"><!-- Marco de portada. Contiene imagen, etiqueta del estado y botón de favorito superpuesto. -->
+<div class="product-main-image"><!-- Imagen dinámica: src contiene inicialmente una imagen de reserva.
+     mostrarProducto(producto) reemplazará src usando obtenerRutaImagen(producto.imagen) y cambiará alt
+     al título real. El id debe coincidir exactamente con el selector usado en JavaScript. -->
+<img id="productImage" src="static/isotipo sin fondo.png" alt="Portada del manga"><!-- Etiqueta del estado. NUEVO es texto provisional: JavaScript lo reemplaza por el estado de Supabase
+     y cambia las clases new/used para que CSS aplique el estilo correspondiente. -->
+<span class="product-state new" id="productState">NUEVO</span><!-- Botón del corazón. type=button evita un envío de formulario; el id permite localizarlo en la página.
+     favoritos.js también puede reconocerlo para guardar el estado de favorito asociado al producto. -->
+<button class="product-favorite" id="productFavorite" type="button" aria-label="Agregar a favoritos"><i class="fa-regular fa-heart"></i></button></div></div><!-- Columna de datos y acciones: categoría, nombre, tomo, precio, disponibilidad, descripción y botones. -->
+<div class="product-info"><!-- Categoría textual con valor inicial fijo. mostrarProducto() actualmente la establece como MANGA para cualquier producto. -->
+<span class="product-category" id="productCategory">MANGA</span><!-- h1 es el título principal de la página. El texto inicial informa que faltan datos; JavaScript lo sustituye
+     por producto.titulo cuando termina la consulta. Este id también sirve para cambiar document.title. -->
+<h1 id="productTitle">Cargando producto...</h1><!-- Campo que mostrará el número de tomo recibido desde Supabase. El guion es un marcador provisional. -->
+<p class="product-volume" id="productVolume">Tomo -</p><!-- Bloque visual de valoración. Las cinco estrellas y su texto están escritos como contenido fijo:
+     en este HTML no se cargan valoraciones reales desde la base de datos. -->
+<div class="product-rating"><!-- aria-label intenta describir la fila de estrellas a lectores de pantalla. Las estrellas siguientes son iconos,
+     pero actualmente no representan una puntuación dinámica procedente de Supabase. -->
+<div class="stars" aria-label="Sin valoración"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div><span>Producto disponible</span></div><!-- Precio dinámico. $0 es un valor de reserva hasta que mostrarProducto() llame a formatearPrecio(). -->
+<div class="product-price"><span id="productPrice">$0</span></div><!-- Indicador visual de disponibilidad. El punto usa CSS; no es una consulta de inventario por sí mismo. -->
+<div class="product-availability"><span class="availability-dot"></span><!-- Texto inicial fijo. mostrarProducto() también establece actualmente "Disponible"; la lógica de stock real
+     o de marcar publicaciones agotadas no está implementada en este bloque. -->
+<span id="productAvailability">Disponible</span></div><div class="product-divider"></div><!-- Resumen corto de la descripción. Arranca con texto provisional y JavaScript lo reemplaza con la columna descripcion
+     o con un mensaje alternativo si el campo llega vacío. -->
+<p class="product-short-description" id="productShortDescription">Cargando descripción...</p><!-- Agrupa el selector de cantidad y la acción para agregar al carrito. -->
+<div class="product-actions"><!-- Selector de cantidad. El HTML muestra el número, pero el estado numérico real se mantiene en una variable
+     local de iniciarControlesProducto() dentro de script.js. -->
+<div class="quantity-selector"><!-- El id quantityMinus permite conectar el evento que resta una unidad. JavaScript limita el mínimo a 1. -->
+<button type="button" id="quantityMinus" aria-label="Disminuir cantidad"><i class="fa-solid fa-minus"></i></button><!-- Número visible de unidades. No es un input editable: solo se cambia desde los botones + y -. -->
+<span id="productQuantity">1</span><!-- El id quantityPlus conecta el botón que aumenta la cantidad elegida. -->
+<button type="button" id="quantityPlus" aria-label="Aumentar cantidad"><i class="fa-solid fa-plus"></i></button></div><!-- Añade al carrito el producto cargado y la cantidad elegida. El botón no envía un formulario;
+     script.js actualiza localStorage y muestra una confirmación temporal en el propio botón. -->
+<button type="button" class="product-cart-button" id="addProductToCart"><i class="fa-solid fa-cart-plus"></i> Agregar al carrito</button></div><!-- En este estado, Comprar ahora agrega la selección al carrito y navega a carrito.html.
+     No procesa un pago ni confirma una compra real. -->
+<button type="button" class="buy-now-button" id="buyNow"><i class="fa-solid fa-bolt"></i> Comprar ahora</button><!-- Bloque informativo y visual de beneficios. Son mensajes estáticos para la interfaz, no resultados de verificaciones técnicas. -->
+<div class="product-benefits"><div class="product-benefit"><i class="fa-solid fa-shield-halved"></i><div><strong>Compra segura</strong><span>Datos protegidos durante el proceso.</span></div></div><div class="product-benefit"><i class="fa-solid fa-box-open"></i><div><strong>Producto verificado</strong><span>Información tomada de la publicación.</span></div></div><div class="product-benefit"><i class="fa-solid fa-truck-fast"></i><div><strong>Envío</strong><span>Costos y disponibilidad a confirmar.</span></div></div></div></div></section>
+<!-- Sección separada para la descripción larga del manga, fuera de la columna principal de compra. -->
+<section class="product-information"><div class="product-description"><h2>Descripción</h2><!-- Segunda ubicación de descripción. JavaScript escribe aquí el mismo texto que en el resumen corto. -->
+<p id="productDescription">Cargando descripción...</p></div></section>
+<!-- Recomendaciones: otra consulta de productos rellena estos contenedores después de cargar el detalle principal. -->
+<section class="related-products"><div class="section-title"><h2>También te puede interesar</h2><p>Otros mangas disponibles en ReManga.</p></div><!-- Contenedor vacío para tarjetas relacionadas. mostrarProductosRelacionados() inserta aquí los article creados por JS. -->
+<div class="related-grid" id="relatedGrid"></div><!-- Estado de carga de recomendaciones. Se muestra mientras la consulta está pendiente y luego se oculta en finally. -->
+<div id="relatedLoading" style="display:none; text-align:center; padding:30px; color:var(--text-secondary);"><i class="fa-solid fa-spinner fa-spin"></i><p>Cargando productos...</p></div><!-- Estado vacío/error de recomendaciones. Se muestra si no hay productos para pintar o si ocurre un error en esa carga. -->
+<div id="relatedEmpty" style="display:none; text-align:center; padding:30px; color:var(--text-secondary);"><p>No hay productos relacionados.</p></div></section>
+<!-- Cierre del contenedor que agrupa el detalle. La sección de descripción y las recomendaciones forman parte
+     del mismo main, aunque estén separadas en bloques para su disposición visual. -->
+</div></main></div></main>
 
     <!-- PIE DE PÁGINA: enlaces secundarios, redes e información legal. -->
-    <footer><div class="footer-logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div><div class="footer-links"><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a></div><div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div><p>© 2026 ReManga - Todos los derechos reservados.</p></footer>
+    <!-- Pie de página semántico con marca, navegación secundaria y datos de cierre. -->
+<footer><!-- La marca al pie repite el enlace al inicio para que siga disponible después del contenido principal. -->
+<div class="footer-logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div><!-- Enlaces secundarios a páginas locales; href determina el archivo al que navega el navegador. -->
+<div class="footer-links"><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a></div><!-- Estos iconos sociales no están envueltos en enlaces <a>, así que actualmente son decorativos y no abren perfiles. -->
+<div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div><p>© 2026 ReManga - Todos los derechos reservados.</p></footer>
     <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
-    <script src="config.js"></script><script src="static/script.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="static/favoritos.js"></script>
+    <!-- config.js expone la configuración pública de Supabase en window.REMANGA_SUPABASE_CONFIG. -->
+<script src="config.js"></script><!-- script.js contiene los inicializadores del sitio. Registra su trabajo en DOMContentLoaded; este evento
+     se dispara después de que el navegador terminó de procesar los scripts clásicos del documento. -->
+<script src="static/script.js"></script><!-- SDK de Supabase para el navegador. En este documento aparece después de script.js, pero antes de que ocurra
+     DOMContentLoaded; por eso el callback registrado puede encontrar window.supabase si la descarga se completa. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><!-- El módulo de favoritos inicializa sus eventos cuando el DOM está listo. Enlaza el botón #productFavorite
+     con la persistencia local o con la tabla favoritos de Supabase según la sesión. -->
+<script src="static/favoritos.js"></script>
 </body></html>
