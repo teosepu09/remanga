@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="static/brand.css">
 
     <style>
+        /* ===== Ajustes puntuales de la portada: complementan los estilos compartidos de static/style.css. ===== */
         /* El header del index debe mantener el mismo tamaño de marca en Railway y GitHub Pages. */
         #header .logo .brand-lockup .brand-mark {
             width: 34px !important;
@@ -37,6 +38,9 @@
     <script src="config.js"></script>
 
     <script>
+        // ===== PROTECCIÓN DE NAVEGACIÓN SEGÚN LA SESIÓN =====
+        // Revisa si hay una sesión de Supabase o si el visitante eligió entrar como invitado.
+        // Si no se cumple ninguna condición, lo envía a la pantalla de inicio de sesión.
         (async function () {
             const guest = sessionStorage.getItem("remangaGuest") === "true";
             const config = window.REMANGA_SUPABASE_CONFIG;
@@ -51,6 +55,7 @@
                 })
                 : null;
 
+            // Cuando hay cliente disponible, consultamos la sesión actual antes de redirigir.
             if (supabaseClient) {
                 const { data, error } = await supabaseClient.auth.getSession();
 
@@ -60,6 +65,7 @@
                 }
             }
 
+            // La marca de invitado está en sessionStorage y dura durante la sesión del navegador.
             if (guest) return;
 
             window.location.replace("./login.html");
