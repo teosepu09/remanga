@@ -2,7 +2,10 @@
 // ReManga - Mi cuenta
 // =========================================================
 
+// Comprueba la sesión antes de mostrar información privada del usuario.
 document.addEventListener("DOMContentLoaded", async () => {
+    // ===== SESIÓN Y DATOS DE CUENTA =====
+    // El perfil requiere una sesión real; los visitantes invitados vuelven al inicio de sesión.
     const config = window.REMANGA_SUPABASE_CONFIG;
     const usernameElement = document.getElementById("profileUsername");
     const emailElement = document.getElementById("profileEmail");
@@ -51,6 +54,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Mis publicaciones
     // =========================================================
 
+    // ===== PUBLICACIONES DEL USUARIO =====
+    // Filtra en Supabase las publicaciones creadas por la cuenta actual.
     async function cargarMisPublicaciones() {
         if (!supabaseClient || !user) {
             renderizarPublicacionesPerfil([]);
@@ -181,6 +186,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     // =========================================================
+    // Cerrar sesión// =========================================================
     // Cerrar sesión
     // =========================================================
 
