@@ -2,6 +2,7 @@
 // ReManga - Restablecer contraseña
 // =========================================================
 
+// Prepara el formulario y espera a que Supabase procese la sesión de recuperación.
 document.addEventListener("DOMContentLoaded", async () => {
     const form = document.getElementById("resetForm");
     const passwordInput = document.getElementById("password");
@@ -11,6 +12,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const message = document.getElementById("authMessage");
     const submitButton = form?.querySelector(".login-button");
 
+    // ===== CLIENTE Y SESIÓN DE RECUPERACIÓN =====
+    // El enlace del correo contiene información que Supabase utiliza para autorizar el cambio.
     const config = window.REMANGA_SUPABASE_CONFIG;
     const supabaseClient = (config?.enabled && window.supabase && config.url && config.publishableKey)
         ? window.supabase.createClient(config.url, config.publishableKey, {
@@ -22,6 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
         : null;
 
+    // ===== UTILIDADES VISUALES =====
     function mostrarMensaje(texto, tipo = "error") {
         if (!message) return;
         message.textContent = texto;
@@ -57,7 +61,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     let recoveryReady = false;
     let recoveryEventReceived = false;
 
-    // Supabase puede establecer la sesión de recuperación de forma asíncrona
+    // ===== DETECCIÓN DE LA SESIÓN TEMPORAL =====
+    // Supabase puede establecer la sesión de recuperación de forma asíncrona// Supabase puede establecer la sesión de recuperación de forma asíncrona
     // mientras procesa el enlace recibido por correo. Escuchamos el evento
     // PASSWORD_RECOVERY antes de decidir que el enlace no es válido.
     const { data: authListener } = supabaseClient.auth.onAuthStateChange((event, session) => {
@@ -99,6 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
+        // ===== VALIDAR Y GUARDAR LA NUEVA CONTRASEÑA =====
         const password = passwordInput?.value || "";
         const confirm = confirmInput?.value || "";
 
