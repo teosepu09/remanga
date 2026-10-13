@@ -26,12 +26,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         : null;
 
     // ===== UTILIDADES VISUALES =====
+    /**
+     * Muestra el resultado de validar o cambiar la contraseña.
+     * - texto: mensaje; tipo: clase visual.
+     * - No devuelve valor.
+     */
     function mostrarMensaje(texto, tipo = "error") {
         if (!message) return;
         message.textContent = texto;
         message.className = `auth-message ${tipo}`;
     }
 
+    /**
+     * Conecta el botón para mostrar u ocultar el contenido de un campo de contraseña.
+     * - button: botón; input: campo afectado.
+     * - No devuelve valor.
+     */
     function configurarToggle(button, input) {
         if (!button || !input) return;
         button.addEventListener("click", () => {
