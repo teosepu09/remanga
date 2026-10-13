@@ -45,7 +45,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const email = emailInput?.value.trim() || "";
+        // Correo escrito por el usuario: Supabase lo usa para iniciar el flujo de recuperación.
+const email = emailInput?.value.trim() || "";
 
         if (!email || !email.includes("@")) {
             mostrarMensaje("Ingresá un correo electrónico válido.");
@@ -63,7 +64,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Supabase envía el flujo de recuperación al correo. redirectTo define a qué página vuelve
     // el enlace; esa URL también debe estar permitida en la configuración de Auth del proyecto.
-    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    // Solicita el correo de recuperación. redirectTo debe estar permitido en la configuración de URLs de Auth.
+const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
             redirectTo: redirectUrl
         });
 
