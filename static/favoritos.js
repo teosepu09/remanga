@@ -3,6 +3,8 @@
 // Favoritos por cuenta en Supabase + favoritos de invitado en localStorage.
 // =========================================================
 
+// Este módulo se encapsula en una función para no llenar el ámbito global con variables auxiliares.
+// Los favoritos de invitados se guardan localmente; los de una cuenta se sincronizan con Supabase.
 (function () {
     var FAVORITES_PREFIX = "remangaFavorites:";
     var GUEST_KEY = FAVORITES_PREFIX + "guest";
@@ -16,7 +18,8 @@
     var currentUser = null;
     var usingDatabase = false;
 
-    function crearClienteSupabase() {
+    // Prepara un cliente de Supabase solo si la configuración pública está disponible y activada.
+function crearClienteSupabase() {
         var config = window.REMANGA_SUPABASE_CONFIG;
 
         if (!(config && config.enabled && window.supabase && config.url && config.publishableKey)) {
@@ -37,7 +40,8 @@
         }
     }
 
-    async function identificarUsuario() {
+    // Determina si hay una sesión real; esa decisión define si usamos la tabla remota o el almacenamiento local.
+async function identificarUsuario() {
         supabaseClient = crearClienteSupabase();
 
         if (!supabaseClient) {
@@ -69,7 +73,8 @@
         }
     }
 
-    function cargarFavoritosLocales() {
+    // Lee y reconstruye la lista de identificadores guardada en localStorage.
+function cargarFavoritosLocales() {
         try {
             var datos = JSON.parse(localStorage.getItem(favoriteKey) || "[]");
 
@@ -105,7 +110,8 @@
         );
     }
 
-    async function cargarFavoritosDesdeSupabase() {
+    // Consulta los favoritos vinculados al usuario autenticado.
+async function cargarFavoritosDesdeSupabase() {
         if (!usingDatabase || !supabaseClient || !currentUser) {
             cargarFavoritosLocales();
             return;
@@ -135,7 +141,8 @@
         }
     }
 
-    async function migrarFavoritosLocales() {
+    // Si el visitante inicia sesión, intenta trasladar sus favoritos locales a su cuenta.
+async function migrarFavoritosLocales() {
         var locales = obtenerFavoritosLocalesDeUsuario();
 
         if (!locales.length || !currentUser || !supabaseClient) {
@@ -292,7 +299,8 @@
         }
     }
 
-    async function alternarFavorito(id) {
+    // Agrega o quita un producto y después actualiza la interfaz con el estado confirmado.
+async function alternarFavorito(id) {
         var key = String(id);
         var activoAntes = favoriteIds.has(key);
 
@@ -332,7 +340,8 @@
         }
     }
 
-    async function cargarProductos() {
+    // Obtiene los productos necesarios para construir las tarjetas de favoritos.
+async function cargarProductos() {
         if (!supabaseClient) {
             productosCache = [];
             return;
@@ -473,7 +482,8 @@
         if (label) label.textContent = cantidad;
     }
 
-    function renderizarFavoritosPerfil() {
+    // Pinta el bloque de favoritos dentro de la página de perfil.
+function renderizarFavoritosPerfil() {
         var grid = document.getElementById("favoriteProducts");
         var empty = document.getElementById("favoriteEmpty");
 
@@ -500,7 +510,8 @@
         });
     }
 
-    function manejarClickFavorito(event) {
+    // Escucha clics sobre botones de favorito, incluso en tarjetas creadas dinámicamente.
+function manejarClickFavorito(event) {
         var button = event.target.closest(
             ".favorite-button, #productFavorite, .favorite-remove"
         );
@@ -533,7 +544,8 @@
         alternarFavorito(id);
     }
 
-    async function inicializar() {
+    // Punto de arranque: detecta usuario, carga los datos y enlaza los botones existentes.
+async function inicializar() {
         if (initialized) return;
         initialized = true;
 
