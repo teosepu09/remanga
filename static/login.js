@@ -104,7 +104,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const usuarioEl = document.getElementById("usuario");
-            const email = usuarioEl ? usuarioEl.value.trim() : "";
+            // El correo y la contraseña se leen de los controles al enviar; trim quita espacios accidentales del correo.
+const email = usuarioEl ? usuarioEl.value.trim() : "";
             const password = passwordInput ? passwordInput.value : "";
 
             if (!email || !password) {
