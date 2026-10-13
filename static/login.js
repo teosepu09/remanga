@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ===== CLIENTE DE SUPABASE AUTH =====
     // Auth administra la sesión y valida las credenciales; este archivo solo coordina la interfaz.
+    // config.js debe haberse cargado antes que este archivo; publica sus valores en window.
+    // Si falta la configuración o la librería, no se puede iniciar sesión desde esta página.
     const config = window.REMANGA_SUPABASE_CONFIG;
     let supabaseClient = null;
 
@@ -42,7 +44,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (supabaseClient) {
         try {
             const { data, error } = await supabaseClient.auth.getSession();
-            if (error) {
+            // Los errores de autenticación pueden significar credenciales incorrectas, cuenta no confirmada
+    // u otro problema del proveedor. Se muestra un mensaje sin exponer detalles internos sensibles.
+    if (error) {
                 console.error("Error al recuperar la sesión:", error);
             }
             if (data?.session) {
