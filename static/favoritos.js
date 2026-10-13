@@ -21,6 +21,11 @@
     var usingDatabase = false;
 
     // Prepara un cliente de Supabase solo si la configuración pública está disponible y activada.
+/**
+ * Crea el cliente de Supabase solo si la configuración pública y la librería están disponibles.
+ * - No recibe parámetros.
+ * - Cliente reutilizable o null si no se puede conectar.
+ */
 function crearClienteSupabase() {
         var config = window.REMANGA_SUPABASE_CONFIG;
 
@@ -43,6 +48,11 @@ function crearClienteSupabase() {
     }
 
     // Determina si hay una sesión real; esa decisión define si usamos la tabla remota o el almacenamiento local.
+/**
+ * Lee la sesión actual y decide si los favoritos se gestionan para invitado o usuario autenticado.
+ * - No recibe parámetros.
+ * - Actualiza currentUser, favoriteKey y usingDatabase.
+ */
 async function identificarUsuario() {
         supabaseClient = crearClienteSupabase();
 
@@ -78,6 +88,11 @@ async function identificarUsuario() {
     }
 
     // Lee y reconstruye la lista de identificadores guardada en localStorage.
+/**
+ * Lee los IDs desde localStorage y los convierte en un Set para evitar duplicados.
+ * - No recibe parámetros.
+ * - Actualiza favoriteIds.
+ */
 function cargarFavoritosLocales() {
         try {
             var datos = JSON.parse(localStorage.getItem(favoriteKey) || "[]");
@@ -91,6 +106,11 @@ function cargarFavoritosLocales() {
         }
     }
 
+    /**
+     * Recupera los favoritos locales guardados para la cuenta identificada.
+     * - No recibe parámetros.
+     * - Devuelve un array de IDs.
+     */
     function obtenerFavoritosLocalesDeUsuario() {
         if (!currentUser) return [];
 
@@ -107,6 +127,11 @@ function cargarFavoritosLocales() {
         }
     }
 
+    /**
+     * Serializa favoriteIds a JSON y lo guarda en la clave local activa.
+     * - No recibe parámetros.
+     * - No devuelve valor.
+     */
     function guardarFavoritosLocales() {
         localStorage.setItem(
             favoriteKey,
@@ -115,6 +140,11 @@ function cargarFavoritosLocales() {
     }
 
     // Consulta los favoritos vinculados al usuario autenticado.
+/**
+ * Consulta la tabla favoritos y reconstruye los IDs del usuario actual.
+ * - No recibe parámetros.
+ * - Actualiza favoriteIds o informa un error.
+ */
 async function cargarFavoritosDesdeSupabase() {
         if (!usingDatabase || !supabaseClient || !currentUser) {
             cargarFavoritosLocales();
@@ -148,6 +178,11 @@ async function cargarFavoritosDesdeSupabase() {
     }
 
     // Si el visitante inicia sesión, intenta trasladar sus favoritos locales a su cuenta.
+/**
+ * Importa a la cuenta los favoritos locales válidos cuando el usuario inicia sesión.
+ * - No recibe parámetros.
+ * - Inserta los registros que falten.
+ */
 async function migrarFavoritosLocales() {
         var locales = obtenerFavoritosLocalesDeUsuario();
 
@@ -200,10 +235,20 @@ async function migrarFavoritosLocales() {
         }
     }
 
+    /**
+     * Comprueba si el conjunto actual contiene el ID indicado.
+     * - id: identificador del producto.
+     * - Devuelve true o false.
+     */
     function esFavorito(id) {
         return favoriteIds.has(String(id));
     }
 
+    /**
+     * Actualiza el aspecto y los atributos del botón según si el producto es favorito.
+     * - button: elemento HTML del botón.
+     * - No devuelve valor.
+     */
     function configurarEstadoBoton(button) {
         if (!button) return;
 
@@ -226,12 +271,22 @@ async function migrarFavoritosLocales() {
         }
     }
 
+    /**
+     * Sincroniza todos los botones visibles con el estado de favoriteIds.
+     * - No recibe parámetros.
+     * - No devuelve valor.
+     */
     function actualizarBotonesFavoritos() {
         document
             .querySelectorAll(".favorite-button, #productFavorite")
             .forEach(configurarEstadoBoton);
     }
 
+    /**
+     * Muestra una notificación para comunicar el resultado de una acción.
+     * - texto: mensaje; tipo: categoría visual.
+     * - No devuelve valor.
+     */
     function mostrarAviso(texto, tipo) {
         if (typeof window.mostrarMensaje === "function") {
             window.mostrarMensaje(texto, tipo || "success");
@@ -255,10 +310,20 @@ async function migrarFavoritosLocales() {
         }, 2200);
     }
 
+    /**
+     * Normaliza un precio para mostrarlo en las tarjetas.
+     * - precio: valor de precio.
+     * - Devuelve texto formateado.
+     */
     function obtenerPrecioFormateado(precio) {
         return "$" + (Number(precio) || 0).toLocaleString("es-AR");
     }
 
+    /**
+     * Relaciona una tarjeta visual con un producto comparando título, tomo y precio.
+     * - card: tarjeta HTML que puede no contener el ID real.
+     * - Devuelve el ID o una cadena vacía.
+     */
     function resolverIdDesdeTarjeta(card) {
         if (!card) return null;
 
@@ -285,6 +350,11 @@ async function migrarFavoritosLocales() {
     }
 
     // INSERT en favoritos: user_id y producto_id forman la asociación entre cuenta y manga.
+    /**
+     * Inserta en favoritos la relación entre el usuario y el manga.
+     * - id: ID del manga.
+     * - No devuelve valor.
+     */
     async function agregarFavoritoSupabase(id) {
         var resultado = await supabaseClient
             .from(TABLE)
@@ -299,6 +369,11 @@ async function migrarFavoritosLocales() {
     }
 
     // DELETE solo elimina la fila que coincide con ambos campos; así no se quita el favorito de otra cuenta.
+    /**
+     * Elimina de favoritos la relación del usuario actual con el manga.
+     * - id: ID del manga.
+     * - No devuelve valor.
+     */
     async function eliminarFavoritoSupabase(id) {
         var resultado = await supabaseClient
             .from(TABLE)
@@ -312,6 +387,11 @@ async function migrarFavoritosLocales() {
     }
 
     // Agrega o quita un producto y después actualiza la interfaz con el estado confirmado.
+/**
+ * Agrega o quita el favorito y mantiene sincronizados estado, almacenamiento e interfaz.
+ * - id: ID del producto.
+ * - Actualiza favoriteIds y los botones.
+ */
 async function alternarFavorito(id) {
         var key = String(id);
         var activoAntes = favoriteIds.has(key);
@@ -353,6 +433,11 @@ async function alternarFavorito(id) {
     }
 
     // Obtiene los productos necesarios para construir las tarjetas de favoritos.
+/**
+ * Obtiene de Supabase los productos necesarios para las tarjetas de favoritos.
+ * - No recibe parámetros.
+ * - Actualiza productosCache.
+ */
 async function cargarProductos() {
         if (!supabaseClient) {
             productosCache = [];
@@ -374,6 +459,11 @@ async function cargarProductos() {
         }
     }
 
+    /**
+     * Relaciona las tarjetas del catálogo con sus IDs reales y prepara sus botones.
+     * - No recibe parámetros.
+     * - No devuelve valor.
+     */
     function prepararTarjetasCatalogo() {
         document.querySelectorAll(".catalog-card").forEach(function (card) {
             var id = resolverIdDesdeTarjeta(card);
@@ -386,6 +476,11 @@ async function cargarProductos() {
         });
     }
 
+    /**
+     * Relaciona tarjetas de inicio con productos y prepara sus botones de favorito.
+     * - No recibe parámetros.
+     * - No devuelve valor.
+     */
     function prepararTarjetasHome() {
         document.querySelectorAll(".card").forEach(function (card) {
             var button = card.querySelector(".home-favorite-button, .favorite-button");
@@ -406,6 +501,11 @@ async function cargarProductos() {
         });
     }
 
+    /**
+     * Lee el ID de la URL de detalle y configura el botón de ese manga.
+     * - No recibe parámetros.
+     * - No devuelve valor.
+     */
     function prepararFavoritoProducto() {
         var button = document.getElementById("productFavorite");
         if (!button) return;
@@ -417,6 +517,11 @@ async function cargarProductos() {
         configurarEstadoBoton(button);
     }
 
+    /**
+     * Resuelve el campo imagen a una ruta que el navegador pueda mostrar.
+     * - imagen: URL, ruta local o nombre de Storage.
+     * - Devuelve URL o ruta.
+     */
     function obtenerRutaImagenFavorito(imagen) {
         if (!imagen) {
             return "static/isotipo sin fondo.png";
@@ -443,6 +548,11 @@ async function cargarProductos() {
         return "static/isotipo sin fondo.png";
     }
 
+    /**
+     * Construye una tarjeta de manga para el perfil.
+     * - producto: registro del manga.
+     * - Devuelve un elemento article.
+     */
     function crearTarjetaFavorito(producto) {
         var card = document.createElement("article");
         card.className = "profile-favorite-card";
@@ -486,6 +596,11 @@ async function cargarProductos() {
         return card;
     }
 
+    /**
+     * Actualiza el contador visual de favoritos.
+     * - cantidad: número de favoritos.
+     * - No devuelve valor.
+     */
     function actualizarContadorPerfil(cantidad) {
         var count = document.getElementById("favoriteCount");
         var label = document.getElementById("favoriteCountLabel");
@@ -495,6 +610,11 @@ async function cargarProductos() {
     }
 
     // Pinta el bloque de favoritos dentro de la página de perfil.
+/**
+ * Filtra productosCache con favoriteIds y dibuja los resultados del perfil.
+ * - No recibe parámetros.
+ * - No devuelve valor.
+ */
 function renderizarFavoritosPerfil() {
         var grid = document.getElementById("favoriteProducts");
         var empty = document.getElementById("favoriteEmpty");
@@ -523,6 +643,11 @@ function renderizarFavoritosPerfil() {
     }
 
     // Escucha clics sobre botones de favorito, incluso en tarjetas creadas dinámicamente.
+/**
+ * Identifica el botón que originó el clic delegado y ejecuta la acción correspondiente.
+ * - event: evento de clic del navegador.
+ * - No devuelve valor.
+ */
 function manejarClickFavorito(event) {
         var button = event.target.closest(
             ".favorite-button, #productFavorite, .favorite-remove"
@@ -557,6 +682,11 @@ function manejarClickFavorito(event) {
     }
 
     // Punto de arranque: detecta usuario, carga los datos y enlaza los botones existentes.
+/**
+ * Coordina cliente, sesión, productos, botones y escuchas del módulo.
+ * - No recibe parámetros.
+ * - Configura los listeners y estado inicial.
+ */
 async function inicializar() {
         if (initialized) return;
         initialized = true;
