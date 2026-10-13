@@ -1,29 +1,99 @@
+<!-- DOCTYPE activa el modo estándar HTML5 para que el navegador interprete el marcado con reglas actuales. -->
 <!DOCTYPE html>
+<!-- Elemento raíz del documento. lang="es" declara el idioma principal para lectores de pantalla
+     y otros programas que interpretan o traducen el contenido. -->
 <html lang="es">
 <head>
-    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Carrito | ReManga</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"><link rel="stylesheet" href="static/style.css">
+    <!-- HEAD: define metadatos y recursos visuales antes del contenido. Aquí se cargan fuentes, iconos
+         y las hojas CSS que dan formato a la cabecera, las filas del carrito y el resumen. -->    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
+<!-- UTF-8 permite mostrar correctamente la ñ, las vocales acentuadas y otros símbolos. -->
+<meta charset="UTF-8"><!-- Ajusta el ancho del documento al dispositivo; permite que las media queries adapten el carrito a móviles. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- Título inicial de la pestaña. Es estático porque la página representa al carrito, no a un manga particular. -->
+<title>Carrito | ReManga</title>
+<!-- Anticipa la conexión a Google Fonts para reducir el tiempo de descarga de las fuentes. -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><!-- Dominio que sirve los archivos de fuente; crossorigin permite anticipar esa conexión con la política necesaria. -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><!-- Solicita las fuentes Montserrat y Orbitron con los grosores indicados. rel="stylesheet" marca que el recurso es CSS. -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet"><!-- Font Awesome proporciona los iconos de búsqueda, usuario, carrito, flechas y redes usados en el HTML. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"><!-- Hoja CSS general: incluye estilos compartidos y las reglas principales del carrito. -->
+<link rel="stylesheet" href="static/style.css">
+<!-- Estilos del sistema de marca: controlan el isotipo y el logotipo en la cabecera y el pie. -->
 <link rel="stylesheet" href="static/brand.css">
+<!-- Estilos locales de esta página. Complementan las hojas generales y fijan dimensiones concretas de la marca. -->
 <style>
 #header .logo .brand-lockup .brand-mark { width: 34px !important; height: 34px !important; max-width: 34px !important; min-width: 34px !important; flex: 0 0 34px !important; }
 #header .logo .brand-lockup .brand-wordmark { width: 112px !important; max-width: 112px !important; height: auto !important; }
 </style>
-</head><body>
-    <!-- CARRITO: presenta los artículos guardados, permite cambiar cantidades o quitarlos y calcula el resumen de compra. -->
+</head>
+<!-- BODY: contiene la interfaz que ve el usuario. Los id conectan estas zonas con los selectores de script.js,
+     mientras que las class permiten compartir reglas CSS entre grupos de elementos. -->
+<body></head><body>
+    <!-- CARRITO: muestra el estado guardado en localStorage. El HTML define los contenedores;
+         script.js crea las filas de los productos y calcula los valores del resumen. -->    <!-- CARRITO: presenta los artículos guardados, permite cambiar cantidades o quitarlos y calcula el resumen de compra. -->
 
     <!-- ENCABEZADO: identidad de ReManga, navegación y accesos comunes. -->
-    <header id="header"><div class="logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div>
+    <!-- CABECERA: id="header" permite que el CSS y la función iniciarHeader() encuentren este bloque. -->
+<header id="header"><!-- Bloque de marca. La clase logo da estilo; el enlace devuelve a index.html. -->
+<div class="logo"><!-- href indica el destino del enlace; brand-lockup agrupa las dos imágenes de la marca;
+     aria-label nombra el enlace para tecnologías de asistencia. -->
+<a href="index.html" class="brand-lockup" aria-label="ReManga"><!-- Imagen del isotipo: src localiza el archivo, alt describe su contenido y brand-mark define su tamaño por CSS. -->
+<img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><!-- Logotipo separado del isotipo para que CSS pueda dimensionar cada pieza de manera independiente. -->
+<img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div>
+<!-- nav es la zona semántica de navegación; ul agrupa los destinos en una lista y li representa cada opción. -->
 <nav><ul><li><a href="index.html">Inicio</a></li><li><a href="catalogo.html">Catálogo</a></li><li><a href="vender.html">Vender</a></li></ul></nav>
-<div class="header-right"><div class="search-box"><input type="text" id="cartSearch" placeholder="Buscar manga..."><button type="button" id="cartSearchButton"><i class="fa-solid fa-magnifying-glass"></i></button></div><div class="header-icons"><a href="perfil.html" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-regular fa-user"></i></a><a href="carrito.html" class="cart-icon-container" aria-label="Carrito"><i class="fa-solid fa-cart-shopping"></i><span class="cart-counter" id="cartCounter">0</span></a></div></div></header>
+<!-- Agrupa buscador, cuenta y carrito para alinearlos en el extremo derecho del header. -->
+<div class="header-right"><!-- BUSCADOR DEL CARRITO:
+     cartSearch identifica el campo y cartSearchButton el botón. script.js lee input.value y, si hay texto,
+     navega a catalogo.html?search=...; el carrito no filtra por sí mismo los productos guardados.
+     placeholder es solo una pista visual, y type="button" evita un envío de formulario involuntario. -->
+<div class="search-box"><input type="text" id="cartSearch" placeholder="Buscar manga..."><button type="button" id="cartSearchButton"><i class="fa-solid fa-magnifying-glass"></i></button></div><!-- Acciones rápidas para abrir el perfil o la página del carrito. -->
+<div class="header-icons"><!-- Enlace al perfil; aria-label y title describen la acción aunque visualmente solo haya un icono. -->
+<a href="perfil.html" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-regular fa-user"></i></a><!-- El contador comienza en 0 como texto de reserva. actualizarContadorCarrito() calcula las unidades
+     reales desde localStorage. La clase permite actualizar todos los contadores de la web y el id identifica este nodo. -->
+<a href="carrito.html" class="cart-icon-container" aria-label="Carrito"><i class="fa-solid fa-cart-shopping"></i><span class="cart-counter" id="cartCounter">0</span></a></div></div></header>
 
     <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
-    <main class="cart-page"><div class="cart-container"><div class="cart-heading"><span>REMANGA</span><h1>Tu carrito</h1><p>Revisá tus productos antes de finalizar la compra.</p></div>
-<div class="cart-layout"><section class="cart-products"><div class="cart-products-header"><h2>Productos</h2><span id="cartItemsCount">0 productos</span></div><div class="cart-items" id="cartItems"></div><div class="empty-cart" id="emptyCart"><div class="empty-cart-icon"><i class="fa-solid fa-cart-shopping"></i></div><h2>Tu carrito está vacío</h2><p>Todavía no agregaste ningún manga.</p><a href="catalogo.html" class="btn-primary">Explorar catálogo</a></div><a href="catalogo.html" class="continue-shopping"><i class="fa-solid fa-arrow-left"></i> Continuar comprando</a></section>
-<aside class="cart-summary"><h2>Resumen</h2><div class="summary-line"><span>Productos</span><strong id="summarySubtotal">$0</strong></div><div class="summary-line"><span>Envío</span><strong id="summaryShipping">A calcular</strong></div><div class="summary-divider"></div><div class="summary-total"><span>Total</span><strong id="summaryTotal">$0</strong></div><button type="button" class="checkout-button" id="checkoutButton">Finalizar compra <i class="fa-solid fa-arrow-right"></i></button><div class="checkout-security"><i class="fa-solid fa-shield-halved"></i><span>Compra segura dentro de ReManga</span></div></aside></div></div></main>
+    <!-- main señala el contenido principal de esta página. cart-page delimita el ámbito CSS de los estilos del carrito. -->
+<main class="cart-page"><!-- Contenedor interior que controla el ancho y el espacio general entre encabezado y contenido del carrito. -->
+<div class="cart-container"><!-- Encabezado visual de la página: marca, título y breve explicación del propósito del carrito. -->
+<div class="cart-heading"><span>REMANGA</span><h1>Tu carrito</h1><p>Revisá tus productos antes de finalizar la compra.</p></div>
+<!-- Distribución de dos zonas: lista de productos a la izquierda y resumen de importes a la derecha.
+     CSS puede convertir esta disposición en una columna en pantallas pequeñas. -->
+<div class="cart-layout"><!-- ZONA DE PRODUCTOS: incluye el contador de artículos, las filas generadas y el estado de carrito vacío. -->
+<section class="cart-products"><!-- cartItemsCount es un marcador inicial. renderCarrito() lo reemplaza con el total de unidades
+     incluyendo cantidades (por ejemplo, dos ejemplares de un manga cuentan como dos productos). -->
+<div class="cart-products-header"><h2>Productos</h2><span id="cartItemsCount">0 productos</span></div><!-- CONTENEDOR DINÁMICO DE FILAS:
+     se deja vacío en el HTML. renderCarrito() lee localStorage, crea una fila por cada tipo de manga y la inserta aquí.
+     Los botones +/- y eliminar se generan junto con esas filas; por eso no están escritos individualmente aquí. -->
+<div class="cart-items" id="cartItems"></div><!-- ESTADO VACÍO: este bloque explica qué ocurre si el array del carrito no contiene filas.
+     JavaScript alterna su visibilidad frente a #cartItems para no mostrar una lista vacía como si tuviera productos. -->
+<div class="empty-cart" id="emptyCart"><!-- Contenedor decorativo del icono que representa el carrito vacío. -->
+<div class="empty-cart-icon"><i class="fa-solid fa-cart-shopping"></i></div><h2>Tu carrito está vacío</h2><p>Todavía no agregaste ningún manga.</p><!-- Enlace de acción principal para volver al catálogo y agregar productos; no requiere JavaScript. -->
+<a href="catalogo.html" class="btn-primary">Explorar catálogo</a></div><!-- Acción secundaria de navegación para seguir comprando sin borrar el estado actual del carrito. -->
+<a href="catalogo.html" class="continue-shopping"><i class="fa-solid fa-arrow-left"></i> Continuar comprando</a></section>
+<!-- RESUMEN: panel complementario al listado. Muestra importes y una acción de checkout; no representa todavía
+     una orden real ni un cálculo definitivo de envío. -->
+<aside class="cart-summary"><h2>Resumen</h2><!-- summarySubtotal muestra la suma de precio × cantidad de todas las filas. $0 es un valor inicial,
+     reemplazado por renderCarrito() después de leer el carrito guardado. -->
+<div class="summary-line"><span>Productos</span><strong id="summarySubtotal">$0</strong></div><!-- El envío permanece en "A calcular": todavía no hay una cotización logística ni un costo calculado automáticamente. -->
+<div class="summary-line"><span>Envío</span><strong id="summaryShipping">A calcular</strong></div><!-- Separador visual entre subtotal/envío y el total mostrado debajo. No contiene lógica de cálculo. -->
+<div class="summary-divider"></div><!-- summaryTotal muestra actualmente el subtotal. Como el envío no se calcula aún, no se suma un cargo de envío real. -->
+<div class="summary-total"><span>Total</span><strong id="summaryTotal">$0</strong></div><!-- checkoutButton es detectado por iniciarCarrito(). Hoy solo muestra un aviso de funcionalidad futura;
+     type="button" evita enviar un formulario, ya que aquí no hay un formulario de pago implementado. -->
+<button type="button" class="checkout-button" id="checkoutButton">Finalizar compra <i class="fa-solid fa-arrow-right"></i></button><!-- Mensaje visual de confianza. No significa que exista una pasarela de pago activa ni una transacción segura implementada. -->
+<div class="checkout-security"><i class="fa-solid fa-shield-halved"></i><span>Compra segura dentro de ReManga</span></div></aside></div></div></main>
 
     <!-- PIE DE PÁGINA: enlaces secundarios, redes e información legal. -->
-    <footer><div class="footer-logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div><div class="footer-links"><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a></div><div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div><p>© 2026 ReManga - Todos los derechos reservados.</p></footer>
+    <!-- PIE DE PÁGINA: sección semántica de cierre con marca y enlaces secundarios. -->
+<footer><!-- Segunda aparición de la marca; conserva un enlace al inicio al terminar el contenido principal. -->
+<div class="footer-logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div><!-- Enlaces internos a páginas del sitio. Los href apuntan a documentos HTML locales. -->
+<div class="footer-links"><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a></div><!-- Iconos sociales decorativos; como no están dentro de enlaces a, no navegan a perfiles en esta versión. -->
+<div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div><p>© 2026 ReManga - Todos los derechos reservados.</p></footer>
     <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
-    <script src="config.js"></script><script src="static/script.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="static/favoritos.js"></script>
+    <!-- Publica en window la configuración de Supabase. Esta página usa el carrito local, pero el resto de los módulos
+     comunes también necesitan que la configuración esté disponible cuando corresponda. -->
+<script src="config.js"></script><!-- Script común: inicializa la cabecera, contador, buscador y lógica del carrito al procesarse DOMContentLoaded. -->
+<script src="static/script.js"></script><!-- Carga el SDK JavaScript de Supabase para los módulos que lo requieren. Aunque esta pantalla conserva el carrito
+     en localStorage, script.js también contiene funciones de datos que usan este SDK en otras páginas. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><!-- Módulo común de favoritos. Se carga para que el comportamiento compartido de la web esté disponible. -->
+<script src="static/favoritos.js"></script>
 </body></html>
