@@ -30,14 +30,29 @@ document.addEventListener("DOMContentLoaded", () => {
 // Funciones auxiliares reutilizadas en varias vistas: formato, imágenes, parámetros y mensajes.
 
 
+/**
+ * Convierte el estado recibido a una representación consistente para poder compararlo sin diferencias por mayúsculas o espacios.
+ * - estado: valor de estado recibido desde el producto o el formulario.
+ * - texto normalizado, por ejemplo "nuevo" o "usado".
+ */
 function normalizarEstado(estado) {
     return String(estado || "").trim().toLowerCase();
 }
 
+/**
+ * Convierte un valor numérico en texto con formato de precio argentino.
+ * - precio: precio que se quiere mostrar. Puede llegar como número o como texto numérico.
+ * - cadena con símbolo $ y separadores locales.
+ */
 function formatearPrecio(precio) {
     return `$${(Number(precio) || 0).toLocaleString("es-AR")}`;
 }
 
+/**
+ * Resuelve qué URL debe usar el navegador para mostrar una imagen guardada localmente o en Supabase Storage.
+ * - imagen: URL completa, ruta local, nombre de archivo de Storage o valor vacío.
+ * - URL o ruta lista para asignar a img.src.
+ */
 function obtenerRutaImagen(imagen) {
     // El campo de imagen puede guardar tres formatos: vacío, una URL completa, una ruta local
     // del repositorio o el nombre de un objeto dentro de Supabase Storage.
@@ -63,10 +78,21 @@ function obtenerRutaImagen(imagen) {
     return "static/isotipo sin fondo.png";
 }
 
+/**
+ * Lee un parámetro de la cadena de consulta de la URL actual, por ejemplo ?id=12 o ?search=naruto.
+ * - nombre: nombre exacto del parámetro que se desea leer.
+ * - valor textual del parámetro o null si no existe.
+ */
 function obtenerParam(nombre) {
     return new URLSearchParams(window.location.search).get(nombre);
 }
 
+/**
+ * Crea una notificación temporal en la página y le aplica una clase visual según el tipo.
+ * - texto: mensaje que se mostrará al usuario.
+ * - tipo: clase de estilo, normalmente success o warning.
+ * - No devuelve un valor: modifica el DOM.
+ */
 function mostrarMensaje(texto, tipo = "success") {
     // Se quita el aviso anterior antes de crear otro, para que no se apilen notificaciones.
     // El ?. permite ejecutar remove() solo si el selector encontró un elemento.
@@ -87,6 +113,11 @@ function mostrarMensaje(texto, tipo = "success") {
     }, 3000);
 }
 
+/**
+ * Comprueba de forma básica que una dirección tenga la estructura habitual de un correo.
+ * - email: texto ingresado por el usuario.
+ * - true si coincide con el patrón; false en caso contrario. No verifica que el buzón exista.
+ */
 function validarEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -95,6 +126,11 @@ function validarEmail(email) {
 // Comportamiento compartido de la cabecera; algunas páginas pueden no tener todos sus elementos.
 
 
+/**
+ * Activa el cambio visual de la cabecera cuando el usuario se desplaza por la página.
+ * - No recibe parámetros.
+ * - No devuelve un valor; si la página no tiene #header, termina inmediatamente.
+ */
 function iniciarHeader() {
     const header = document.getElementById("header");
     if (!header) return;
@@ -111,6 +147,11 @@ function iniciarHeader() {
 // Busca desde la cabecera y redirige al catálogo con el texto como parámetro de URL.
 
 
+/**
+ * Conecta los buscadores compartidos para que funcionen con clic o con la tecla Enter.
+ * - No recibe parámetros; localiza los buscadores por la clase .search-box.
+ * - No devuelve un valor; registra eventos en los controles encontrados.
+ */
 function iniciarBuscador() {
     document.querySelectorAll(".search-box").forEach((box) => {
         const input = box.querySelector("input");
@@ -141,6 +182,11 @@ function iniciarBuscador() {
 // Gestiona la interfaz de suscripción del boletín; no confundir con un sistema de mailing externo.
 
 
+/**
+ * Valida el campo del boletín y muestra un mensaje local de confirmación.
+ * - No recibe parámetros; busca .newsletter form en el HTML.
+ * - No devuelve un valor. En este código la suscripción es una confirmación de interfaz: no se envía a un servicio externo.
+ */
 function iniciarNewsletter() {
     const form = document.querySelector(".newsletter form");
     if (!form) return;
@@ -171,6 +217,11 @@ function iniciarNewsletter() {
 // Activa animaciones cuando los elementos entran en pantalla y respeta el soporte del navegador.
 
 
+/**
+ * Prepara elementos visuales para que aparezcan cuando entran en la zona visible de la pantalla.
+ * - No recibe parámetros.
+ * - No devuelve un valor; configura estilos y un IntersectionObserver.
+ */
 function iniciarAnimaciones() {
     const elementos = document.querySelectorAll(
         ".benefit, .action-card, .card, .newsletter"
@@ -213,6 +264,11 @@ function iniciarAnimaciones() {
 let remangaSupabaseClient = null;
 
 // Construye el cliente oficial de Supabase usando la configuración compartida del proyecto.
+/**
+ * Crea una única instancia reutilizable del cliente JavaScript de Supabase para las consultas de productos.
+ * - No recibe parámetros; usa REMANGA_SUPABASE_CONFIG publicada en window por config.js.
+ * - Cliente de Supabase o null si falta la configuración o no se pudo crear.
+ */
 function obtenerClienteSupabaseDatos() {
     // Guardamos el cliente en una variable compartida y lo reutilizamos durante esta carga de página.
     // Evita crear repetidamente clientes con la misma URL y la misma sesión.
@@ -245,6 +301,11 @@ function obtenerClienteSupabaseDatos() {
 const CAMPOS_PRODUCTO = "id,titulo,tomo,precio,estado,descripcion,imagen";
 
 // Lee la colección de productos. El resultado se devuelve al resto del frontend para renderizarlo.
+/**
+ * Consulta los productos de la tabla productos y los ordena por identificador descendente.
+ * - No recibe parámetros.
+ * - Array de productos; lanza un Error si no puede consultar Supabase.
+ */
 async function apiGetProductos() {
     const supabaseClient = obtenerClienteSupabaseDatos();
 
@@ -270,6 +331,11 @@ async function apiGetProductos() {
 }
 
 // Busca un único producto por su identificador, usado en la página de detalle.
+/**
+ * Busca un único producto por su ID para llenar la página de detalle.
+ * - id: identificador del producto obtenido de la URL.
+ * - Objeto producto; lanza un Error si hay un problema o el registro no existe.
+ */
 async function apiGetProducto(id) {
     const supabaseClient = obtenerClienteSupabaseDatos();
 
@@ -302,6 +368,11 @@ async function apiGetProducto(id) {
 // La publicación requiere sesión, carga la imagen a Storage y luego inserta los datos del producto.
 
 
+/**
+ * Lee la sesión que mantiene Supabase Auth para saber si hay una cuenta autenticada.
+ * - No recibe parámetros.
+ * - Sesión actual o null si no se puede leer o no hay sesión.
+ */
 async function obtenerSesionActual() {
     const supabaseClient = obtenerClienteSupabaseDatos();
     if (!supabaseClient) return null;
@@ -315,6 +386,11 @@ async function obtenerSesionActual() {
     }
 }
 
+/**
+ * Construye un nombre de archivo distinto para guardar una imagen sin reemplazar intencionalmente otra.
+ * - archivo: objeto File elegido en el formulario; se utiliza su nombre para extraer la extensión.
+ * - Cadena que combina tiempo actual, parte aleatoria y extensión.
+ */
 function nombreImagenUnico(archivo) {
     // split(".") separa el nombre por puntos y pop() toma la última parte como extensión.
     // Sumamos milisegundos actuales y una cadena aleatoria para reducir choques de nombres.
@@ -325,6 +401,11 @@ function nombreImagenUnico(archivo) {
 }
 
 // Sube el archivo seleccionado a Supabase Storage y obtiene la ruta que se guardará con el producto.
+/**
+ * Envía una imagen elegida por el usuario al bucket de Supabase Storage.
+ * - archivo: objeto File, no una URL ni el nombre de archivo.
+ * - Nombre del objeto almacenado; lanza un Error si la carga falla.
+ */
 async function subirImagenProducto(archivo) {
     const supabaseClient = obtenerClienteSupabaseDatos();
     const config = window.REMANGA_SUPABASE_CONFIG;
@@ -354,6 +435,11 @@ async function subirImagenProducto(archivo) {
 }
 
 // Comprueba la sesión, prepara la imagen si existe e inserta el producto en la tabla correspondiente.
+/**
+ * Valida que haya sesión, sube una imagen si corresponde y crea el registro del manga en productos.
+ * - producto: objeto con titulo, tomo, precio, estado, descripcion e imagen (File opcional).
+ * - Registro insertado devuelto por Supabase; lanza un Error si falta sesión, falla Storage o falla la inserción.
+ */
 async function apiCrearProducto(producto) {
     const supabaseClient = obtenerClienteSupabaseDatos();
 
@@ -412,6 +498,11 @@ async function apiCrearProducto(producto) {
 // El carrito se conserva en localStorage del navegador; aquí no depende de una API Flask ni de Supabase.
 
 
+/**
+ * Copia el carrito de la clave de almacenamiento antigua a la clave actual, sin sobrescribir la nueva.
+ * - No recibe parámetros.
+ * - No devuelve un valor; se ejecuta como compatibilidad con versiones previas.
+ */
 function migrarCarritoAntiguo() {
     // Migración de compatibilidad: si ya existe la clave nueva, no se pisa con datos antiguos.
     // Solo se busca "remanga_carrito" cuando la clave actual todavía no existe.
@@ -433,6 +524,11 @@ function migrarCarritoAntiguo() {
 }
 
 // Convierte el texto JSON del almacenamiento local en un array utilizable por JavaScript.
+/**
+ * Lee el carrito persistido y lo convierte desde JSON a un array.
+ * - No recibe parámetros.
+ * - Array de líneas del carrito; devuelve [] si no hay datos válidos.
+ */
 function obtenerCarrito() {
     migrarCarritoAntiguo();
     const datos = localStorage.getItem(CART_KEY);
@@ -448,10 +544,20 @@ function obtenerCarrito() {
 }
 
 // Serializa el array del carrito para poder recuperarlo cuando el usuario cambie de página.
+/**
+ * Persiste el array del carrito en localStorage, convirtiéndolo primero a JSON.
+ * - carrito: array de productos y cantidades que se debe guardar.
+ * - No devuelve un valor.
+ */
 function guardarCarrito(carrito) {
     localStorage.setItem(CART_KEY, JSON.stringify(carrito));
 }
 
+/**
+ * Suma las unidades de todos los renglones del carrito.
+ * - carrito: array cuyos elementos tienen quantity.
+ * - Número total de unidades; no es la cantidad de tipos distintos de manga.
+ */
 function cantidadTotalCarrito(carrito) {
     // reduce recorre cada fila y acumula las unidades. Ejemplo: cantidades 2 + 1 + 3 = 6.
     // El 0 del final es el valor inicial del acumulador "total".
@@ -461,6 +567,11 @@ function cantidadTotalCarrito(carrito) {
     );
 }
 
+/**
+ * Refleja el total de unidades en todos los contadores visibles del carrito.
+ * - No recibe parámetros; lee el carrito almacenado.
+ * - No devuelve un valor; actualiza texto y visibilidad de los contadores.
+ */
 function actualizarContadorCarrito() {
     const contadores = document.querySelectorAll(".cart-counter");
     if (!contadores.length) return;
@@ -472,6 +583,12 @@ function actualizarContadorCarrito() {
     });
 }
 
+/**
+ * Añade un manga al carrito o suma unidades si ese ID ya estaba presente.
+ * - producto: datos del manga, que se normalizan a un formato común.
+ * - cantidad: unidades a añadir; por defecto 1.
+ * - No devuelve un valor; guarda el carrito y refresca su contador.
+ */
 function agregarProductoAlCarrito(producto, cantidad = 1) {
     const carrito = obtenerCarrito();
     const id = Number(producto.id);
@@ -510,6 +627,11 @@ function agregarProductoAlCarrito(producto, cantidad = 1) {
 // Obtiene y dibuja los productos destacados de la página de inicio.
 
 
+/**
+ * Carga los productos para la portada si existe el contenedor específico de la página de inicio.
+ * - No recibe parámetros.
+ * - No devuelve un valor; maneja la carga, los errores y la representación de tarjetas.
+ */
 async function iniciarHome() {
 
     const cardsContainer =
@@ -557,6 +679,11 @@ async function iniciarHome() {
    MOSTRAR PRODUCTOS EN HOME
    ========================================================= */
 
+   /**
+    * Reemplaza el contenido del contenedor de inicio por tarjetas creadas para los productos recibidos.
+    * - productos: array de registros de productos.
+    * - No devuelve un valor; modifica el DOM.
+    */
    function mostrarProductosHome(productos) {
 
     const cardsContainer =
@@ -592,6 +719,11 @@ async function iniciarHome() {
    CREAR CARD DE HOME
    ========================================================= */
 
+   /**
+    * Construye una tarjeta visual para un manga de la página de inicio y conecta sus acciones.
+    * - producto: objeto con los datos del manga que se mostrarán.
+    * - Elemento HTML article ya preparado para insertarse en la página.
+    */
    function crearCardHome(
     producto
 ) {
@@ -755,6 +887,11 @@ async function iniciarHome() {
     return card;
 
 }
+/**
+ * Activa los controles de desplazamiento de la sección de recomendados cuando existe ese carrusel.
+ * - No recibe parámetros.
+ * - No devuelve un valor; asocia los botones anterior y siguiente con el contenedor desplazable.
+ */
 function iniciarCarruselRecomendados() {
 
     const carousel =
@@ -790,6 +927,11 @@ function iniciarCarruselRecomendados() {
        CANTIDAD DE DESPLAZAMIENTO
        ===================================================== */
 
+    /**
+     * Calcula cuánto debe avanzar el carrusel tomando como referencia el ancho de una tarjeta y su separación.
+     * - No recibe parámetros; consulta el primer elemento de tarjeta y el espacio entre tarjetas.
+     * - Cantidad de píxeles que debe desplazarse el carrusel.
+     */
     function obtenerDesplazamiento() {
 
         const card =
@@ -871,6 +1013,11 @@ function iniciarCarruselRecomendados() {
 
 let productosCatalogo = [];
 
+/**
+ * Carga una vez los productos del catálogo y conecta los filtros y el ordenamiento de resultados.
+ * - No recibe parámetros; busca #catalogGrid para identificar la página de catálogo.
+ * - No devuelve un valor; actualiza la lista global productosCatalogo y la interfaz.
+ */
 async function iniciarCatalogo() {
     const grid = document.getElementById("catalogGrid");
     if (!grid) return;
@@ -895,6 +1042,11 @@ async function iniciarCatalogo() {
     }
 }
 
+/**
+ * Lee el parámetro search de la URL y lo coloca en los campos de búsqueda del catálogo.
+ * - No recibe parámetros.
+ * - No devuelve un valor; sincroniza los campos al abrir enlaces de búsqueda.
+ */
 function aplicarBusquedaInicialCatalogo() {
     const search = obtenerParam("search");
     if (!search) return;
@@ -905,6 +1057,11 @@ function aplicarBusquedaInicialCatalogo() {
     if (header) header.value = search;
 }
 
+/**
+ * Construye una tarjeta del catálogo con imagen, estado, título, tomo, precio y botones.
+ * - producto: objeto con los datos del manga.
+ * - Elemento article listo para agregarse a la cuadrícula.
+ */
 function crearCardProducto(producto) {
     const article = document.createElement("article");
     article.className = "catalog-card";
@@ -991,6 +1148,11 @@ function crearCardProducto(producto) {
     return article;
 }
 
+/**
+ * Dibuja la lista que se le entrega en la cuadrícula del catálogo.
+ * - productos: array ya filtrado u ordenado.
+ * - No devuelve un valor; vacía el contenedor y agrega una tarjeta por producto.
+ */
 function mostrarProductos(productos) {
     const grid = document.getElementById("catalogGrid");
     if (!grid) return;
@@ -1001,17 +1163,32 @@ function mostrarProductos(productos) {
     });
 }
 
+/**
+ * Lee y normaliza el texto del filtro de búsqueda del catálogo.
+ * - No recibe parámetros.
+ * - Texto en minúsculas y sin espacios externos; cadena vacía si no hay campo.
+ */
 function obtenerTextoBusquedaCatalogo() {
     return (
         document.getElementById("filterSearch")?.value || ""
     ).trim().toLowerCase();
 }
 
+/**
+ * Lee el límite superior del precio configurado en el control deslizante.
+ * - No recibe parámetros.
+ * - Número máximo permitido o Infinity cuando el filtro no existe.
+ */
 function obtenerPrecioMaximoCatalogo() {
     const filtro = document.getElementById("priceFilter");
     return filtro ? Number(filtro.value) : Infinity;
 }
 
+/**
+ * Reúne los estados que el usuario marcó como filtro (nuevo y/o usado).
+ * - No recibe parámetros.
+ * - Array de estados normalizados; [] significa que no se restringe por estado.
+ */
 function obtenerEstadosCatalogo() {
     const estados = [];
     if (document.getElementById("filterNuevo")?.checked) estados.push("nuevo");
@@ -1019,6 +1196,12 @@ function obtenerEstadosCatalogo() {
     return estados;
 }
 
+/**
+ * Ordena una copia de los productos según el orden seleccionado, sin modificar el array original.
+ * - productos: array que se desea ordenar.
+ * - orden: modo seleccionado, como price-low, price-high, name o default.
+ * - Array ordenado.
+ */
 function ordenarProductosCatalogo(productos, orden) {
     // sort modifica el array recibido. El spread [...productos] crea una copia para no alterar
     // productosCatalogo, que se necesita intacto para volver a filtrar desde el conjunto completo.
@@ -1046,6 +1229,11 @@ function ordenarProductosCatalogo(productos, orden) {
 }
 
 // Aplica los criterios elegidos por el usuario al conjunto de productos ya cargados.
+/**
+ * Combina texto, estado y precio; luego ordena y vuelve a dibujar los resultados.
+ * - No recibe parámetros; toma los valores actuales de los controles de la página.
+ * - No devuelve un valor; actualiza tarjetas, contador y aviso sin resultados.
+ */
 function mostrarProductosFiltrados() {
     const texto = obtenerTextoBusquedaCatalogo();
     const maxPrecio = obtenerPrecioMaximoCatalogo();
@@ -1075,6 +1263,11 @@ function mostrarProductosFiltrados() {
     mostrarSinResultados(productos.length);
 }
 
+/**
+ * Sincroniza el buscador lateral con el de cabecera y vuelve a filtrar cuando cambia el texto.
+ * - No recibe parámetros.
+ * - No devuelve un valor; registra listeners si los campos existen.
+ */
 function configurarBusquedaCatalogo() {
     const filtro = document.getElementById("filterSearch");
     const header = document.getElementById("catalogSearch");
@@ -1093,6 +1286,11 @@ function configurarBusquedaCatalogo() {
     button?.addEventListener("click", mostrarProductosFiltrados);
 }
 
+/**
+ * Conecta las casillas de estado para recalcular el catálogo cuando se marcan o desmarcan.
+ * - No recibe parámetros.
+ * - No devuelve un valor.
+ */
 function configurarFiltrosCatalogo() {
     [
         document.getElementById("filterNuevo"),
@@ -1102,6 +1300,11 @@ function configurarFiltrosCatalogo() {
     });
 }
 
+/**
+ * Conecta el control deslizante de precio y actualiza tanto el valor mostrado como los resultados.
+ * - No recibe parámetros.
+ * - No devuelve un valor.
+ */
 function configurarPrecioCatalogo() {
     const filtro = document.getElementById("priceFilter");
     const display = document.getElementById("priceDisplay");
@@ -1113,11 +1316,21 @@ function configurarPrecioCatalogo() {
     });
 }
 
+/**
+ * Hace que cambiar el selector de orden vuelva a mostrar el catálogo ordenado.
+ * - No recibe parámetros.
+ * - No devuelve un valor.
+ */
 function configurarOrdenamientoCatalogo() {
     document.getElementById("sortProducts")
         ?.addEventListener("change", mostrarProductosFiltrados);
 }
 
+/**
+ * Muestra una etiqueta singular o plural con la cantidad de resultados encontrados.
+ * - cantidad: número de tarjetas coincidentes.
+ * - No devuelve un valor; actualiza el texto del contador.
+ */
 function actualizarContadorResultados(cantidad) {
     const contador = document.getElementById("resultsCount");
     if (!contador) return;
@@ -1126,12 +1339,22 @@ function actualizarContadorResultados(cantidad) {
         : `${cantidad} productos encontrados`;
 }
 
+/**
+ * Activa o desactiva el mensaje de búsqueda vacía según la cantidad de resultados.
+ * - cantidad: total de productos filtrados.
+ * - No devuelve un valor.
+ */
 function mostrarSinResultados(cantidad) {
     const mensaje = document.getElementById("noResults");
     if (!mensaje) return;
     mensaje.classList.toggle("show", cantidad === 0);
 }
 
+/**
+ * Restablece los campos de búsqueda, casillas, precio y orden a sus valores iniciales.
+ * - No recibe parámetros.
+ * - No devuelve un valor; vuelve a aplicar los filtros después de resetearlos.
+ */
 function limpiarFiltros() {
     const filtro = document.getElementById("filterSearch");
     const header = document.getElementById("catalogSearch");
@@ -1152,21 +1375,41 @@ function limpiarFiltros() {
     mostrarProductosFiltrados();
 }
 
+/**
+ * Conecta el botón de limpiar filtros con la función que restaura los valores iniciales.
+ * - No recibe parámetros.
+ * - No devuelve un valor.
+ */
 function configurarLimpiarFiltros() {
     document.getElementById("clearFilters")
         ?.addEventListener("click", limpiarFiltros);
 }
 
+/**
+ * Conecta el botón de reiniciar búsqueda con la misma función de limpieza de filtros.
+ * - No recibe parámetros.
+ * - No devuelve un valor.
+ */
 function configurarResetResultados() {
     document.getElementById("resetSearch")
         ?.addEventListener("click", limpiarFiltros);
 }
 
+/**
+ * Muestra u oculta el indicador de carga del catálogo.
+ * - mostrar: booleano; true muestra el indicador y false lo oculta.
+ * - No devuelve un valor.
+ */
 function mostrarCargaCatalogo(mostrar) {
     const loading = document.getElementById("catalogLoading");
     if (loading) loading.style.display = mostrar ? "flex" : "none";
 }
 
+/**
+ * Limpia la cuadrícula y cambia el mensaje de estado cuando no se pueden cargar los productos.
+ * - No recibe parámetros.
+ * - No devuelve un valor.
+ */
 function mostrarErrorCatalogo() {
     const grid = document.getElementById("catalogGrid");
     const noResults = document.getElementById("noResults");
@@ -1187,6 +1430,11 @@ function mostrarErrorCatalogo() {
 // Lee el identificador del producto desde la URL y prepara la vista de detalle y productos relacionados.
 
 
+/**
+ * Valida el parámetro id de la URL, obtiene el producto y carga sus productos relacionados.
+ * - No recibe parámetros.
+ * - No devuelve un valor; muestra carga o error según el resultado.
+ */
 async function iniciarProducto() {
     // Este inicializador corre en cualquier página, pero solo sigue si existe el contenedor del detalle.
     // El identificador de la URL indica a Supabase qué producto debe devolver.
@@ -1218,6 +1466,11 @@ async function iniciarProducto() {
     }
 }
 
+/**
+ * Copia los datos del producto recibido a los campos de la página de detalle.
+ * - producto: objeto devuelto por Supabase.
+ * - No devuelve un valor; actualiza texto, imagen, estado y título del documento.
+ */
 function mostrarProducto(producto) {
     const image = document.getElementById("productImage");
     const title = document.getElementById("productTitle");
@@ -1252,6 +1505,11 @@ function mostrarProducto(producto) {
     document.title = `${producto.titulo || "Producto"} | ReManga`;
 }
 
+/**
+ * Conecta cantidad, agregar al carrito, comprar ahora y el botón de favorito del detalle.
+ * - producto: producto que se está mostrando.
+ * - No devuelve un valor; registra los eventos de los botones.
+ */
 function iniciarControlesProducto(producto) {
     const quantity = { value: 1 };
     const display = document.getElementById("productQuantity");
@@ -1298,6 +1556,11 @@ function iniciarControlesProducto(producto) {
     });
 }
 
+/**
+ * Obtiene otros productos para la sección de recomendaciones del detalle.
+ * - productoActualId: ID del manga abierto, que debe excluirse de la lista.
+ * - No devuelve un valor; administra el estado de carga y representa resultados.
+ */
 async function cargarProductosRelacionados(productoActualId) {
     const grid = document.getElementById("relatedGrid");
     const loading = document.getElementById("relatedLoading");
@@ -1325,6 +1588,11 @@ async function cargarProductosRelacionados(productoActualId) {
     }
 }
 
+/**
+ * Dibuja las tarjetas recibidas en la cuadrícula de recomendados.
+ * - productos: array de productos relacionados.
+ * - No devuelve un valor.
+ */
 function mostrarProductosRelacionados(productos) {
     const grid = document.getElementById("relatedGrid");
     const empty = document.getElementById("relatedEmpty");
@@ -1343,6 +1611,11 @@ function mostrarProductosRelacionados(productos) {
     });
 }
 
+/**
+ * Construye la tarjeta para un producto recomendado en la página de detalle.
+ * - producto: objeto del manga recomendado.
+ * - Elemento HTML article con evento de navegación al detalle.
+ */
 function crearCardRelacionado(producto) {
     const card = document.createElement("article");
     card.className = "related-card";
@@ -1381,11 +1654,21 @@ function crearCardRelacionado(producto) {
     return card;
 }
 
+/**
+ * Atenúa u oculta visualmente el estado de carga del detalle.
+ * - mostrar: booleano que indica si está cargando.
+ * - No devuelve un valor.
+ */
 function mostrarCargaProducto(mostrar) {
     const detail = document.getElementById("productDetail");
     if (detail) detail.style.opacity = mostrar ? "0.5" : "1";
 }
 
+/**
+ * Sustituye el detalle por un aviso de error y un enlace para volver al catálogo.
+ * - mensaje: descripción del problema que se mostrará.
+ * - No devuelve un valor.
+ */
 function mostrarErrorProducto(mensaje) {
     const detail = document.getElementById("productDetail");
     if (!detail) return;
@@ -1404,6 +1687,11 @@ function mostrarErrorProducto(mensaje) {
 // Presenta el contenido guardado en localStorage y conecta los controles de cantidad y eliminación.
 
 
+/**
+ * Inicia el renderizado del carrito y conecta sus acciones generales y buscador.
+ * - No recibe parámetros.
+ * - No devuelve un valor; solo actúa cuando existe el contenedor del carrito.
+ */
 function iniciarCarrito() {
     const cartItems = document.getElementById("cartItems");
     if (!cartItems) return;
@@ -1434,6 +1722,11 @@ function iniciarCarrito() {
     });
 }
 
+/**
+ * Lee el carrito guardado, decide si mostrar el estado vacío y calcula cantidades y subtotales.
+ * - No recibe parámetros.
+ * - No devuelve un valor; reescribe la interfaz y vuelve a enlazar los botones.
+ */
 function renderCarrito() {
     const container = document.getElementById("cartItems");
     if (!container) return;
@@ -1487,6 +1780,12 @@ function renderCarrito() {
     configurarBotonesCarritoPagina();
 }
 
+/**
+ * Genera el HTML de una fila del carrito con controles de cantidad y eliminar.
+ * - item: objeto normalizado guardado en el carrito.
+ * - index: posición de la fila en el array, usada para identificarla al hacer clic.
+ * - Cadena HTML de una fila.
+ */
 function crearItemCarrito(item, index) {
     const precio = Number(item.price) || 0;
     const cantidad = Number(item.quantity) || 1;
@@ -1515,6 +1814,11 @@ function crearItemCarrito(item, index) {
     `;
 }
 
+/**
+ * Conecta los botones de aumentar, disminuir y eliminar de las filas actuales.
+ * - No recibe parámetros.
+ * - No devuelve un valor; al cambiar una fila guarda y redibuja el carrito.
+ */
 function configurarBotonesCarritoPagina() {
     // renderCarrito reemplaza las tarjetas al cambiar cantidades; por eso los botones nuevos necesitan
     // que sus eventos se conecten otra vez después de cada representación.
@@ -1557,6 +1861,11 @@ function configurarBotonesCarritoPagina() {
 // Sincroniza la vista previa del formulario y valida los campos antes de enviar la publicación a Supabase.
 
 
+/**
+ * Conecta el formulario para vender, sincroniza su vista previa y valida los datos antes de publicarlos.
+ * - No recibe parámetros; localiza los campos mediante sus ID HTML.
+ * - No devuelve un valor; registra eventos de entrada y envío.
+ */
 function iniciarVender() {
     const form = document.getElementById("sellForm");
     if (!form) return;
