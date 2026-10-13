@@ -1,13 +1,17 @@
+/* ReManga - estilos para páginas informativas (compras, envíos y precios). Organiza la portada informativa, las tarjetas, pasos, preguntas frecuentes y su adaptación responsive. */
+
 /* =========================================================
    REMANGA — PÁGINAS INFORMATIVAS
    Estilos compartidos para envíos, precios y compra
    ========================================================= */
 
+/* ===== CONTENEDOR GENERAL DE LA PÁGINA INFORMATIVA ===== */
 .info-page {
     padding-top: 82px;
     min-height: 100vh;
 }
 
+/* ===== ENCABEZADO VISUAL DE LA PÁGINA ===== */
 .info-hero {
     width: 90%;
     max-width: 1180px;
@@ -96,6 +100,7 @@
     color: var(--accent);
 }
 
+/* ===== CONTENIDO, SECCIONES, TARJETAS Y PASOS ===== */
 .info-content {
     width: 90%;
     max-width: 1180px;
@@ -213,6 +218,7 @@
     line-height: 1.7;
 }
 
+/* ===== PREGUNTAS FRECUENTES DESPLEGABLES ===== */
 .info-faq {
     display: grid;
     gap: 10px;
@@ -266,6 +272,7 @@
     gap: 9px;
 }
 
+/* ===== ADAPTACIÓN A TABLETS ===== */
 @media (max-width: 900px) {
     .info-hero {
         margin-top: 45px;
@@ -277,6 +284,7 @@
     }
 }
 
+/* ===== ADAPTACIÓN A MÓVILES ===== */
 @media (max-width: 600px) {
     .info-page {
         padding-top: 70px;
