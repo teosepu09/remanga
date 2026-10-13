@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Comunidad | ReManga</title>
@@ -23,14 +24,19 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background:rad
 </style>
 </head>
 <body>
-<header class="header">
+    <!-- COMUNIDAD: interfaz para explorar y filtrar comunidades o espacios de conversación de ReManga. -->
+
+    <!-- ENCABEZADO: identidad de ReManga, navegación y accesos comunes. -->
+    <header class="header">
 <a class="logo" href="index.html">RE<span>MANGA</span></a>
 <nav class="nav" aria-label="Navegación principal">
 <a href="index.html">Inicio</a><a href="#">Catálogo</a><a href="#">Vender</a><a href="comunidad.html" class="active">Comunidad</a>
 </nav>
 <div class="search"><input type="search" placeholder="Buscar manga..." aria-label="Buscar manga"></div>
 </header>
-<main class="page">
+
+    <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
+    <main class="page">
 <section class="intro">
 <div class="eyebrow">Comunidad ReManga</div>
 <h1>Encontrá tu comunidad.</h1>
@@ -53,7 +59,8 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background:rad
 </section>
 </section>
 </main>
-<script>
+    <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
+    <script>
 const communities=[
  {name:"Naruto",count:128},{name:"One Piece",count:96},{name:"Jujutsu Kaisen",count:74},{name:"Berserk",count:51},{name:"Dragon Ball",count:43}
 ];
