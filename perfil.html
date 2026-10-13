@@ -1,82 +1,156 @@
+<!-- DOCTYPE activa el modo estándar HTML5 del navegador. No produce contenido visible: determina cómo
+     se interpreta el resto del documento. -->
 <!DOCTYPE html>
+<!-- Elemento raíz del documento. lang="es" declara el idioma principal para lectores de pantalla,
+     traducción automática y herramientas que procesan este contenido. -->
 <html lang="es">
 <head>
-    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
+    <!-- HEAD: contiene metadatos, título de la pestaña, fuentes, CSS y librerías que deben cargarse
+         antes de que la página pueda utilizar funciones de autenticación o aplicar su diseño. -->    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
+<!-- UTF-8 permite mostrar correctamente ñ, tildes y símbolos. -->
 <meta charset="UTF-8">
+<!-- Adapta la página al ancho real del dispositivo y permite que el diseño CSS responda en móviles. -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Título de la pestaña y nombre de esta vista en el navegador. -->
 <title>Mi cuenta | ReManga</title>
+<!-- Anticipa la conexión con Google Fonts antes de solicitar los archivos de fuente. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- Dominio que entrega los archivos de fuentes; crossorigin habilita la conexión anticipada requerida. -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Descarga Montserrat en los grosores indicados. rel="stylesheet" identifica el recurso como hoja CSS;
+     display=swap permite mostrar una fuente de reserva mientras se carga la elegida. -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Librería de iconos utilizada para usuario, favoritos, tienda, compras y acciones de cuenta. -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<!-- Estilos generales compartidos por el sitio: cabecera, enlaces, botones y pie de página. -->
 <link rel="stylesheet" href="static/style.css">
+<!-- Estilos del sistema visual de marca: dimensiones y alineación del isotipo y logotipo. -->
 <link rel="stylesheet" href="static/brand.css">
+<!-- Hoja especializada para la página de perfil: tarjeta del usuario, paneles, grillas y estados vacíos. -->
 <link rel="stylesheet" href="static/perfil.css">
+<!-- SDK oficial de Supabase para el navegador. Se carga antes de config.js y antes de los scripts de perfil/favoritos
+     para que puedan utilizar window.supabase cuando se inicialicen. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Define window.REMANGA_SUPABASE_CONFIG, que indica al frontend qué proyecto y bucket públicos utilizar.
+     El orden importa: los scripts posteriores leen esa configuración compartida. -->
 <script src="config.js"></script>
+<!-- Ajustes locales que complementan el CSS externo y fijan el tamaño de la marca en la cabecera de esta página. -->
 <style>
 #header .logo .brand-lockup .brand-mark { width: 34px !important; height: 34px !important; max-width: 34px !important; min-width: 34px !important; flex: 0 0 34px !important; }
 #header .logo .brand-lockup .brand-wordmark { width: 112px !important; max-width: 112px !important; height: auto !important; }
 </style>
 </head>
+<!-- BODY contiene lo que el usuario ve. Las clases conectan cada bloque con CSS; los id permiten que
+     perfil.js y favoritos.js localicen elementos concretos para rellenarlos con datos reales. -->
 <body>
-    <!-- PERFIL: muestra información de la cuenta y las publicaciones o favoritos asociados al usuario. -->
+    <!-- PERFIL: combina datos de la sesión, publicaciones propias y favoritos. El HTML define contenedores;
+         los scripts los rellenan consultando Supabase Auth, la tabla de productos y los datos de favoritos. -->    <!-- PERFIL: muestra información de la cuenta y las publicaciones o favoritos asociados al usuario. -->
 
     <!-- ENCABEZADO: identidad de ReManga, navegación y accesos comunes. -->
-    <header id="header">
-<div class="logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div>
+    <!-- CABECERA compartida. El id header permite a estilos y funciones comunes identificar este elemento. -->
+<header id="header">
+<!-- Enlace de marca al inicio. brand-lockup agrupa las dos imágenes y aria-label da un nombre accesible
+     al enlace, ya que no tiene texto normal visible. -->
+<div class="logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><!-- Isotipo: src es la ruta del archivo, alt describe la imagen y brand-mark aplica sus reglas de tamaño. -->
+<img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><!-- Logotipo por separado para poder ajustar su ancho independientemente del isotipo. -->
+<img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div>
+<!-- nav identifica la navegación principal; ul agrupa los enlaces en una lista y cada li es una opción. -->
 <nav><ul><li><a href="index.html">Inicio</a></li><li><a href="catalogo.html">Catálogo</a></li><li><a href="vender.html">Vender</a></li></ul></nav>
-<div class="header-right"><div class="header-icons"><a href="perfil.html" class="profile-active" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-solid fa-user"></i></a><a href="carrito.html" class="cart-icon-container" aria-label="Carrito"><i class="fa-solid fa-cart-shopping"></i><span class="cart-counter" id="cartCounter">0</span></a></div></div>
+<div class="header-right"><div class="header-icons"><!-- Enlace a esta misma sección. profile-active es una clase visual para indicar que la cuenta está seleccionada. -->
+<a href="perfil.html" class="profile-active" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-solid fa-user"></i></a><a href="carrito.html" class="cart-icon-container" aria-label="Carrito"><i class="fa-solid fa-cart-shopping"></i><!-- Contador de unidades del carrito. Empieza como marcador 0 y el JavaScript lo actualiza leyendo localStorage. -->
+<span class="cart-counter" id="cartCounter">0</span></a></div></div>
 </header>
 
 
     <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
-    <main class="profile-page">
+    <!-- main define el contenido principal. profile-page delimita el conjunto de reglas CSS de esta vista. -->
+<main class="profile-page">
+<!-- TARJETA DE CUENTA: avatar visual y datos de identidad. No contiene directamente los datos de la cuenta;
+     profile.js utiliza los id de abajo para insertar el usuario y correo de la sesión de Supabase Auth. -->
 <section class="profile-card">
+<!-- Avatar decorativo. aria-hidden="true" indica que el icono se puede omitir del árbol accesible porque
+     la identidad se comunica mediante el nombre y correo que aparecen al lado. -->
 <div class="profile-avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></div>
-<div class="profile-main"><span class="profile-eyebrow">MI CUENTA</span><h1 id="profileUsername">Cargando...</h1><p id="profileEmail">Cargando correo...</p><span class="profile-status"><i class="fa-solid fa-circle-check"></i> Sesión activa</span></div>
+<div class="profile-main"><span class="profile-eyebrow">MI CUENTA</span><!-- Encabezado principal del perfil. Cargando... es texto provisional; perfil.js lo reemplaza con username,
+     name o una parte del correo del usuario autenticado, según los metadatos disponibles. -->
+<h1 id="profileUsername">Cargando...</h1><!-- Marcador del correo. El script obtiene la información de la sesión y actualiza este párrafo dinámicamente. -->
+<p id="profileEmail">Cargando correo...</p><!-- Estado visual escrito directamente en HTML. No es una validación de sesión por sí solo; la sesión real
+     se consulta con Supabase Auth desde perfil.js. -->
+<span class="profile-status"><i class="fa-solid fa-circle-check"></i> Sesión activa</span></div>
 </section>
 
+<!-- PANEL DE ACCESOS: tarjetas que llevan a secciones inferiores del mismo documento mediante href="#...".
+     Son enlaces de navegación interna, no botones que consulten la base de datos por sí mismos. -->
 <section class="profile-dashboard">
-<a class="profile-dashboard-card" href="#favoritesSection"><i class="fa-solid fa-heart"></i><div><strong>Favoritos</strong><span><b id="favoriteCount">0</b> mangas guardados</span></div></a>
+<!-- href="#favoritesSection" desplaza la página hasta el elemento que tiene id="favoritesSection".
+     Las demás tarjetas usan el mismo mecanismo para publicaciones, compras y reseñas. -->
+<a class="profile-dashboard-card" href="#favoritesSection"><i class="fa-solid fa-heart"></i><div><strong>Favoritos</strong><span><!-- Contador de favoritos en el panel de accesos. favoritos.js actualiza este id con la cantidad calculada. -->
+<b id="favoriteCount">0</b> mangas guardados</span></div></a>
 <a class="profile-dashboard-card" href="#publicationsSection"><i class="fa-solid fa-store"></i><div><strong>Mis publicaciones</strong><span>Gestionar tus mangas publicados</span></div></a>
+<!-- Enlace a la sección de compras. Esa zona está marcada como próximamente, así que hoy solo navega al aviso. -->
 <a class="profile-dashboard-card" href="#ordersSection"><i class="fa-solid fa-bag-shopping"></i><div><strong>Mis compras</strong><span>Próximamente</span></div></a>
+<!-- Enlace a la sección de reseñas, también presentada como función futura. -->
 <a class="profile-dashboard-card" href="#reviewsSection"><i class="fa-solid fa-star"></i><div><strong>Mis reseñas</strong><span>Próximamente</span></div></a>
 </section>
 
+<!-- MIS PUBLICACIONES: id publicationsSection es el ancla para el panel de accesos.
+     Esta sección se llena desde perfil.js con productos donde vendedor_id corresponde al usuario actual. -->
 <section class="profile-section" id="publicationsSection">
-<div class="profile-section-heading"><div><span class="profile-eyebrow">EN VENTA</span><h2>Mis publicaciones</h2></div><span class="profile-section-count" id="publicationCount">0</span></div>
+<div class="profile-section-heading"><div><span class="profile-eyebrow">EN VENTA</span><h2>Mis publicaciones</h2></div><!-- Contador de publicaciones propias. Empieza en cero y el script lo actualiza con la cantidad recibida. -->
+<span class="profile-section-count" id="publicationCount">0</span></div>
+<!-- Cuadrícula dinámica. Está vacía en el HTML porque perfil.js crea una tarjeta por cada publicación del usuario. -->
 <div class="profile-products-grid" id="myProductsGrid"></div>
+<!-- Estado vacío para publicaciones: JavaScript muestra u oculta este bloque según haya productos propios para dibujar. -->
 <div class="profile-empty" id="publicationEmpty"><i class="fa-solid fa-store"></i><h3>Todavía no tenés publicaciones</h3><p>Cuando publiques un manga, va a aparecer acá para que puedas consultar tus productos en venta.</p><a href="vender.html">Publicar un manga</a></div>
 </section>
 
+<!-- MIS FAVORITOS: sección a la que llega href="#favoritesSection". favoritos.js reúne los productos marcados
+     y genera sus tarjetas dentro del contenedor correspondiente. -->
 <section class="profile-section" id="favoritesSection">
-<div class="profile-section-heading"><div><span class="profile-eyebrow">GUARDADOS</span><h2>Mis favoritos</h2></div><span class="profile-section-count" id="favoriteCountLabel">0</span></div>
+<div class="profile-section-heading"><div><span class="profile-eyebrow">GUARDADOS</span><h2>Mis favoritos</h2></div><!-- Segundo contador de favoritos, situado en el encabezado de la sección. Se mantiene sincronizado con el del panel. -->
+<span class="profile-section-count" id="favoriteCountLabel">0</span></div>
+<!-- Contenedor en el que favoritos.js insertará tarjetas de los mangas favoritos de la cuenta o invitado actual. -->
 <div class="profile-favorites-grid" id="favoriteProducts"></div>
+<!-- Mensaje que se muestra cuando no existen favoritos para el usuario actual. JS controla su visibilidad. -->
 <div class="profile-empty" id="favoriteEmpty"><i class="fa-regular fa-heart"></i><h3>Todavía no tenés favoritos</h3><p>Guardá los mangas que te interesen desde el catálogo para encontrarlos rápidamente.</p><a href="catalogo.html">Explorar catálogo</a></div>
 </section>
 
+<!-- SECCIÓN FUTURA: el id permite que el enlace de arriba llegue hasta aquí, pero todavía no existe un historial de pedidos real. -->
 <section class="profile-section profile-coming-soon" id="ordersSection">
 <i class="fa-solid fa-bag-shopping"></i><div><span class="profile-eyebrow">PRÓXIMAMENTE</span><h2>Mis compras</h2><p>Acá vamos a mostrar el historial de compras cuando implementemos el proceso de compra.</p></div>
 </section>
 
+<!-- SECCIÓN FUTURA de reseñas. La presentación es estática y todavía no se conecta a una tabla de calificaciones. -->
 <section class="profile-section profile-coming-soon" id="reviewsSection">
 <i class="fa-solid fa-star"></i><div><span class="profile-eyebrow">PRÓXIMAMENTE</span><h2>Mis reseñas</h2><p>Esta sección se conectará con las calificaciones y reseñas dinámicas de los productos.</p></div>
 </section>
 
+<!-- ACCIONES DE CUENTA: explicación, botón de cierre, espacio para mensajes y enlace al inicio. -->
 <section class="profile-actions">
+<!-- Tarjeta informativa. El texto explica el uso de Supabase Auth; no contiene campos de edición del perfil todavía. -->
 <div class="profile-info-card"><i class="fa-solid fa-id-card"></i><div><h2>Cuenta</h2><p>Tu sesión está vinculada a Supabase Auth. Más adelante podremos agregar edición de datos y otras opciones.</p></div></div>
+<!-- logoutBtn conecta con perfil.js, que escucha el clic y solicita cerrar la sesión de Supabase Auth.
+     type="button" evita que actúe como envío de formulario. -->
 <button id="logoutBtn" class="logout-button" type="button"><i class="fa-solid fa-right-from-bracket"></i> CERRAR SESIÓN</button>
+<!-- Región de estado accesible: perfil.js puede escribir aquí errores o confirmaciones; aria-live="polite"
+     pide a lectores de pantalla anunciar cambios sin interrumpir inmediatamente la lectura actual. -->
 <p id="profileMessage" class="profile-message" role="status" aria-live="polite"></p>
+<!-- Enlace de navegación de vuelta al inicio; no requiere JavaScript para funcionar. -->
 <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i> Volver al inicio</a>
 </section>
 </main>
 
 
     <!-- PIE DE PÁGINA: enlaces secundarios, redes e información legal. -->
-    <footer><div class="footer-logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div><div class="footer-links"><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a><a href="carrito.html">Carrito</a></div><p>© 2026 ReManga - Todos los derechos reservados.</p></footer>
+    <!-- PIE DE PÁGINA: marca y enlaces comunes que aparecen después de las secciones del perfil. -->
+<footer><!-- Marca repetida al final del documento para mantener un enlace de regreso a inicio. -->
+<div class="footer-logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div><!-- Navegación secundaria que enlaza con páginas HTML del mismo proyecto. -->
+<div class="footer-links"><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a><a href="carrito.html">Carrito</a></div><p>© 2026 ReManga - Todos los derechos reservados.</p></footer>
     <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
-    <script src="static/favoritos.js"></script>
+    <!-- favoritos.js gestiona la lista de favoritos y sus botones. Se carga primero para registrar su lógica común. -->
+<script src="static/favoritos.js"></script>
+<!-- perfil.js lee la sesión, carga los datos de cuenta/publicaciones y conecta el botón de cerrar sesión.
+     Ambos scripts esperan DOMContentLoaded, por lo que los nodos HTML ya estarán disponibles al inicializarse. -->
 <script src="static/perfil.js"></script>
 </body>
 </html>
