@@ -1,8 +1,11 @@
+/* ReManga - sistema visual de marca. Define el tamaño, alineación y adaptación responsive del isotipo y el logotipo en cabecera, pie y pantallas de autenticación. */
+
 /* =========================================================
    REMANGA — IDENTIDAD VISUAL
    Lockup consistente de isotipo + logotipo
    ========================================================= */
 
+/* ===== MARCA COMBINADA: isotipo y logotipo en una misma fila ===== */
 .brand-lockup {
     display: inline-flex;
     align-items: center;
@@ -42,6 +45,7 @@
     flex: 0 0 auto;
 }
 
+/* ===== ESTADO INTERACTIVO DE LA MARCA EN LA CABECERA ===== */
 #header .logo .brand-lockup:hover img {
     filter: brightness(1.06);
 }
@@ -62,6 +66,7 @@
     max-width: 98px !important;
 }
 
+/* ===== VERSIONES DE MARCA EN EL PIE DE PÁGINA ===== */
 footer .footer-logo {
     display: inline-flex;
     align-items: center;
@@ -84,6 +89,7 @@ footer .footer-logo .brand-wordmark {
     max-width: 108px !important;
 }
 
+/* ===== VERSIÓN DE MARCA PARA LAS PANTALLAS DE AUTENTICACIÓN ===== */
 .login-brand {
     display: inline-flex;
     align-items: center;
@@ -108,6 +114,7 @@ footer .footer-logo .brand-wordmark {
     object-fit: contain;
 }
 
+/* ===== AJUSTES PARA TABLETS ===== */
 @media (max-width: 900px) {
     .brand-lockup {
         gap: 8px;
@@ -159,6 +166,7 @@ footer .footer-logo .brand-wordmark {
     }
 }
 
+/* ===== AJUSTES PARA MÓVILES ===== */
 @media (max-width: 600px) {
     .brand-lockup {
         gap: 7px;
