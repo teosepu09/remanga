@@ -56,7 +56,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const redirectUrl = `${window.location.origin}${window.location.pathname.replace(/recuperar\.html$/, "restablecer.html")}`;
 
-        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+        // Supabase envía el flujo de recuperación al correo. redirectTo define a qué página vuelve
+    // el enlace; esa URL también debe estar permitida en la configuración de Auth del proyecto.
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
             redirectTo: redirectUrl
         });
 
