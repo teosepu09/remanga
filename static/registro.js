@@ -115,7 +115,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        if (error) {
+        // Si Supabase devuelve error, no continuamos como si el usuario ya se hubiera registrado.
+    if (error) {
             const raw = (error.message || "").toLowerCase();
             let mensaje = error.message || "No se pudo crear la cuenta.";
 
