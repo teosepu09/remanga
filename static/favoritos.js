@@ -10,6 +10,8 @@
     var GUEST_KEY = FAVORITES_PREFIX + "guest";
     var TABLE = "favoritos";
 
+    // favoriteKey indica dónde se guarda la lista local según el visitante o usuario autenticado.
+    // Set mantiene IDs únicos: agregar dos veces el mismo ID no duplica el favorito.
     var favoriteKey = GUEST_KEY;
     var favoriteIds = new Set();
     var productosCache = [];
@@ -52,6 +54,8 @@ async function identificarUsuario() {
         }
 
         try {
+            // getSession lee la sesión que el SDK conserva; no valida una contraseña manualmente.
+            // Esperamos la respuesta porque la inicialización depende de saber quién es el usuario.
             var resultado = await supabaseClient.auth.getSession();
             var session = resultado && resultado.data ? resultado.data.session : null;
 
@@ -127,6 +131,8 @@ async function cargarFavoritosDesdeSupabase() {
                 throw resultado.error;
             }
 
+            // La tabla devuelve filas { producto_id: ... }. map extrae cada ID y String normaliza
+            // tipos numéricos/textuales; Set elimina duplicados y permite consultar con .has() rápido.
             favoriteIds = new Set(
                 (resultado.data || []).map(function (row) {
                     return String(row.producto_id);
@@ -149,6 +155,8 @@ async function migrarFavoritosLocales() {
             return;
         }
 
+        // No migramos IDs a ciegas: solo se copian los que todavía existen en productosCache.
+        // Esto evita intentar guardar favoritos de publicaciones borradas.
         var productosValidos = locales.filter(function (id) {
             return productosCache.some(function (producto) {
                 return String(producto.id) === String(id);
@@ -176,6 +184,8 @@ async function migrarFavoritosLocales() {
                     producto_id: productoId
                 });
 
+            // PostgreSQL 23505 significa violación de unicidad: el favorito ya existe.
+            // Ese caso no se trata como fallo de migración; otros errores sí detienen el proceso.
             if (resultado.error && resultado.error.code !== "23505") {
                 huboError = true;
                 console.warn("No se pudo migrar el favorito " + productoId + ":", resultado.error);
@@ -564,9 +574,12 @@ async function inicializar() {
         actualizarBotonesFavoritos();
         renderizarFavoritosPerfil();
 
-        document.addEventListener("click", manejarClickFavorito, true);
+        // Delegación de eventos: un solo listener en document también recibe clics en botones
+        // que se creen más tarde. El true activa la fase de captura, antes de listeners internos.
 
         if (document.body) {
+            // MutationObserver detecta tarjetas que otros scripts agregan o reemplazan en el DOM.
+            // Cuando cambian, volvemos a asignar IDs y clases visuales a los botones de favorito.
             var observer = new MutationObserver(function () {
                 prepararTarjetasCatalogo();
                 prepararTarjetasHome();
@@ -581,6 +594,8 @@ async function inicializar() {
         }
 
         if (supabaseClient) {
+            // Escucha login/logout y otros cambios de sesión. Al cambiar el usuario, se vuelve a
+            // cargar la lista correcta para no mezclar favoritos de cuentas diferentes.
             supabaseClient.auth.onAuthStateChange(async function (event, session) {
                 var nuevoUserId = session && session.user ? session.user.id : null;
                 var actualUserId = currentUser ? currentUser.id : null;
