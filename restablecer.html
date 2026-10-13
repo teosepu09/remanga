@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva contraseña | ReManga</title>
@@ -20,11 +21,14 @@
     </style>
 </head>
 <body>
+    <!-- RESTABLECER CONTRASEÑA: permite definir una contraseña nueva a través de la sesión de recuperación. -->
     <div class="login-background" aria-hidden="true">
         <img class="login-background-image" src="static/fotologin.jpeg" alt="">
         <div class="login-background-glow"></div>
     </div>
 
+    
+    <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
     <main class="login-container">
         <section class="branding">
             <div class="login-brand">
@@ -42,7 +46,9 @@
                 <p>Ingresá tu nueva contraseña.</p>
             </div>
 
-            <form id="resetForm" novalidate>
+            
+    <!-- FORMULARIO DE AUTENTICACIÓN: campos que utiliza el script de esta página. -->
+    <form id="resetForm" novalidate>
                 <div class="input-group">
                     <label for="password">Nueva contraseña</label>
                     <div class="password-container">
@@ -64,6 +70,7 @@
         </section>
     </main>
 
+        <!-- JAVASCRIPT: librería de Supabase, configuración y lógica de esta pantalla. -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="config.js"></script>
     <script src="static/restablecer.js"></script>
