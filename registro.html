@@ -1,92 +1,190 @@
+<!-- DOCTYPE activa el modo estándar HTML5 del navegador. No se muestra en pantalla: define cómo
+     interpretar el documento y evita que el navegador use modos antiguos de compatibilidad. -->
 <!DOCTYPE html>
+<!-- Elemento raíz del documento. lang="es" declara el idioma principal para lectores de pantalla,
+     traducción automática y herramientas que procesan el texto. -->
 <html lang="es">
 <head>
-    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear cuenta | ReManga</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="static/login.css">
-    <link rel="stylesheet" href="static/brand.css">
+    <!-- HEAD reúne información que el navegador necesita antes del contenido visible: codificación,
+         título, fuentes y reglas de estilo. Los campos del registro se encuentran más abajo, dentro de body. -->    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
+    <!-- UTF-8 permite representar correctamente ñ, tildes y otros símbolos del español. -->
+<meta charset="UTF-8">
+    <!-- Indica que el ancho de la página debe seguir al ancho físico de la pantalla. Es clave para que
+     login.css adapte el formulario cuando se abre desde un teléfono. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título de la pestaña del navegador; ayuda a identificar la pantalla abierta. -->
+<title>Crear cuenta | ReManga</title>
+    <!-- Pide al navegador que prepare la conexión a Google Fonts antes de solicitar la hoja con la fuente. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Dominio desde el que se descargan los archivos de fuentes. crossorigin permite iniciar la conexión
+     anticipada con la política que requiere ese recurso externo. -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Descarga Montserrat en varios grosores. rel="stylesheet" declara que el recurso es CSS;
+     display=swap permite mostrar una fuente de reserva mientras se descarga la tipografía seleccionada. -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Estilos compartidos por las pantallas de login y registro: fondo, panel, grupos de inputs y botones. -->
+<link rel="stylesheet" href="static/login.css">
+    <!-- Reglas globales para presentar el isotipo y el logotipo con la misma identidad visual del resto del sitio. -->
+<link rel="stylesheet" href="static/brand.css">
+    <!-- Estilos locales de esta pantalla. Se usan para particularidades del registro sin modificar el CSS común. -->
     <style>
+        /* Mantiene un espacio para los avisos y define tamaño/espaciado del texto. min-height reduce
+           saltos de diseño cuando aparece un mensaje después de pulsar Crear cuenta. */
         .auth-message { min-height: 20px; margin: -4px 0 14px; font-size: 13px; line-height: 1.45; }
+        /* Selector compuesto: solo aplica este color a elementos que tengan las clases auth-message y error. */
         .auth-message.error { color: #ff8b79; }
+        /* Variante visual para confirmaciones exitosas, por ejemplo cuando Supabase acepta el registro. */
         .auth-message.success { color: #68e0a0; }
+        /* Variante informativa, usada mientras se limpia un mensaje previo o se indica un estado neutral. */
         .auth-message.info { color: rgba(255,255,255,.68); }
+        /* :disabled selecciona el botón mientras está deshabilitado. La apariencia indica que se está
+           procesando una operación y evita que parezca listo para recibir otro clic. */
         .login-button:disabled { opacity: .65; cursor: wait; transform: none; }
+        /* El enlace ocupa una línea completa (block) para centrarlo y separarlo del botón principal. */
         .back-login { display:block; margin-top:18px; text-align:center; color:rgba(255,255,255,.62); text-decoration:none; font-size:14px; }
+        /* :hover cambia el color al colocar el cursor sobre el enlace; no modifica su destino ni su función. */
         .back-login:hover { color:white; }
+        /* Nota secundaria: un tamaño menor y un color atenuado la distinguen del mensaje principal del formulario. */
         .register-note { margin-top:8px; color:rgba(255,255,255,.48); font-size:12px; line-height:1.5; text-align:center; }
     </style>
 </head>
+<!-- BODY contiene la interfaz visible. class conecta elementos con CSS; id permite que registro.js encuentre
+     cada campo y le asocie lecturas/eventos sin depender de su posición en el documento. -->
 <body>
-    <!-- REGISTRO: recoge los datos necesarios para crear una cuenta mediante Supabase Auth. -->
-    <div class="login-background" aria-hidden="true">
-        <img class="login-background-image" src="static/fotologin.jpeg" alt="">
-        <div class="login-background-glow"></div>
+    <!-- REGISTRO: solicita los datos iniciales de una cuenta. Este formulario llama a Supabase Auth desde
+         el navegador; no crea una cuenta en Flask ni implica que exista una tabla de perfiles propia. -->    <!-- REGISTRO: recoge los datos necesarios para crear una cuenta mediante Supabase Auth. -->
+    <!-- Fondo decorativo. aria-hidden="true" elimina todo este bloque del árbol accesible porque no contiene
+     información necesaria para completar el registro. -->
+<div class="login-background" aria-hidden="true">
+        <!-- Imagen usada solo como fondo. alt vacío declara que es decorativa para que el lector de pantalla no
+     anuncie una descripción innecesaria. class controla el recorte/tamaño con CSS; src apunta al archivo. -->
+<img class="login-background-image" src="static/fotologin.jpeg" alt="">
+        <!-- Capa sin texto interior: el efecto visual se genera mediante reglas CSS de la clase login-background-glow. -->
+<div class="login-background-glow"></div>
     </div>
 
     
     <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
-    <main class="login-container">
-        <section class="branding">
-            <div class="login-brand">
-                <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="login-brand-mark">
-                <img src="static/logotipo.png" alt="ReManga" class="login-brand-wordmark">
+    <!-- main identifica el contenido principal. login-container reúne la identidad de marca y el panel de registro
+     para poder alinearlos y adaptar su distribución mediante CSS. -->
+<main class="login-container">
+        <!-- Bloque de presentación visual de ReManga, separado del formulario. section agrupa contenido relacionado. -->
+<section class="branding">
+            <!-- Contenedor de las dos piezas gráficas del logo; CSS puede alinearlas como una sola unidad. -->
+<div class="login-brand">
+                <!-- Isotipo: src es la ruta del archivo; alt describe la imagen; login-brand-mark le asigna reglas de tamaño. -->
+<img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="login-brand-mark">
+                <!-- Logotipo escrito en otra imagen. Se mantiene separado para ajustar su ancho sin estirar el isotipo. -->
+<img src="static/logotipo.png" alt="ReManga" class="login-brand-wordmark">
             </div>
-            <p class="slogan">COMPRA <span>•</span> VENDE <span>•</span> DESCUBRÍ</p>
+            <!-- Eslogan estático. Los span contienen separadores visuales entre palabras; no son campos de formulario. -->
+<p class="slogan">COMPRA <span>•</span> VENDE <span>•</span> DESCUBRÍ</p>
             <p class="branding-description">Creá tu cuenta y formá parte de la comunidad ReManga.</p>
         </section>
 
-        <section class="login-panel" aria-labelledby="registerTitle">
+        <!-- PANEL DEL FORMULARIO:
+     aria-labelledby="registerTitle" indica que el título accesible de la sección es el h1 con ese id.
+     Esto mejora la estructura accesible; no afecta a la validación ni al envío. -->
+<section class="login-panel" aria-labelledby="registerTitle">
             <div class="login-header">
-                <div class="user-icon" aria-hidden="true"><span>♙</span></div>
-                <h1 id="registerTitle">Crear cuenta</h1>
+                <!-- Icono decorativo que no necesita anuncio por lector de pantalla porque el h1 ya indica la acción. -->
+<div class="user-icon" aria-hidden="true"><span>♙</span></div>
+                <!-- h1 es el encabezado principal. Su id también es la referencia de aria-labelledby del panel que lo contiene. -->
+<h1 id="registerTitle">Crear cuenta</h1>
                 <p>Unite a ReManga</p>
             </div>
 
             
-    <!-- FORMULARIO DE AUTENTICACIÓN: campos que utiliza el script de esta página. -->
-    <form id="registerForm" novalidate>
+    <!-- FORMULARIO:
+         registerForm es el id que registro.js busca para escuchar submit.
+         novalidate desactiva los avisos automáticos de validación del navegador al intentar enviar; por eso
+         registro.js comprueba explícitamente usuario, correo, longitud de contraseña y coincidencia de contraseñas.
+         Las restricciones minlength/maxlength siguen describiendo el campo, pero el flujo se controla por JS. -->    <!-- FORMULARIO DE AUTENTICACIÓN: campos que utiliza el script de esta página. -->
+    <!-- form agrupa los controles que forman una única operación de registro. id permite encontrarlo desde JS.
+     novalidate deja el control de mensajes al código registro.js en vez de mostrar la validación nativa del navegador. -->
+<form id="registerForm" novalidate>
                 <div class="input-group">
-                    <label for="username">Nombre de usuario</label>
-                    <input type="text" id="username" name="username" placeholder="Elegí tu nombre de usuario" autocomplete="username" minlength="3" maxlength="30" required>
+                    <!-- for enlaza la etiqueta con el input que tiene id="username". Al pulsar la etiqueta se enfoca ese campo. -->
+<label for="username">Nombre de usuario</label>
+                    <!-- NOMBRE DE USUARIO:
+     type="text" permite texto común; id="username" es el selector usado por registro.js; name="username"
+     es el nombre del dato en un envío HTML tradicional. placeholder es una pista, no el valor del campo.
+     autocomplete="username" permite al navegador sugerir nombres guardados.
+     minlength/maxlength declaran un rango de 3 a 30 caracteres; required marca que no debe quedar vacío.
+     Además, registro.js aplica una expresión regular que limita los caracteres permitidos a letras, números,
+     punto, guion y guion bajo. novalidate hace que el control real de los mensajes lo lleve JavaScript. -->
+<input type="text" id="username" name="username" placeholder="Elegí tu nombre de usuario" autocomplete="username" minlength="3" maxlength="30" required>
                 </div>
 
                 <div class="input-group">
-                    <label for="email">Correo electrónico</label>
-                    <input type="email" id="email" name="email" placeholder="Ingresá tu correo electrónico" autocomplete="email" required>
+                    <!-- Esta etiqueta se vincula con el campo id="email" mediante for. -->
+<label for="email">Correo electrónico</label>
+                    <!-- CORREO:
+     type="email" permite al navegador reconocer que se espera una dirección y mostrar un teclado adecuado en móvil.
+     id lo usa registro.js para leer value; name identifica el campo en envíos HTML tradicionales.
+     autocomplete="email" permite sugerir un correo guardado; required marca que es obligatorio.
+     Como el formulario tiene novalidate, el script también comprueba que exista y tenga al menos un @.
+     Esa comprobación es básica: no demuestra que el correo exista ni que el usuario lo controle. -->
+<input type="email" id="email" name="email" placeholder="Ingresá tu correo electrónico" autocomplete="email" required>
                 </div>
 
                 <div class="input-group">
-                    <label for="password">Contraseña</label>
-                    <div class="password-container">
-                        <input type="password" id="password" name="password" placeholder="Creá una contraseña" autocomplete="new-password" minlength="6" required>
-                        <button type="button" id="togglePassword" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
+                    <!-- Vincula la etiqueta al input cuyo id es password; ambos nombres deben coincidir exactamente. -->
+<label for="password">Contraseña</label>
+                    <!-- Agrupa input y botón de mostrar/ocultar para posicionar el botón sobre el campo con CSS. -->
+<div class="password-container">
+                        <!-- CONTRASEÑA:
+     type="password" enmascara los caracteres en pantalla, pero no almacena ni cifra la contraseña por sí mismo.
+     registro.js lee passwordInput.value cuando se envía el formulario.
+     autocomplete="new-password" indica al navegador que se trata de una contraseña nueva, útil para gestores de claves.
+     minlength="6" y required documentan la longitud mínima y que el campo debe completarse.
+     registro.js vuelve a comprobar la longitud antes de llamar a Supabase Auth. -->
+<input type="password" id="password" name="password" placeholder="Creá una contraseña" autocomplete="new-password" minlength="6" required>
+                        <!-- Botón que no envía el formulario porque type="button". registro.js enlaza este id con configurarToggle()
+     para cambiar el input entre password y text. aria-label describe la acción y cambia entre mostrar y ocultar. -->
+<button type="button" id="togglePassword" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <label for="passwordConfirm">Confirmar contraseña</label>
+                    <!-- Etiqueta asociada al segundo campo, que sirve para detectar errores al repetir la contraseña. -->
+<label for="passwordConfirm">Confirmar contraseña</label>
                     <div class="password-container">
-                        <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Repetí tu contraseña" autocomplete="new-password" minlength="6" required>
-                        <button type="button" id="togglePasswordConfirm" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
+                        <!-- CONFIRMACIÓN:
+     Es un segundo campo independiente; registro.js compara su value con el value del campo password.
+     No se envía como contraseña distinta a Supabase: solo sirve para detectar un error de escritura.
+     autocomplete="new-password" ayuda a gestores de contraseñas; minlength/required describen restricciones
+     del campo, y el script vuelve a validarlas porque el formulario usa novalidate. -->
+<input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Repetí tu contraseña" autocomplete="new-password" minlength="6" required>
+                        <!-- Segundo botón de mostrar/ocultar, enlazado al input passwordConfirm. Usa un id propio porque cada botón
+     debe controlar un campo diferente; ambos reutilizan la misma función configurarToggle(button, input). -->
+<button type="button" id="togglePasswordConfirm" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
                     </div>
                 </div>
 
-                <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
-                <button type="submit" class="login-button">CREAR CUENTA</button>
-                <a href="login.html" class="back-login">Ya tengo una cuenta</a>
-                <p class="register-note">Tu contraseña será administrada de forma segura por Supabase Auth.</p>
+                <!-- Espacio inicialmente vacío donde registro.js escribe errores o confirmaciones con textContent.
+     role="status" y aria-live="polite" permiten anunciar el cambio a lectores de pantalla sin interrumpir de golpe. -->
+<p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+                <!-- Botón principal: submit dispara el evento del form. registro.js lo intercepta, valida el contenido,
+     lo deshabilita mientras espera a Supabase y finalmente muestra el resultado. No hace un POST HTML tradicional. -->
+<button type="submit" class="login-button">CREAR CUENTA</button>
+                <!-- Enlace de navegación para volver al login si la persona ya está registrada. No necesita JavaScript especial. -->
+<a href="login.html" class="back-login">Ya tengo una cuenta</a>
+                <!-- Nota informativa estática. La gestión de credenciales se delega a Supabase Auth; no significa que esta nota
+     valide la fortaleza de la contraseña ni que el frontend deba almacenar su contenido. -->
+<p class="register-note">Tu contraseña será administrada de forma segura por Supabase Auth.</p>
             </form>
         </section>
     </main>
 
         <!-- JAVASCRIPT: librería de Supabase, configuración y lógica de esta pantalla. -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
-    <script src="static/registro.js"></script>
+    <!-- SDK de Supabase. Crea window.supabase y debe estar disponible antes de crear el cliente de autenticación. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Publica window.REMANGA_SUPABASE_CONFIG con URL y clave publicable. registro.js lee esta variable global,
+     por eso la configuración se carga antes de la lógica de la página. -->
+<script src="config.js"></script>
+    <!-- Lógica del registro: recoge inputs, configura los dos toggles de contraseña, valida y llama a auth.signUp().
+     Está al final del body para que los elementos ya estén escritos en el DOM cuando se conecten los eventos. -->
+<script src="static/registro.js"></script>
 </body>
 </html>
