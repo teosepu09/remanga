@@ -6,6 +6,23 @@
    ========================================================= */
 
 /* =========================================================
+   MAPA DE LECTURA PARA APRENDER CSS
+   Este archivo es una hoja de estilos compartida y extensa. Está
+   organizado por zonas de la interfaz: base global, inicio, catálogo,
+   detalle de producto, carrito y publicación de productos.
+
+   IMPORTANTE: CSS funciona mediante la cascada. Si un selector aparece
+   más de una vez, no significa necesariamente que sea un error: una
+   regla posterior puede ajustar o reemplazar una propiedad anterior.
+   Para saber el resultado hay que considerar selector, especificidad,
+   orden de aparición y posibles declaraciones !important.
+
+   Los comentarios explican la intención visual; CSS no obtiene productos,
+   valida usuarios ni ejecuta acciones de compra. Ese comportamiento vive
+   en HTML y JavaScript.
+   ========================================================= */
+
+/* =========================================================
    REMANGA
    STYLE.CSS
    Home Page
@@ -17,6 +34,9 @@
    ========================================================= */
 
 /* ===== VARIABLES GLOBALES: colores, sombras, bordes y transiciones ===== */
+/* :root representa el elemento raíz del documento. Las custom properties
+   declaradas aquí se pueden reutilizar en toda la página con var(--nombre).
+   Centralizarlas facilita cambiar la identidad visual sin buscar cada color. */
 :root {
 
     /* Colores principales */
@@ -59,6 +79,9 @@
    2. RESET
    ========================================================= */
 
+/* Reset básico: elimina márgenes/rellenos predeterminados del navegador.
+   box-sizing:border-box hace que width/height incluyan padding y borde,
+   lo que vuelve más predecible calcular tamaños de tarjetas y formularios. */
 * {
     margin: 0;
     padding: 0;
@@ -69,6 +92,9 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Estilos base heredables de casi toda la interfaz. overflow-x:hidden
+   evita que elementos anchos generen desplazamiento horizontal; no debe
+   usarse para ocultar un desbordamiento que convendría corregir. */
 body {
 
     font-family: "Montserrat", sans-serif;
@@ -107,6 +133,9 @@ button {
    ========================================================= */
 
 /* ===== CABECERA: navegación, marca, búsqueda e iconos ===== */
+/* La cabecera permanece pegada a la parte superior incluso al desplazarse.
+   Como sale del flujo normal por position:fixed, el diseño de cada página
+   reserva espacio o ajusta su contenido para que no quede tapado. */
 #header {
 
     position: fixed;
@@ -148,6 +177,9 @@ button {
 
 /* Header cuando hacemos scroll */
 
+/* JavaScript puede añadir/quitar la clase scrolled según el scroll.
+   Esta regla no detecta el desplazamiento por sí sola: solo define cómo
+   cambia la cabecera cuando esa clase está presente. */
 #header.scrolled {
 
     height: 68px;
@@ -174,6 +206,9 @@ button {
 }
 
 /* Lockup de marca: isotipo + logotipo siempre en una sola fila. */
+/* El lockup agrupa isotipo y logotipo. !important fuerza estas decisiones
+   frente a reglas ordinarias que podrían imponer una disposición distinta;
+   conviene reservarlo para casos de conflicto real de la cascada. */
 .logo .brand-lockup {
     display: flex !important;
     flex-direction: row !important;
@@ -227,6 +262,9 @@ button {
    NAVEGACIÓN
    ========================================================= */
 
+/* La navegación ocupa el espacio flexible entre la marca y los controles.
+   flex:1 permite que crezca y que justify-content centre sus enlaces dentro
+   del espacio disponible, sin fijar un ancho rígido. */
 nav {
 
     flex: 1;
@@ -315,6 +353,8 @@ nav ul li a:hover {
         box-shadow var(--transition-fast);
 }
 
+/* :focus-within se activa si el input o cualquier descendiente recibe foco.
+   Así se destaca el buscador completo al escribir, no solamente el campo. */
 .search-box:focus-within {
 
     border-color: rgba(255, 136, 111, 0.6);
@@ -413,6 +453,9 @@ nav ul li a:hover {
    ========================================================= */
 
 /* ===== PORTADA DE INICIO: imagen de fondo, superposición y texto principal ===== */
+/* Sección principal de bienvenida. position:relative crea referencia para
+   capas absolutas como la imagen y el degradado; flex centra el contenido
+   verticalmente sin necesidad de coordenadas rígidas. */
 .hero {
 
     position: relative;
@@ -431,6 +474,9 @@ nav ul li a:hover {
 
 /* Imagen */
 
+/* La imagen decorativa cubre la sección sin ocupar espacio en el flujo.
+   inset:0 equivale a top/right/bottom/left en cero; object-fit:cover llena
+   el marco conservando proporciones, aunque recorte partes de la imagen. */
 .hero-bg {
 
     position: absolute;
@@ -455,6 +501,9 @@ nav ul li a:hover {
 
 /* Oscurecimiento */
 
+/* Capa de degradados sobre la imagen. Los fondos múltiples se pintan en
+   capas: el primer gradiente queda delante del siguiente. Oscurecer la foto
+   aumenta el contraste del texto que se coloca encima. */
 .hero-overlay {
 
     position: absolute;
@@ -483,6 +532,9 @@ nav ul li a:hover {
 
 /* Contenido */
 
+/* El contenido se coloca por encima de la imagen y del overlay mediante
+   z-index. width:min(...) limita el ancho para que el texto no se extienda
+   demasiado en monitores grandes. */
 .hero-content {
 
     position: relative;
@@ -526,6 +578,8 @@ nav ul li a:hover {
 
     font-family: "Orbitron", sans-serif;
 
+    /* clamp(mínimo, valor preferido, máximo): adapta el título al ancho de
+       pantalla sin dejar que sea demasiado pequeño o enorme. */
     font-size: clamp(42px, 5vw, 72px);
 
     font-weight: 700;
@@ -650,6 +704,9 @@ nav ul li a:hover {
    ========================================================= */
 
 /* ===== BLOQUE DE BENEFICIOS ===== */
+/* El bloque de beneficios se superpone un poco a la portada con margen
+   superior negativo. position:relative y z-index lo elevan en el apilamiento;
+   el fondo translúcido y blur crean el efecto de panel de vidrio. */
 .benefits {
 
     width: 90%;
@@ -760,6 +817,9 @@ nav ul li a:hover {
     gap: 22px;
 }
 
+/* Tarjeta visual para acceder a comprar/vender. isolation:isolate crea un
+   contexto de apilamiento propio, útil porque la imagen y el pseudo-elemento
+   de degradado usan z-index negativos dentro de esta tarjeta. */
 .action-card {
 
     position: relative;
@@ -808,6 +868,9 @@ nav ul li a:hover {
 
 /* Overlay */
 
+/* ::after genera una capa decorativa sin añadir un nodo al HTML. content:""
+   es necesario para que el pseudo-elemento exista; el gradiente mejora la
+   lectura del texto colocado sobre la fotografía. */
 .action-card::after {
 
     content: "";
@@ -903,6 +966,9 @@ nav ul li a:hover {
 
 /* Grid */
 
+/* Cuadrícula de tarjetas recomendadas. repeat(4,1fr) crea cuatro columnas
+   iguales; los media queries posteriores reducen columnas cuando hay menos
+   espacio disponible. */
 .cards {
 
     display: grid;
@@ -917,6 +983,9 @@ nav ul li a:hover {
    CARD
    ========================================================= */
 
+/* Tarjeta reutilizable de producto. overflow:hidden recorta la imagen y los
+   efectos que sobresalgan de las esquinas redondeadas. El hover es únicamente
+   visual; no implementa navegación ni agrega el producto al carrito. */
 .card {
 
     position: relative;
@@ -1110,6 +1179,9 @@ nav ul li a:hover {
 
 /* Formulario */
 
+/* Formulario en fila en pantallas amplias. El ancho máximo limita su longitud;
+   margin:auto lo centra y flex distribuye input y botón. La suscripción real
+   depende de la lógica HTML/JavaScript, no de estas reglas. */
 .newsletter form {
 
     width: min(500px, 100%);
@@ -1348,6 +1420,8 @@ footer > p {
    ========================================================= */
 
 /* ===== AJUSTES RESPONSIVOS PARA PANTALLAS MEDIANAS ===== */
+/* Primer punto de quiebre del sitio de inicio: por debajo de 1100 px se
+   reajustan espacios y navegación para que no se amontonen los elementos. */
 @media (max-width: 1100px) {
 
     #header {
@@ -1784,6 +1858,9 @@ footer > p {
 
 }
 
+/* El bloque siguiente agrega la apariencia específica del catálogo. Está
+   en la misma hoja para compartir tokens de color, tipografía y cabecera,
+   pero sus selectores empiezan con catalog- para limitar colisiones. */
 /* =========================================================
    REMANGA - CATÁLOGO
    ========================================================= */
@@ -1804,6 +1881,8 @@ nav ul li a.active {
    ========================================================= */
 
 /* ===== VISTA DE CATÁLOGO: filtros, resultados y tarjetas de mangas ===== */
+/* Marco de la página de catálogo. El espacio superior compensa la cabecera
+   fija para que el primer contenido no quede oculto detrás de ella. */
 .catalog-page {
     padding-top: 82px;
     min-height: 100vh;
@@ -1955,6 +2034,9 @@ nav ul li a.active {
    5. FILTROS
    ========================================================= */
 
+/* Panel de filtros. Cuando se usa position:sticky, conserva su posición
+   relativa al desplazamiento dentro de los límites de su contenedor; no es
+   lo mismo que fixed, porque sigue formando parte del flujo de la página. */
 .filters {
     position: sticky;
 
@@ -2430,6 +2512,8 @@ nav ul li a.active {
    12. GRID DEL CATÁLOGO
    ========================================================= */
 
+/* Cuadrícula de resultados. Las columnas y separaciones determinan cuántas
+   tarjetas entran por fila; los media queries cambian esa distribución. */
 .catalog-grid {
     display: grid;
 
@@ -2722,6 +2806,8 @@ nav ul li a.active {
    18. PRODUCTOS OCULTOS POR FILTRO
    ========================================================= */
 
+/* Clase de estado: display:none saca la tarjeta del diseño cuando los filtros
+   no deben mostrarla. La decisión de qué productos ocultar la toma JavaScript. */
 .catalog-card.hidden {
     display: none;
 }
@@ -3059,6 +3145,9 @@ nav ul li a.active {
     box-shadow:
         0 0 10px rgba(255, 136, 111, 0.45);
 }
+/* La siguiente zona define la página de detalle de un manga. Sus estilos
+   separan galería, información, precio, disponibilidad, acciones y productos
+   relacionados para que cada bloque pueda ajustarse de forma independiente. */
 /* =========================================================
    REMANGA - PRODUCTO
    ========================================================= */
@@ -3134,6 +3223,8 @@ nav ul li a.active {
    3. PRODUCTO PRINCIPAL
    ========================================================= */
 
+/* Distribución principal del detalle: Grid permite reservar una columna
+   para la galería y otra para los datos del producto. */
 .product-detail {
     display: grid;
 
@@ -3260,6 +3351,8 @@ nav ul li a.active {
    6. FAVORITO
    ========================================================= */
 
+/* Botón visual de favoritos colocado sobre la zona del producto. El estado
+   real de favorito debe gestionarse con JavaScript y persistencia si aplica. */
 .product-favorite {
     position: absolute;
 
@@ -3497,6 +3590,8 @@ nav ul li a.active {
    14. SELECTOR DE CANTIDAD
    ========================================================= */
 
+/* Controles de cantidad. Flexbox alinea decremento, valor e incremento; CSS
+   solo les da disposición, no calcula ni limita la cantidad elegida. */
 .quantity-selector {
     display: flex;
 
@@ -4086,6 +4181,9 @@ nav ul li a.active {
     }
 
 }
+/* Los estilos del carrito distinguen lista de artículos, controles de cantidad,
+   subtotales y resumen final. Los importes y operaciones deben venir del código
+   de la aplicación: esta sección solo define su presentación. */
 /* =========================================================
    REMANGA - CARRITO
    ========================================================= */
@@ -4177,6 +4275,8 @@ nav ul li a.active {
    3. DISTRIBUCIÓN
    ========================================================= */
 
+/* Distribución del carrito en dos zonas, normalmente artículos y resumen.
+   En pantallas pequeñas el media query posterior cambia esta composición. */
 .cart-layout {
     display: grid;
 
@@ -4531,6 +4631,8 @@ nav ul li a.active {
    13. RESUMEN
    ========================================================= */
 
+/* Resumen que puede permanecer visible mientras se recorre la lista mediante
+   position:sticky. Necesita espacio suficiente en el contenedor para funcionar. */
 .cart-summary {
     position: sticky;
 
@@ -4779,6 +4881,8 @@ nav ul li a.active {
    20. CARRITO VACÍO
    ========================================================= */
 
+/* Estado alternativo cuando el carrito no tiene artículos. display:none lo
+   oculta por defecto; JavaScript/HTML debe cambiar el estado cuando corresponda. */
 .empty-cart {
     display: none;
 
@@ -5076,6 +5180,9 @@ nav ul li a.active {
     }
 
 }
+/* La zona de publicación contiene formulario y panel de vista previa. Los
+   estilos de .error y .success comunican estados visuales, pero no sustituyen
+   la validación de datos ni la subida de imágenes que realiza JavaScript. */
 /* =========================================================
    REMANGA - PÁGINA VENDER
    ========================================================= */
@@ -5167,6 +5274,8 @@ nav ul li a.active {
    3. ESTRUCTURA DEL FORMULARIO
    ========================================================= */
 
+/* Grid distribuye el formulario y el panel de resumen en columnas. El media
+   query de tablet lo convierte en una sola columna para evitar estrechez. */
 .sell-form {
     display: grid;
 
@@ -5288,6 +5397,8 @@ nav ul li a.active {
    6. SUBIDA DE IMAGEN
    ========================================================= */
 
+/* Zona que invita a seleccionar o arrastrar una imagen. Su aspecto no sube
+   ningún archivo por sí mismo: el input file y JavaScript realizan esa tarea. */
 .image-upload {
     width: 100%;
     min-height: 230px;
@@ -5961,6 +6072,9 @@ nav ul li a.active {
    23. VALIDACIÓN VISUAL
    ========================================================= */
 
+/* Estas clases reflejan el resultado de una validación visual. El CSS colorea
+   el borde; el código que revisa los valores decide cuándo añadir/quitar error
+   o success. */
 .form-group input.error,
 .form-group select.error,
 .form-group textarea.error {
@@ -6085,6 +6199,8 @@ nav ul li a.active {
    CARGANDO CATÁLOGO
    ========================================================= */
 
+/* Estado de carga para el catálogo. La animación del icono es decorativa y
+   no indica por sí sola el progreso real de una petición. */
 .catalog-loading {
     width: 100%;
     min-height: 280px;
@@ -6271,6 +6387,10 @@ nav ul li a.active {
 
 }
 
+/* FASE C reúne ajustes globales aplicados después de los estilos iniciales.
+   Por aparecer al final, algunas reglas vuelven a definir tipografías, márgenes
+   y anchuras de selectores anteriores. Para aprender la cascada, compara estas
+   declaraciones con la primera definición de cada selector. */
 /* =========================================================
    REMANGA - FASE C
    MÁRGENES + TIPOGRAFÍA
@@ -6291,6 +6411,9 @@ body {
     line-height: 1.65;
 }
 
+/* Regla compartida de anchura máxima: resta los márgenes laterales del ancho
+   disponible y nunca supera --content-max. Es una alternativa más flexible a
+   repetir width:90% y max-width en cada bloque. */
 .benefits,
 .actions,
 .recommended {
@@ -6353,6 +6476,8 @@ footer > p {
     line-height: 1.5;
 }
 
+/* Ajustes finales para tablet/móvil. Cambiar una variable en :root afecta a
+   todos los lugares que la consumen, por eso el espacio global se reduce aquí. */
 @media (max-width: 768px) {
     :root { --page-gutter: 20px; }
     body { font-size: 14px; }
@@ -6373,6 +6498,9 @@ footer > p {
     .hero-content h1 { letter-spacing: -0.8px; }
 }
 
+/* Este bloque centraliza tamaños tipográficos mediante variables --text-*.
+   Las reglas posteriores vuelven a usar estos tokens para mantener jerarquía
+   visual consistente y ajustar varios textos con un único cambio. */
 /* =========================================================
    FASE C - AJUSTE 2
    JERARQUÍA TIPOGRÁFICA
@@ -6455,6 +6583,9 @@ nav ul li a { font-size: 13px; }
     .section-title h2 { font-size: var(--text-xl); }
 }
 
+/* Este ajuste afina el ritmo vertical: márgenes entre secciones, alturas
+   mínimas y alineación de títulos. Al repetirse selectores, estas reglas
+   posteriores pueden prevalecer sobre valores definidos más arriba. */
 /* =========================================================
    FASE C - AJUSTE 3
    COMPOSICIÓN Y RITMO VISUAL
@@ -6512,6 +6643,9 @@ nav ul li a { font-size: 13px; }
     }
 }
 
+/* El ajuste final centra el bloque del hero con un ancho equivalente al
+   contenido de otras secciones. margin-left:auto y margin-right:auto centran
+   horizontalmente un bloque con ancho definido. */
 /* =========================================================
    FASE C - AJUSTE 4
    ALINEACIÓN HERO ↔ BANNERS
@@ -6525,6 +6659,10 @@ nav ul li a { font-size: 13px; }
 
 
 
+/* Último conjunto de reglas compartidas: normaliza tipografía y espaciado
+   de catálogo, venta y perfil. Al estar al final, puede prevalecer frente a
+   reglas anteriores con la misma especificidad. Revisa los media queries si
+   el resultado cambia en pantallas pequeñas. */
 /* =========================================================
    FASE C - CONTROL FINAL DE CONSISTENCIA
    ========================================================= */
