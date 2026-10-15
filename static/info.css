@@ -6,39 +6,55 @@
    ========================================================= */
 
 /* ===== CONTENEDOR GENERAL DE LA PÁGINA INFORMATIVA ===== */
+/* Marco principal de las páginas informativas. Esta clase controla el espacio superior y la altura mínima de la página. */
 .info-page {
     padding-top: 82px;
+    /* 100vh equivale a la altura visible de la ventana; garantiza una altura mínima de pantalla completa. */
     min-height: 100vh;
 }
 
 /* ===== ENCABEZADO VISUAL DE LA PÁGINA ===== */
+/* Bloque destacado superior (hero): concentra el título y la introducción. El ancho porcentual deja márgenes laterales y max-width evita que se estire demasiado en monitores grandes. */
 .info-hero {
     width: 90%;
     max-width: 1180px;
+    /* 70 px arriba, auto a izquierda/derecha para centrar, y 0 abajo. */
     margin: 70px auto 0;
+    /* Espacio interior vertical de 70 px y horizontal del 8 % del ancho del contenedor. */
     padding: 70px 8%;
     position: relative;
+    /* Recorta lo que sobresalga del hero, incluido el círculo decorativo que se desplaza fuera de sus bordes. */
     overflow: hidden;
+    /* Usa una variable de color compartida para mantener coherencia con el resto de la interfaz. */
     border: 1px solid var(--border);
+    /* Radio de esquina tomado del tema global, así se puede cambiar la forma de los componentes desde una variable. */
     border-radius: var(--radius-large);
+    /* Capas de fondo: primero un resplandor radial de acento y después un degradado lineal oscuro. En CSS, la primera capa se dibuja por encima de la siguiente. */
     background:
         radial-gradient(circle at 85% 20%, rgba(255, 136, 111, 0.13), transparent 32%),
         linear-gradient(135deg, rgba(36, 36, 47, 0.98), rgba(27, 27, 36, 0.98));
     box-shadow: var(--shadow-medium);
 }
 
+/* Pseudoelemento decorativo: dibuja un círculo de fondo sin agregar un elemento extra al HTML. Requiere content para que el pseudoelemento exista. */
 .info-hero::after {
+    /* content es obligatorio para generar el pseudoelemento; una cadena vacía crea la forma sin texto. */
     content: "";
+    /* Saca el adorno del flujo normal y permite ubicarlo con right/bottom respecto al hero posicionado. */
     position: absolute;
     width: 220px;
     height: 220px;
+    /* Desplaza parte del círculo fuera del borde derecho para que solo se vea una porción decorativa. */
     right: -80px;
+    /* Desplaza el círculo parcialmente por debajo del contenedor. overflow:hidden recorta la parte exterior. */
     bottom: -110px;
     border: 1px solid rgba(255, 136, 111, 0.18);
+    /* Un radio del 50 % convierte la caja cuadrada en círculo. */
     border-radius: 50%;
     box-shadow: 0 0 45px rgba(255, 136, 111, 0.08);
 }
 
+/* Caja que presenta el icono de la sección informativa. Flexbox centra el icono dentro del cuadrado. */
 .info-icon {
     width: 58px;
     height: 58px;
@@ -54,6 +70,7 @@
     box-shadow: var(--shadow-neon);
 }
 
+/* Texto pequeño previo al título, usado como etiqueta o categoría visual. Orbitron y el espaciado entre letras refuerzan la identidad tecnológica. */
 .info-eyebrow {
     margin-bottom: 12px;
     color: var(--accent);
@@ -64,22 +81,28 @@
     text-transform: uppercase;
 }
 
+/* Título principal dentro del hero. clamp() adapta el tamaño de fuente al ancho de pantalla sin salir de los límites mínimo y máximo. */
 .info-hero h1 {
     max-width: 800px;
     margin-bottom: 18px;
     color: var(--white);
     font-family: "Orbitron", sans-serif;
+    /* Fuente adaptable: no baja de 32 px ni supera 58 px; entre ambos límites responde al 4.5 % del ancho de ventana. */
     font-size: clamp(32px, 4.5vw, 58px);
+    /* Altura de línea proporcional al tamaño de fuente; 1.08 mantiene el título compacto en varias líneas. */
     line-height: 1.08;
+    /* Acerca ligeramente las letras del título para lograr una composición tipográfica más compacta. */
     letter-spacing: -1.5px;
 }
 
+/* El combinador > limita la regla a párrafos hijos directos del hero, para no afectar párrafos dentro de componentes anidados. */
 .info-hero > p {
     max-width: 760px;
     color: var(--text-secondary);
     font-size: 15px;
 }
 
+/* Aviso o nota debajo del hero. Flexbox alinea el icono y el texto; align-items:flex-start los alinea desde arriba cuando el texto ocupa varias líneas. */
 .info-note {
     width: 90%;
     max-width: 1180px;
@@ -87,6 +110,7 @@
     padding: 18px 22px;
     display: flex;
     align-items: flex-start;
+    /* Espacio entre el icono y el texto de la nota sin necesidad de márgenes por separado. */
     gap: 13px;
     border: 1px solid rgba(255, 136, 111, 0.18);
     border-radius: var(--radius-medium);
@@ -95,26 +119,31 @@
     font-size: 12px;
 }
 
+/* Ajusta el icono de la nota por separado del texto contiguo. */
 .info-note i {
     margin-top: 3px;
     color: var(--accent);
 }
 
 /* ===== CONTENIDO, SECCIONES, TARJETAS Y PASOS ===== */
+/* Contenedor principal del contenido. Repite el ancho máximo del hero para que ambas zonas compartan alineación visual. */
 .info-content {
     width: 90%;
     max-width: 1180px;
     margin: 70px auto 100px;
 }
 
+/* Sección temática individual dentro del contenido; el margen inferior separa una sección de la siguiente. */
 .info-section {
     margin-bottom: 54px;
 }
 
+/* Pseudoclase estructural: quita el margen inferior solo a la última sección para evitar espacio extra al final. */
 .info-section:last-child {
     margin-bottom: 0;
 }
 
+/* Subtítulos de segundo nivel para dividir el contenido informativo en temas. */
 .info-section h2 {
     margin-bottom: 12px;
     color: var(--white);
@@ -122,6 +151,7 @@
     font-size: 22px;
 }
 
+/* Párrafo introductorio directo de cada sección; el ancho máximo mejora la legibilidad de líneas largas. */
 .info-section > p {
     max-width: 850px;
     margin-bottom: 25px;
@@ -129,42 +159,51 @@
     font-size: 13px;
 }
 
+/* Cuadrícula de tarjetas. repeat(3, 1fr) crea tres columnas iguales que comparten el espacio disponible. */
 .info-grid {
     display: grid;
+    /* Crea tres columnas de igual fracción del espacio disponible. */
     grid-template-columns: repeat(3, 1fr);
     gap: 18px;
 }
 
+/* Tarjeta informativa individual. La transición enumera las propiedades que pueden cambiar suavemente en hover. */
 .info-card {
     padding: 27px;
     border: 1px solid var(--border);
     border-radius: var(--radius-medium);
     background: rgba(36, 36, 47, 0.72);
     box-shadow: var(--shadow-small);
+    /* Anima transform, borde y fondo con la duración definida en la variable global de transición rápida. */
     transition:
         transform var(--transition-fast),
         border-color var(--transition-fast),
         background var(--transition-fast);
 }
 
+/* Estado de interacción de una tarjeta al pasar el cursor; eleva unos píxeles y modifica sutilmente borde y fondo. */
 .info-card:hover {
+    /* Desplaza la tarjeta 3 px hacia arriba sin alterar el espacio que ocupa en el flujo. */
     transform: translateY(-3px);
     border-color: rgba(255, 136, 111, 0.22);
     background: rgba(255, 136, 111, 0.045);
 }
 
+/* Icono dentro de la tarjeta: utiliza el color de acento para diferenciarlo del texto. */
 .info-card i {
     margin-bottom: 16px;
     color: var(--accent);
     font-size: 19px;
 }
 
+/* Título de cada tarjeta, con separación inferior para que no quede pegado al texto descriptivo. */
 .info-card h3 {
     margin-bottom: 9px;
     color: var(--white);
     font-size: 14px;
 }
 
+/* Agrupa párrafos y elementos de lista de una tarjeta porque comparten color, tamaño y altura de línea. */
 .info-card p,
 .info-card li {
     color: var(--text-secondary);
@@ -172,17 +211,21 @@
     line-height: 1.7;
 }
 
+/* Indentación de las listas dentro de tarjetas para que las viñetas y el texto queden dentro de la caja. */
 .info-card ul {
     padding-left: 18px;
 }
 
+/* Lista visual de pasos: grid apila cada paso en filas separadas por gap. */
 .info-steps {
     display: grid;
     gap: 14px;
 }
 
+/* Cada paso usa dos columnas: número a la izquierda y contenido a la derecha. align-items:start evita estirar el número si el texto es largo. */
 .info-step {
     display: grid;
+    /* Reserva 42 px para el número y deja que la segunda columna use el resto del ancho. */
     grid-template-columns: 42px 1fr;
     gap: 18px;
     align-items: start;
@@ -192,6 +235,7 @@
     background: rgba(36, 36, 47, 0.58);
 }
 
+/* Círculo numerado que identifica el orden del paso; Flexbox centra el número en ambas direcciones. */
 .info-step-number {
     width: 42px;
     height: 42px;
@@ -206,12 +250,14 @@
     font-weight: 700;
 }
 
+/* Título de un paso con una pequeña separación del párrafo que lo explica. */
 .info-step h3 {
     margin-bottom: 6px;
     color: var(--white);
     font-size: 14px;
 }
 
+/* Texto explicativo de los pasos; line-height aumenta el espacio entre renglones y facilita la lectura. */
 .info-step p {
     color: var(--text-secondary);
     font-size: 12px;
@@ -219,41 +265,51 @@
 }
 
 /* ===== PREGUNTAS FRECUENTES DESPLEGABLES ===== */
+/* Contenedor de preguntas frecuentes. Cada pregunta se representa con details/summary nativos de HTML. */
 .info-faq {
     display: grid;
     gap: 10px;
 }
 
+/* Caja de una pregunta frecuente. El elemento details controla de forma nativa el estado abierto/cerrado. */
 .info-faq details {
     border: 1px solid var(--border);
     border-radius: var(--radius-medium);
     background: rgba(36, 36, 47, 0.58);
 }
 
+/* La pregunta visible y pulsable. cursor:pointer comunica que se puede activar; list-style:none oculta el marcador predeterminado. */
 .info-faq summary {
     padding: 18px 20px;
     cursor: pointer;
     color: var(--white);
     font-size: 13px;
     font-weight: 600;
+    /* Quita el marcador predeterminado del summary; el símbolo se controla con el pseudoelemento ::after. */
     list-style: none;
 }
 
+/* Oculta el triángulo nativo de details en navegadores WebKit para usar el símbolo personalizado que se dibuja con ::after. */
 .info-faq summary::-webkit-details-marker {
     display: none;
 }
 
+/* Añade un signo + al final de la pregunta sin modificar el HTML. float:right lo alinea a la derecha del resumen. */
 .info-faq summary::after {
+    /* Inserta el símbolo más como contenido decorativo, no como texto real del HTML. */
     content: "+";
+    /* Lleva el símbolo hacia el extremo derecho de la línea del resumen. */
     float: right;
     color: var(--accent);
     font-size: 17px;
 }
 
+/* Selector de atributo: se activa cuando details tiene el atributo open; cambia el + por un signo menos al desplegar la respuesta. */
 .info-faq details[open] summary::after {
     content: "−";
 }
 
+/* Espaciado y tipografía de la respuesta que aparece dentro del elemento details. */
 .info-faq details p {
     padding: 0 20px 20px;
     color: var(--text-secondary);
@@ -261,11 +317,13 @@
     line-height: 1.7;
 }
 
+/* Zona de enlace para volver, centrada y separada del contenido principal. */
 .info-back {
     margin-top: 60px;
     text-align: center;
 }
 
+/* El enlace de regreso se presenta en línea con Flexbox para alinear el icono y el texto. */
 .info-back a {
     display: inline-flex;
     align-items: center;
@@ -273,6 +331,7 @@
 }
 
 /* ===== ADAPTACIÓN A TABLETS ===== */
+/* Reglas para tabletas o ventanas de hasta 900 px: reduce el hero y pasa la cuadrícula a una sola columna. */
 @media (max-width: 900px) {
     .info-hero {
         margin-top: 45px;
@@ -280,17 +339,20 @@
     }
 
     .info-grid {
-        grid-template-columns: 1fr;
+        /* Cambia la cuadrícula a una única columna, apilando tarjetas verticalmente. */
+    grid-template-columns: 1fr;
     }
 }
 
 /* ===== ADAPTACIÓN A MÓVILES ===== */
+/* Reglas móviles: disminuyen espacios, ajustan los anchos y compactan los pasos para pantallas angostas. */
 @media (max-width: 600px) {
     .info-page {
         padding-top: 70px;
     }
 
     .info-hero {
+        /* Deja un margen lateral proporcional algo mayor en móvil, sin pegar el bloque al borde de pantalla. */
         width: 92%;
         margin-top: 30px;
         padding: 42px 25px;
@@ -312,6 +374,7 @@
     }
 
     .info-step {
+        /* En móvil reduce la columna del número del paso y conserva el resto para el texto. */
         grid-template-columns: 34px 1fr;
         gap: 13px;
         padding: 18px;
