@@ -1,78 +1,134 @@
+<!-- DOCTYPE activa el modo estándar HTML5; no es visible y evita que el navegador interprete el documento con reglas antiguas. -->
 <!DOCTYPE html>
+<!-- Elemento raíz del documento. lang="es" declara el idioma principal para lectores de pantalla y otras herramientas. -->
 <html lang="es">
 <head>
     <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nueva contraseña | ReManga</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="static/login.css">
-    <link rel="stylesheet" href="static/brand.css">
+    <!-- UTF-8 permite representar ñ, tildes y otros símbolos correctamente. -->
+<meta charset="UTF-8">
+    <!-- Adapta el ancho de la página a la pantalla del dispositivo y permite que el CSS sea responsive. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título que aparece en la pestaña del navegador e identifica esta pantalla. -->
+<title>Nueva contraseña | ReManga</title>
+    <!-- Prepara la conexión a Google Fonts antes de descargar su hoja de estilos. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Dominio que entrega los archivos de fuentes; crossorigin permite la conexión anticipada necesaria para este recurso. -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Solicita Montserrat en varios grosores. rel=stylesheet indica que el recurso es CSS y display=swap permite usar una fuente de reserva mientras carga. -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Reutiliza el diseño de las pantallas de autenticación: fondo, panel, campos y botones. -->
+<link rel="stylesheet" href="static/login.css">
+    <!-- Reglas globales para mantener consistente la presentación de la marca ReManga. -->
+<link rel="stylesheet" href="static/brand.css">
+    <!-- Estilos locales de esta pantalla para los mensajes, el botón deshabilitado y el enlace de regreso. -->
     <style>
+        /* Reserva espacio para los avisos y controla su separación, tamaño e interlineado. */
         .auth-message { min-height:20px; margin:0 0 16px; font-size:13px; line-height:1.45; }
+        /* Solo aplica si el elemento tiene ambas clases: auth-message y error. */
         .auth-message.error { color:#ff8b79; }
+        /* Diferencia visualmente el mensaje de éxito tras actualizar la contraseña. */
         .auth-message.success { color:#68e0a0; }
+        /* Estilo para estados informativos, como la validación del enlace o el guardado en curso. */
         .auth-message.info { color:rgba(255,255,255,.68); }
+        /* :disabled selecciona el botón deshabilitado; la opacidad y el cursor indican que no está listo para otro clic. */
         .login-button:disabled { opacity:.65; cursor:wait; transform:none; }
+        /* Convierte el enlace en bloque para centrarlo y separarlo del botón principal. */
         .back-login { display:block; margin-top:18px; text-align:center; color:rgba(255,255,255,.62); text-decoration:none; font-size:14px; }
+        /* Cambia el color al pasar el cursor; no altera el destino ni el comportamiento del enlace. */
         .back-login:hover { color:white; }
     </style>
 </head>
+<!-- BODY contiene la interfaz visible. Las clases se conectan al CSS; los id son puntos de conexión con restablecer.js. -->
+<body></head>
 <body>
-    <!-- RESTABLECER CONTRASEÑA: permite definir una contraseña nueva a través de la sesión de recuperación. -->
-    <div class="login-background" aria-hidden="true">
-        <img class="login-background-image" src="static/fotologin.jpeg" alt="">
-        <div class="login-background-glow"></div>
+    <!-- PROPÓSITO: la persona llega aquí desde un enlace de recuperación. JavaScript debe comprobar que Supabase reconoció la sesión temporal antes de permitir el cambio. -->    <!-- RESTABLECER CONTRASEÑA: permite definir una contraseña nueva a través de la sesión de recuperación. -->
+    <!-- Fondo decorativo oculto a lectores de pantalla porque no aporta información necesaria para completar el proceso. -->
+<div class="login-background" aria-hidden="true">
+        <!-- Imagen de fondo. alt vacío la declara decorativa; src indica el archivo y la clase controla su recorte con CSS. -->
+<img class="login-background-image" src="static/fotologin.jpeg" alt="">
+        <!-- Capa vacía usada para crear el efecto de iluminación mediante CSS. -->
+<div class="login-background-glow"></div>
     </div>
 
     
     <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
-    <main class="login-container">
-        <section class="branding">
-            <div class="login-brand">
-                <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="login-brand-mark">
-                <img src="static/logotipo.png" alt="ReManga" class="login-brand-wordmark">
+    <!-- main identifica el contenido principal. login-container agrupa marca y panel para organizarlos de forma adaptable. -->
+<main class="login-container">
+        <!-- Bloque de identidad visual y texto introductorio, independiente del formulario funcional. -->
+<section class="branding">
+            <!-- Agrupa las imágenes del isotipo y logotipo para alinearlas como una sola unidad. -->
+<div class="login-brand">
+                <!-- Isotipo: src es la ruta, alt describe la imagen y login-brand-mark permite controlar su tamaño mediante CSS. -->
+<img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="login-brand-mark">
+                <!-- Logotipo independiente para ajustar su ancho sin deformar el isotipo. -->
+<img src="static/logotipo.png" alt="ReManga" class="login-brand-wordmark">
             </div>
-            <p class="slogan">COMPRA <span>•</span> VENDE <span>•</span> DESCUBRÍ</p>
-            <p class="branding-description">Elegí una nueva contraseña para volver a usar tu cuenta.</p>
+            <!-- Eslogan fijo; los span separan visualmente las palabras y no son controles interactivos. -->
+<p class="slogan">COMPRA <span>•</span> VENDE <span>•</span> DESCUBRÍ</p>
+            <!-- Texto explicativo estático que orienta al usuario; no valida ni cambia la contraseña. -->
+<p class="branding-description">Elegí una nueva contraseña para volver a usar tu cuenta.</p>
         </section>
 
-        <section class="login-panel" aria-labelledby="resetTitle">
+        <!-- Panel del formulario. aria-labelledby conecta su nombre accesible con el h1 que tiene id resetTitle. -->
+<section class="login-panel" aria-labelledby="resetTitle">
             <div class="login-header">
-                <div class="user-icon" aria-hidden="true"><span>♙</span></div>
-                <h1 id="resetTitle">Nueva contraseña</h1>
-                <p>Ingresá tu nueva contraseña.</p>
+                <!-- Icono decorativo excluido del árbol accesible para no duplicar información del encabezado. -->
+<div class="user-icon" aria-hidden="true"><span>♙</span></div>
+                <!-- Encabezado principal. Su id también es la referencia que utiliza aria-labelledby. -->
+<h1 id="resetTitle">Nueva contraseña</h1>
+                <!-- Instrucción visible; la actualización efectiva depende de la lógica JavaScript y de la respuesta de Supabase. -->
+<p>Ingresá tu nueva contraseña.</p>
             </div>
 
             
-    <!-- FORMULARIO DE AUTENTICACIÓN: campos que utiliza el script de esta página. -->
-    <form id="resetForm" novalidate>
+    <!-- FORMULARIO: resetForm es el id que restablecer.js usa para escuchar submit. novalidate deja los mensajes y validaciones bajo control del script. -->    <!-- FORMULARIO DE AUTENTICACIÓN: campos que utiliza el script de esta página. -->
+    <!-- form agrupa los dos campos de contraseña y el botón de acción. id enlaza el formulario con JS.
+     novalidate evita la validación automática al enviar; el script debe comprobar longitud y coincidencia explícitamente. -->
+<form id="resetForm" novalidate>
                 <div class="input-group">
-                    <label for="password">Nueva contraseña</label>
+                    <!-- for="password" vincula esta etiqueta al input con id=password, de modo que pulsarla enfoca el campo. -->
+<label for="password">Nueva contraseña</label>
                     <div class="password-container">
-                        <input type="password" id="password" autocomplete="new-password" minlength="6" required placeholder="Ingresá una nueva contraseña">
-                        <button type="button" id="togglePassword" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
+                        <!-- NUEVA CONTRASEÑA:
+     type=password enmascara visualmente los caracteres; no los cifra ni los guarda por sí mismo.
+     id=password permite que restablecer.js encuentre el input; autocomplete=new-password sugiere que se trata de una clave nueva.
+     minlength=6 y required describen las restricciones, pero novalidate significa que JavaScript debe verificarlas.
+     placeholder es una pista visual, no el valor real del campo. No hay atributo name: el script lee directamente la propiedad value. -->
+<input type="password" id="password" autocomplete="new-password" minlength="6" required placeholder="Ingresá una nueva contraseña">
+                        <!-- Botón independiente del envío. El id permite al script alternar input.type entre password y text; aria-label comunica la acción a tecnologías de asistencia. -->
+<button type="button" id="togglePassword" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
                     </div>
                 </div>
                 <div class="input-group">
-                    <label for="passwordConfirm">Confirmar contraseña</label>
+                    <!-- Vincula la etiqueta al segundo campo para que el usuario pueda enfocarlo pulsando el texto. -->
+<label for="passwordConfirm">Confirmar contraseña</label>
                     <div class="password-container">
-                        <input type="password" id="passwordConfirm" autocomplete="new-password" minlength="6" required placeholder="Repetí la nueva contraseña">
-                        <button type="button" id="togglePasswordConfirm" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
+                        <!-- CONFIRMACIÓN:
+     Es un segundo valor usado para detectar errores de escritura. El script compara su value con la contraseña principal.
+     No tiene name porque no se envía mediante un formulario tradicional: JavaScript lee directamente el valor.
+     minlength y required describen las restricciones; novalidate hace que el script deba aplicarlas. -->
+<input type="password" id="passwordConfirm" autocomplete="new-password" minlength="6" required placeholder="Repetí la nueva contraseña">
+                        <!-- Segundo botón de visibilidad. Tiene id propio porque controla passwordConfirm y no el primer input. -->
+<button type="button" id="togglePasswordConfirm" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
                     </div>
                 </div>
-                <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
-                <button type="submit" class="login-button">CAMBIAR CONTRASEÑA</button>
-                <a href="login.html" class="back-login">Volver a iniciar sesión</a>
+                <!-- Área inicialmente vacía para mensajes. El script escribe aquí el estado de validación, los errores o la confirmación.
+     role=status y aria-live=polite ayudan a que lectores de pantalla anuncien los cambios sin interrupción brusca. -->
+<p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+                <!-- submit activa el evento del formulario. restablecer.js lo intercepta, valida los dos campos y llama a Supabase Auth para actualizar la contraseña. -->
+<button type="submit" class="login-button">CAMBIAR CONTRASEÑA</button>
+                <!-- Enlace normal al login; la navegación funciona sin un listener específico. -->
+<a href="login.html" class="back-login">Volver a iniciar sesión</a>
             </form>
         </section>
     </main>
 
-        <!-- JAVASCRIPT: librería de Supabase, configuración y lógica de esta pantalla. -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
-    <script src="static/restablecer.js"></script>
+        <!-- ORDEN DE CARGA: el SDK proporciona window.supabase; config.js publica los datos de conexión; restablecer.js usa ambos para verificar la sesión de recuperación y cambiar la contraseña. -->        <!-- JAVASCRIPT: librería de Supabase, configuración y lógica de esta pantalla. -->
+    <!-- SDK de Supabase. Debe estar disponible antes de crear el cliente de autenticación. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Define window.REMANGA_SUPABASE_CONFIG con la URL y clave publicable que necesita el script. -->
+<script src="config.js"></script>
+    <!-- Lógica que verifica el enlace, gestiona la visibilidad de las contraseñas, valida los campos y llama a auth.updateUser(). -->
+<script src="static/restablecer.js"></script>
 </body>
 </html>
