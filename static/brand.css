@@ -6,209 +6,323 @@
    ========================================================= */
 
 /* ===== MARCA COMBINADA: isotipo y logotipo en una misma fila ===== */
+/* Selector de clase: aplica al enlace que agrupa las dos imágenes de marca. Se usa clase porque el mismo patrón se repite en cabecera, pie y otras vistas. */
 .brand-lockup {
+    /* inline-flex conserva el comportamiento en línea del enlace, pero habilita Flexbox para ordenar sus hijos. */
     display: inline-flex;
+    /* Centra verticalmente las imágenes dentro de la fila. */
     align-items: center;
+    /* Coloca el contenido desde el inicio horizontal de la fila. */
     justify-content: flex-start;
+    /* Separación uniforme entre isotipo y logotipo, sin márgenes individuales. */
     gap: 10px;
+    /* Quita el subrayado predeterminado del enlace que envuelve las imágenes. */
     text-decoration: none;
+    /* Elimina el espacio de línea que puede aparecer debajo de imágenes dentro de un enlace. */
     line-height: 0;
+    /* Atajo flex: no crecer, no encoger y usar el tamaño natural como base. Mantiene estable el conjunto de marca. */
     flex: 0 0 auto;
 }
 
+/* Imagen del isotipo (el símbolo independiente). Estas reglas se comparten entre usos de la marca; los selectores más específicos pueden afinarlas. */
 .brand-mark {
+    /* Ancho fijo del isotipo. !important le da prioridad frente a reglas de igual origen que intenten sobrescribirlo. */
     width: 34px !important;
+    /* Alto fijo para mantener la caja cuadrada del isotipo. */
     height: 34px !important;
+    /* Impide que reglas genéricas de imágenes permitan que el isotipo crezca más de 34 px. */
     max-width: 34px !important;
+    /* Encaja la imagen completa dentro de la caja sin recortarla ni deformar su proporción. */
     object-fit: contain;
+    /* Reserva exactamente 34 px de base y evita que Flexbox cambie el tamaño de la imagen. */
     flex: 0 0 34px;
 }
 
+/* Selector descendiente: apunta solo al isotipo dentro del logo de la cabecera. Tiene más especificidad que .brand-mark, así puede fijar ese tamaño en el encabezado. */
 #header .logo .brand-mark {
+    /* Ancho fijo del isotipo. !important le da prioridad frente a reglas de igual origen que intenten sobrescribirlo. */
     width: 34px !important;
+    /* Alto fijo para mantener la caja cuadrada del isotipo. */
     height: 34px !important;
+    /* Impide que reglas genéricas de imágenes permitan que el isotipo crezca más de 34 px. */
     max-width: 34px !important;
+    /* Impide que Flexbox reduzca el ancho por debajo del tamaño establecido. */
     min-width: 34px !important;
 }
 
+/* Imagen del logotipo escrito. Se dimensiona aparte del isotipo para mantener la proporción visual de cada archivo. */
 .brand-wordmark {
+    /* Ancho visual del logotipo escrito, independiente del ancho del isotipo. */
     width: 112px !important;
+    /* Calcula el alto según la proporción original de la imagen para no estirarla. */
     height: auto !important;
+    /* Limita el ancho máximo para mantener controlada la composición de marca. */
     max-width: 112px !important;
+    /* Encaja la imagen completa dentro de la caja sin recortarla ni deformar su proporción. */
     object-fit: contain;
+    /* Atajo flex: no crecer, no encoger y usar el tamaño natural como base. Mantiene estable el conjunto de marca. */
     flex: 0 0 auto;
 }
 
+/* El contenedor de marca de la cabecera también usa Flexbox para alinear el conjunto con los otros elementos del menú. */
 #header .logo {
     display: flex;
+    /* Centra verticalmente las imágenes dentro de la fila. */
     align-items: center;
+    /* Atajo flex: no crecer, no encoger y usar el tamaño natural como base. Mantiene estable el conjunto de marca. */
     flex: 0 0 auto;
 }
 
 /* ===== ESTADO INTERACTIVO DE LA MARCA EN LA CABECERA ===== */
+/* :hover se activa cuando el puntero pasa sobre el enlace. img selecciona las imágenes dentro del enlace sin tener que asignarles otra clase. */
 #header .logo .brand-lockup:hover img {
+    /* Aumenta levemente el brillo al pasar el puntero; 1 es brillo original y 1.06 equivale a un 6 % más. */
     filter: brightness(1.06);
 }
 
+/* .scrolled es una clase de estado que JavaScript puede añadir al header al desplazarse la página. El selector cambia el espacio entre imágenes cuando eso ocurre. */
 #header.scrolled .brand-lockup {
+    /* Compacta un poco el espacio entre las imágenes al desplazarse la cabecera. */
     gap: 9px;
 }
 
+/* Variante del isotipo con la cabecera desplazada. Este tamaño mayor es una decisión visual del estado scrolled, no una nueva imagen. */
 #header.scrolled .brand-mark {
+    /* Nuevo ancho del isotipo cuando el encabezado está en estado scrolled. */
     width: 38px !important;
+    /* Mantiene el isotipo cuadrado en su variante scrolled. */
     height: 38px !important;
+    /* Evita que otras reglas de imágenes superen el ancho de esta variante. */
     max-width: 38px !important;
+    /* Tamaño base de 38 px dentro de Flexbox para acompañar el ancho y alto de la variante. */
     flex-basis: 38px;
 }
 
+/* Reduce el ancho del logotipo escrito en el estado scrolled para compactar la cabecera. */
 #header.scrolled .brand-wordmark {
+    /* Reduce el ancho del logotipo para que la cabecera desplazada ocupe menos espacio. */
     width: 98px !important;
+    /* Limita también el máximo a ese ancho reducido. */
     max-width: 98px !important;
 }
 
 /* ===== VERSIONES DE MARCA EN EL PIE DE PÁGINA ===== */
+/* Reglas para la marca del pie de página: footer limita el alcance para no modificar logos de otras zonas. */
 footer .footer-logo {
+    /* inline-flex conserva el comportamiento en línea del enlace, pero habilita Flexbox para ordenar sus hijos. */
     display: inline-flex;
+    /* Centra verticalmente las imágenes dentro de la fila. */
     align-items: center;
+    /* Centra horizontalmente el contenido del contenedor. */
     justify-content: center;
 }
 
+/* Espacio entre isotipo y logotipo únicamente en el lockup del footer. */
 footer .footer-logo .brand-lockup {
+    /* Separación uniforme entre isotipo y logotipo, sin márgenes individuales. */
     gap: 10px;
 }
 
+/* El isotipo del pie se muestra más grande que el de la cabecera porque dispone de otra escala de composición. */
 footer .footer-logo .brand-mark {
+    /* Tamaño mayor del isotipo en el pie de página. */
     width: 42px !important;
+    /* Mantiene la caja del isotipo cuadrada en el pie. */
     height: 42px !important;
+    /* Evita que la imagen se ensanche por encima de 42 px. */
     max-width: 42px !important;
+    /* Reserva el espacio horizontal del isotipo dentro del pie. */
     flex-basis: 42px;
 }
 
+/* Ancho independiente del logotipo escrito en el pie. max-width evita que supere la medida elegida. */
 footer .footer-logo .brand-wordmark {
+    /* Ancho del logotipo escrito en el pie de página. */
     width: 108px !important;
+    /* Limita el tamaño máximo del logotipo del pie. */
     max-width: 108px !important;
 }
 
 /* ===== VERSIÓN DE MARCA PARA LAS PANTALLAS DE AUTENTICACIÓN ===== */
+/* Lockup específico para las pantallas de inicio de sesión y registro, donde la marca puede ocupar más espacio. */
 .login-brand {
+    /* inline-flex conserva el comportamiento en línea del enlace, pero habilita Flexbox para ordenar sus hijos. */
     display: inline-flex;
+    /* Centra verticalmente las imágenes dentro de la fila. */
     align-items: center;
+    /* Coloca el contenido desde el inicio horizontal de la fila. */
     justify-content: flex-start;
+    /* En autenticación se deja más aire entre símbolo y palabra por el tamaño mayor de la marca. */
     gap: 18px;
+    /* El contenedor mide lo que necesita su contenido, en vez de ocupar todo el ancho disponible. */
     width: auto;
+    /* Nunca permite que la marca supere el ancho de su contenedor padre. */
     max-width: 100%;
+    /* Sin margen arriba ni a los lados; deja 18 px debajo para separar la marca del formulario. */
     margin: 0 0 18px;
 }
 
+/* Tamaño de isotipo para autenticación. flex-basis reserva ese ancho dentro de Flexbox para evitar que se comprima. */
 .login-brand .login-brand-mark {
+    /* Tamaño inicial del isotipo en pantallas de autenticación. */
     width: 82px;
+    /* Alto equivalente al ancho para conservar una caja cuadrada. */
     height: 82px;
+    /* Impide que el isotipo se encoja dentro del lockup de autenticación. */
     flex: 0 0 82px;
+    /* Encaja la imagen completa dentro de la caja sin recortarla ni deformar su proporción. */
     object-fit: contain;
 }
 
+/* min(300px, 58vw) elige el menor entre 300 píxeles y el 58 % del ancho de la ventana: limita el logo en escritorio y lo adapta en pantallas estrechas. */
 .login-brand .login-brand-wordmark {
+    /* El ancho responde al viewport: como máximo 300 px, o 58 % de la ventana si esta es más angosta. */
     width: min(300px, 58vw);
     height: auto;
+    /* Límite adicional para que el logotipo no pase de 300 px. */
     max-width: 300px;
+    /* Encaja la imagen completa dentro de la caja sin recortarla ni deformar su proporción. */
     object-fit: contain;
 }
 
 /* ===== AJUSTES PARA TABLETS ===== */
+/* Media query: estas reglas se aplican cuando el viewport mide 900 px o menos, un punto de ajuste pensado para tablets y ventanas reducidas. */
 @media (max-width: 900px) {
     .brand-lockup {
-        gap: 8px;
+        /* Reduce la separación entre imágenes para tablets. */
+    gap: 8px;
     }
 
     .brand-mark {
-        width: 32px !important;
-        height: 32px !important;
-        max-width: 32px !important;
-        flex-basis: 32px;
+        /* Escala del isotipo en el punto de quiebre para tablets. */
+    width: 32px !important;
+        /* Alto proporcional del isotipo para tablets. */
+    height: 32px !important;
+        /* Limita el tamaño del isotipo en tablets. */
+    max-width: 32px !important;
+        /* Reserva el ancho reducido en la fila Flexbox. */
+    flex-basis: 32px;
     }
 
     #header .logo .brand-mark {
-        width: 32px !important;
-        height: 32px !important;
-        max-width: 32px !important;
-        min-width: 32px !important;
+        /* Escala del isotipo en el punto de quiebre para tablets. */
+    width: 32px !important;
+        /* Alto proporcional del isotipo para tablets. */
+    height: 32px !important;
+        /* Limita el tamaño del isotipo en tablets. */
+    max-width: 32px !important;
+        /* Evita que el isotipo de cabecera se comprima en tablets. */
+    min-width: 32px !important;
     }
 
     .brand-wordmark {
-        width: 98px !important;
-        max-width: 98px !important;
+        /* Reduce el ancho del logotipo para que la cabecera desplazada ocupe menos espacio. */
+    width: 98px !important;
+        /* Limita también el máximo a ese ancho reducido. */
+    max-width: 98px !important;
     }
 
     footer .footer-logo .brand-mark {
-        width: 40px !important;
-        height: 40px !important;
-        max-width: 40px !important;
-        flex-basis: 40px;
+        /* Reduce el isotipo del pie ligeramente para tablets. */
+    width: 40px !important;
+        /* Mantiene cuadrada la caja del isotipo del pie. */
+    height: 40px !important;
+        /* Límite superior del isotipo del pie en tablets. */
+    max-width: 40px !important;
+        /* Reserva el espacio del isotipo del pie en tablets. */
+    flex-basis: 40px;
     }
 
     footer .footer-logo .brand-wordmark {
-        width: 100px !important;
-        max-width: 100px !important;
+        /* Ancho del logotipo del pie en tablets. */
+    width: 100px !important;
+        /* Evita que el logotipo del pie se extienda más de 100 px. */
+    max-width: 100px !important;
     }
 
     .login-brand {
-        gap: 16px;
+        /* Reduce la separación del lockup de autenticación en tablets. */
+    gap: 16px;
     }
 
     .login-brand .login-brand-mark {
-        width: 72px;
-        height: 72px;
-        flex-basis: 72px;
+        /* Isotipo algo más pequeño en la variante de autenticación para tablets. */
+    width: 72px;
+        /* Alto correspondiente al isotipo de 72 px. */
+    height: 72px;
+        /* Reserva el espacio del isotipo para evitar que Flexbox lo comprima. */
+    flex-basis: 72px;
     }
 
     .login-brand .login-brand-wordmark {
-        width: min(270px, 58vw);
+        /* Logotipo de autenticación con límite de 270 px y adaptación al 58 % de la ventana. */
+    width: min(270px, 58vw);
     }
 }
 
 /* ===== AJUSTES PARA MÓVILES ===== */
+/* En pantallas de hasta 600 px se reduce nuevamente la marca para reservar espacio al menú móvil y al contenido. */
 @media (max-width: 600px) {
     .brand-lockup {
-        gap: 7px;
+        /* Espacio compacto entre las piezas de marca en móviles. */
+    gap: 7px;
     }
 
     .brand-mark {
-        width: 30px !important;
-        height: 30px !important;
-        max-width: 30px !important;
-        flex-basis: 30px;
+        /* Isotipo más pequeño para la cabecera en móviles. */
+    width: 30px !important;
+        /* Alto del isotipo móvil; se mantiene igual que el ancho. */
+    height: 30px !important;
+        /* Límite del isotipo en móviles. */
+    max-width: 30px !important;
+        /* Reserva 30 px dentro de la fila para que la imagen no se comprima. */
+    flex-basis: 30px;
     }
 
     #header .logo .brand-mark {
-        width: 30px !important;
-        height: 30px !important;
-        max-width: 30px !important;
-        min-width: 30px !important;
+        /* Isotipo más pequeño para la cabecera en móviles. */
+    width: 30px !important;
+        /* Alto del isotipo móvil; se mantiene igual que el ancho. */
+    height: 30px !important;
+        /* Límite del isotipo en móviles. */
+    max-width: 30px !important;
+        /* Evita que el isotipo de la cabecera se reduzca más en una fila estrecha. */
+    min-width: 30px !important;
     }
 
     .brand-wordmark {
-        width: 82px !important;
-        max-width: 82px !important;
+        /* Reduce el ancho del logotipo escrito en móviles para liberar espacio horizontal. */
+    width: 82px !important;
+        /* Limita el máximo del logotipo móvil a 82 px. */
+    max-width: 82px !important;
     }
 
     #header.scrolled .brand-wordmark {
-        width: 82px !important;
-        max-width: 82px !important;
+        /* Reduce el ancho del logotipo escrito en móviles para liberar espacio horizontal. */
+    width: 82px !important;
+        /* Limita el máximo del logotipo móvil a 82 px. */
+    max-width: 82px !important;
     }
 
     .login-brand {
-        justify-content: center;
+        /* Centra horizontalmente el contenido del contenedor. */
+    justify-content: center;
         gap: 12px;
-        margin-bottom: 16px;
+        /* Separación inferior de 16 px entre marca y contenido en autenticación móvil. */
+    margin-bottom: 16px;
     }
 
     .login-brand .login-brand-mark {
-        width: 64px;
-        height: 64px;
-        flex-basis: 64px;
+        /* Tamaño compacto del isotipo en autenticación móvil. */
+    width: 64px;
+        /* Alto correspondiente al isotipo móvil. */
+    height: 64px;
+        /* Reserva 64 px de ancho para el isotipo en la fila. */
+    flex-basis: 64px;
     }
 
     .login-brand .login-brand-wordmark {
-        width: min(220px, 62vw);
+        /* En móviles el logotipo ocupa como máximo 220 px o el 62 % de la ventana, el valor que resulte menor. */
+    width: min(220px, 62vw);
     }
 }
