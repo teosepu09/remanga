@@ -5,19 +5,33 @@
 
 // Este módulo se encapsula en una función para no llenar el ámbito global con variables auxiliares.
 // Los favoritos de invitados se guardan localmente; los de una cuenta se sincronizan con Supabase.
+/* IIFE (función ejecutada inmediatamente): crea un ámbito privado para que las
+   variables auxiliares y funciones no contaminen el espacio global de window.
+   Las funciones async permiten esperar operaciones remotas sin bloquear la página. */
 (function () {
+    /* Prefijo común de las claves locales. Así se agrupan las listas del módulo y
+       se distinguen de claves que puedan usar otros componentes del sitio. */
     var FAVORITES_PREFIX = "remangaFavorites:";
     var GUEST_KEY = FAVORITES_PREFIX + "guest";
     var TABLE = "favoritos";
 
     // favoriteKey indica dónde se guarda la lista local según el visitante o usuario autenticado.
     // Set mantiene IDs únicos: agregar dos veces el mismo ID no duplica el favorito.
+    /* Clave de almacenamiento activa: empieza en modo invitado y cambia al detectar
+       una cuenta. Es solo un nombre de clave, no contiene credenciales. */
     var favoriteKey = GUEST_KEY;
+    /* Set conserva IDs únicos y ofrece has/add/delete para consultar y modificar favoritos. */
     var favoriteIds = new Set();
+    /* Caché en memoria de productos para resolver IDs y construir tarjetas sin consultar
+       el registro de producto una y otra vez por cada favorito. */
     var productosCache = [];
+    /* Evita registrar listeners y observadores más de una vez. */
     var initialized = false;
+    /* Cliente del SDK de Supabase; null significa que no está disponible. */
     var supabaseClient = null;
+    /* Usuario de la sesión actual; null representa que no se identificó una cuenta. */
     var currentUser = null;
+    /* Decide si los favoritos se sincronizan con la tabla remota o se guardan localmente. */
     var usingDatabase = false;
 
     // Prepara un cliente de Supabase solo si la configuración pública está disponible y activada.
@@ -29,6 +43,8 @@
 function crearClienteSupabase() {
         var config = window.REMANGA_SUPABASE_CONFIG;
 
+        /* Cada condición verifica una dependencia: configuración, activación, biblioteca
+           cargada, URL y clave publicable. El && exige que todas sean verdaderas. */
         if (!(config && config.enabled && window.supabase && config.url && config.publishableKey)) {
             return null;
         }
@@ -66,6 +82,8 @@ async function identificarUsuario() {
         try {
             // getSession lee la sesión que el SDK conserva; no valida una contraseña manualmente.
             // Esperamos la respuesta porque la inicialización depende de saber quién es el usuario.
+            /* await espera la respuesta del SDK. La expresión ternaria comprueba que exista
+               resultado.data antes de acceder a session; si no hay sesión, usa null. */
             var resultado = await supabaseClient.auth.getSession();
             var session = resultado && resultado.data ? resultado.data.session : null;
 
@@ -95,8 +113,14 @@ async function identificarUsuario() {
  */
 function cargarFavoritosLocales() {
         try {
+            /* localStorage solo almacena texto. Si getItem devuelve null, || "[]" da una
+               lista JSON vacía. JSON.parse convierte ese texto a un valor JavaScript y
+               puede lanzar error si el dato guardado está dañado; por eso hay try/catch. */
             var datos = JSON.parse(localStorage.getItem(favoriteKey) || "[]");
 
+            /* Array.isArray valida que el dato sea una lista. map(String) unifica IDs como
+               7 y "7"; filter(Boolean) descarta valores vacíos y Set elimina duplicados.
+               Si el dato no es un array, se empieza con un conjunto vacío. */
             favoriteIds = Array.isArray(datos)
                 ? new Set(datos.map(function (id) { return String(id); }).filter(Boolean))
                 : new Set();
@@ -133,6 +157,8 @@ function cargarFavoritosLocales() {
      * - No devuelve valor.
      */
     function guardarFavoritosLocales() {
+        /* Array.from transforma el Set en array y JSON.stringify lo convierte a texto,
+           formato que acepta localStorage. setItem reemplaza el valor de esa clave. */
         localStorage.setItem(
             favoriteKey,
             JSON.stringify(Array.from(favoriteIds))
@@ -152,6 +178,9 @@ async function cargarFavoritosDesdeSupabase() {
         }
 
         try {
+            /* La consulta encadena: tabla origen, columna a devolver y filtro por usuario.
+               El filtro organiza los resultados, pero la protección real también requiere
+               políticas RLS bien configuradas en Supabase. */
             var resultado = await supabaseClient
                 .from(TABLE)
                 .select("producto_id")
@@ -192,6 +221,8 @@ async function migrarFavoritosLocales() {
 
         // No migramos IDs a ciegas: solo se copian los que todavía existen en productosCache.
         // Esto evita intentar guardar favoritos de publicaciones borradas.
+        /* filter conserva IDs locales cuyo producto aún existe en la caché. some busca
+           una coincidencia; convertir ambos IDs a String evita diferencias de tipo. */
         var productosValidos = locales.filter(function (id) {
             return productosCache.some(function (producto) {
                 return String(producto.id) === String(id);
@@ -252,12 +283,16 @@ async function migrarFavoritosLocales() {
     function configurarEstadoBoton(button) {
         if (!button) return;
 
+        /* data-product-id del HTML aparece en JavaScript como dataset.productId. Si no
+           hay ID, el botón no permite identificar qué producto debería modificarse. */
         var id = button.dataset.productId;
         if (!id) return;
 
         var activo = esFavorito(id);
         var icon = button.querySelector("i");
 
+        /* toggle(clase, condición) agrega active cuando activo es true y la quita cuando
+           es false. El aspecto representa así el estado actual, no simplemente el último clic. */
         button.classList.toggle("active", activo);
         button.setAttribute(
             "aria-label",
@@ -288,6 +323,8 @@ async function migrarFavoritosLocales() {
      * - No devuelve valor.
      */
     function mostrarAviso(texto, tipo) {
+        /* Si existe el sistema general de notificaciones, se reutiliza. typeof evita
+           llamar por error una propiedad inexistente o que no sea una función. */
         if (typeof window.mostrarMensaje === "function") {
             window.mostrarMensaje(texto, tipo || "success");
             return;
@@ -304,6 +341,8 @@ async function migrarFavoritosLocales() {
         aviso.textContent = texto;
         aviso.classList.add("show");
 
+        /* Cancela el temporizador anterior para que varios avisos seguidos no compitan.
+           El nuevo temporizador oculta el mensaje después de 2200 milisegundos. */
         clearTimeout(aviso._timer);
         aviso._timer = setTimeout(function () {
             aviso.classList.remove("show");
@@ -316,6 +355,9 @@ async function migrarFavoritosLocales() {
      * - Devuelve texto formateado.
      */
     function obtenerPrecioFormateado(precio) {
+        /* Number intenta convertir el precio a número; || 0 usa cero si el valor no sirve.
+           toLocaleString("es-AR") aplica separadores regionales. Esto formatea el texto,
+           no calcula descuentos, impuestos ni el precio de una compra. */
         return "$" + (Number(precio) || 0).toLocaleString("es-AR");
     }
 
@@ -331,6 +373,9 @@ async function migrarFavoritosLocales() {
             return String(card.dataset.productId);
         }
 
+        /* querySelector busca dentro de la tarjeta. ?. evita un error si falta el h3;
+           trim quita espacios exteriores y toLowerCase hace que la comparación ignore
+           mayúsculas. Resolver por texto es menos fiable que tener el ID real en dataset. */
         var title = (card.querySelector("h3")?.textContent || "").trim().toLowerCase();
         var volume = (card.querySelector(".volume")?.textContent || "").trim().toLowerCase();
         var price = (card.querySelector(".product-bottom strong")?.textContent || "").trim();
@@ -393,6 +438,8 @@ async function migrarFavoritosLocales() {
  * - Actualiza favoriteIds y los botones.
  */
 async function alternarFavorito(id) {
+        /* Se normaliza el ID al mismo tipo que almacena el Set. activoAntes captura el
+           estado previo para decidir entre borrar el favorito existente o agregarlo. */
         var key = String(id);
         var activoAntes = favoriteIds.has(key);
 
@@ -439,6 +486,8 @@ async function alternarFavorito(id) {
  * - Actualiza productosCache.
  */
 async function cargarProductos() {
+        /* Sin cliente no se pueden consultar productos. Vaciar la caché evita mostrar
+           datos viejos que hubieran quedado en memoria de una ejecución anterior. */
         if (!supabaseClient) {
             productosCache = [];
             return;
@@ -554,6 +603,8 @@ async function cargarProductos() {
      * - Devuelve un elemento article.
      */
     function crearTarjetaFavorito(producto) {
+        /* Crea elementos DOM por separado. Más adelante se usa textContent para títulos
+           y precios, de modo que esos valores se insertan como texto y no como etiquetas HTML. */
         var card = document.createElement("article");
         card.className = "profile-favorite-card";
 
@@ -583,6 +634,8 @@ async function cargarProductos() {
         remove.dataset.productId = String(producto.id);
         remove.setAttribute("aria-label", "Quitar de favoritos");
         remove.title = "Quitar de favoritos";
+        /* innerHTML inserta aquí un icono fijo definido por el código. No se concatena texto
+           de productos ni usuarios; eso evita interpretar datos externos como HTML. */
         remove.innerHTML = '<i class="fa-solid fa-heart"></i>';
 
         content.append(state, title, volume, price);
@@ -621,6 +674,8 @@ function renderizarFavoritosPerfil() {
 
         if (!grid) return;
 
+        /* filter crea una lista nueva solo con productos cuyo ID figura en favoriteIds.
+           La caché original no se modifica y sigue representando el conjunto de productos. */
         var productosFavoritos = productosCache.filter(function (producto) {
             return favoriteIds.has(String(producto.id));
         });
@@ -649,12 +704,18 @@ function renderizarFavoritosPerfil() {
  * - No devuelve valor.
  */
 function manejarClickFavorito(event) {
+        /* event.target puede ser el icono dentro del botón. closest sube por el árbol DOM
+           hasta hallar el botón; las comas indican que cualquiera de esos selectores coincide. */
         var button = event.target.closest(
             ".favorite-button, #productFavorite, .favorite-remove"
         );
 
         if (!button) return;
 
+        /* preventDefault cancela la acción nativa, por ejemplo navegar por un enlace.
+           stopPropagation frena el recorrido del evento; stopImmediatePropagation también
+           impide que se ejecuten otros listeners posteriores en ese mismo elemento. Es
+           deliberadamente estricto para evitar que otro script duplique el cambio. */
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
@@ -688,6 +749,8 @@ function manejarClickFavorito(event) {
  * - Configura los listeners y estado inicial.
  */
 async function inicializar() {
+        /* La bandera se cambia antes del primer await. Así una segunda llamada que llegue
+           mientras esperamos la red también se detiene y no duplica listeners. */
         if (initialized) return;
         initialized = true;
 
@@ -713,6 +776,9 @@ async function inicializar() {
             // MutationObserver detecta tarjetas que otros scripts agregan o reemplazan en el DOM.
             // Cuando cambian, volvemos a asignar IDs y clases visuales a los botones de favorito.
             // Observa cambios del DOM para reconocer botones en tarjetas generadas dinámicamente.
+            /* MutationObserver detecta nodos agregados o eliminados. Como otros scripts
+               pueden dibujar tarjetas después de cargar la página, este callback vuelve a
+               preparar IDs y estados visuales para los botones recién creados. */
             var observer = new MutationObserver(function () {
                 prepararTarjetasCatalogo();
                 prepararTarjetasHome();
@@ -720,6 +786,8 @@ async function inicializar() {
                 actualizarBotonesFavoritos();
             });
 
+            /* childList observa altas/bajas de nodos hijos; subtree extiende la observación
+               a todos los descendientes de body. No observa cambios de atributos ni de texto. */
             observer.observe(document.body, {
                 childList: true,
                 subtree: true
@@ -730,6 +798,9 @@ async function inicializar() {
             // Escucha login/logout y otros cambios de sesión. Al cambiar el usuario, se vuelve a
             // cargar la lista correcta para no mezclar favoritos de cuentas diferentes.
             // Al entrar o salir de una cuenta, vuelve a seleccionar el conjunto de favoritos correspondiente.
+            /* Registra una función que responde a cambios de autenticación. event indica el
+               tipo de cambio y session contiene la sesión nueva o null. Puede esperar una
+               nueva consulta de favoritos porque el usuario activo quizá haya cambiado. */
             supabaseClient.auth.onAuthStateChange(async function (event, session) {
                 var nuevoUserId = session && session.user ? session.user.id : null;
                 var actualUserId = currentUser ? currentUser.id : null;
@@ -737,6 +808,8 @@ async function inicializar() {
                 if (nuevoUserId === actualUserId) return;
 
                 currentUser = session ? session.user : null;
+                /* !! convierte cualquier valor a booleano: un usuario presente da true;
+                   null o undefined dan false. */
                 usingDatabase = !!currentUser;
                 favoriteKey = currentUser
                     ? FAVORITES_PREFIX + currentUser.id
