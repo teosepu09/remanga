@@ -5,7 +5,9 @@
    ========================================================= */
 
 /* ===== CONTENEDOR Y CABECERA DEL PERFIL ===== */
+/* Contenedor raíz de la pantalla de perfil. Flexbox apila las secciones, las centra y deja una separación uniforme entre ellas. */
 .profile-page {
+    /* Altura mínima basada en el viewport menos 180 px reservados para otras zonas de la página, como cabecera/pie. */
     min-height: calc(100vh - 180px);
     padding: 70px 7% 90px;
     display: flex;
@@ -14,14 +16,18 @@
     gap: 28px;
 }
 
+/* Regla agrupada: los cuatro bloques comparten el mismo límite de ancho y el mismo modelo de caja para alinearse. */
 .profile-card,
 .profile-dashboard,
 .profile-section,
+/* Contenedor de acciones de cuenta; apila sus elementos y los centra. */
 .profile-actions {
+    /* El ancho será el menor entre 980 px y el 100 % disponible: no se desborda en pantallas estrechas ni crece sin límite. */
     width: min(980px, 100%);
     box-sizing: border-box;
 }
 
+/* Tarjeta principal con avatar e información del usuario. Flexbox los coloca en una misma fila en pantallas amplias. */
 .profile-card {
     display: flex;
     align-items: center;
@@ -33,11 +39,14 @@
     box-shadow: 0 18px 45px rgba(0,0,0,.24);
 }
 
+/* Espacio reservado al avatar o icono de usuario; flex-basis evita que el elemento se encoja. */
 .profile-avatar {
     width: 96px;
     height: 96px;
+    /* Shorthand flex-grow/flex-shrink/flex-basis: no crece, no se encoge y mantiene una base de 96 px para el avatar. */
     flex: 0 0 96px;
     display: grid;
+    /* Atajo de alineación que centra el contenido en ambos ejes dentro de Grid. */
     place-items: center;
     border-radius: 50%;
     background: rgba(255,255,255,.08);
@@ -45,6 +54,7 @@
     font-size: 36px;
 }
 
+/* Etiqueta pequeña que antecede a la información principal; opacidad baja para que no compita con el nombre. */
 .profile-eyebrow {
     font-size: 12px;
     font-weight: 700;
@@ -52,21 +62,25 @@
     opacity: .55;
 }
 
+/* Nombre o título principal del perfil. Los márgenes se definen por separado arriba y abajo. */
 .profile-main h1 {
     margin: 7px 0 5px;
     font-size: 30px;
 }
 
+/* Texto secundario bajo el título principal. */
 .profile-main p {
     margin: 0 0 12px;
     opacity: .62;
 }
 
+/* Estado o texto breve del perfil. */
 .profile-status {
     font-size: 13px;
     opacity: .72;
 }
 
+/* Separa el icono de estado del texto que lo acompaña. */
 .profile-status i {
     margin-right: 6px;
 }
@@ -74,12 +88,15 @@
 /* Dashboard */
 
 /* ===== TARJETAS RESUMEN DEL PERFIL ===== */
+/* Cuadrícula de accesos o indicadores resumidos del perfil; en escritorio se reparte en cuatro columnas. */
 .profile-dashboard {
     display: grid;
+    /* Cuatro columnas iguales; cada 1fr recibe una fracción equivalente del espacio disponible. */
     grid-template-columns: repeat(4, 1fr);
     gap: 14px;
 }
 
+/* Tarjeta individual del dashboard. Tiene apariencia de tarjeta, pero el color heredado y text-decoration:none permiten usarla como enlace sin estilo de enlace tradicional. */
 .profile-dashboard-card {
     min-height: 118px;
     padding: 20px;
@@ -95,22 +112,27 @@
     transition: transform .2s ease, background .2s ease, border-color .2s ease;
 }
 
+/* Realimentación visual al pasar el cursor sobre un acceso del dashboard. */
 .profile-dashboard-card:hover {
     transform: translateY(-3px);
     background: rgba(255,255,255,.075);
     border-color: rgba(255,255,255,.13);
 }
 
+/* Solo selecciona iconos que sean hijos directos de la tarjeta, no iconos más profundos dentro de otros elementos. */
 .profile-dashboard-card > i {
     font-size: 22px;
     opacity: .72;
 }
 
+/* Hace que strong y span se comporten como bloques, para que cada texto ocupe su propia línea. */
 .profile-dashboard-card strong,
+/* Texto complementario del indicador, con tamaño y contraste reducidos. */
 .profile-dashboard-card span {
     display: block;
 }
 
+/* Destaca el texto principal de cada indicador. */
 .profile-dashboard-card strong {
     margin-bottom: 7px;
     font-size: 15px;
@@ -122,6 +144,7 @@
     opacity: .52;
 }
 
+/* Resalta un dato importante dentro del texto secundario, por ejemplo una cifra. */
 .profile-dashboard-card span b {
     font-size: 14px;
     opacity: .9;
@@ -131,16 +154,21 @@
 /* Mis publicaciones */
 
 /* ===== CUADRÍCULA DE PUBLICACIONES PROPIAS ===== */
+/* Cuadrícula de publicaciones del usuario. minmax(0, 1fr) permite que cada columna se encoja sin quedar forzada por contenido largo. */
 .profile-products-grid {
     display: grid;
+    /* Tres columnas iguales con mínimo 0 para que nombres largos no fuercen un ancho excesivo. */
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
 }
 
+/* Tarjeta de producto propio: reserva una columna para la imagen y otra flexible para título, estado y precio. */
 .profile-product-card {
+    /* Permite que el elemento se reduzca por debajo del ancho mínimo automático de su contenido, evitando desbordes en Grid/Flex. */
     min-width: 0;
     overflow: hidden;
     display: grid;
+    /* Reserva 86 px para la imagen y asigna el resto al texto, permitiendo que esa segunda columna se encoja. */
     grid-template-columns: 86px minmax(0, 1fr);
     gap: 14px;
     align-items: center;
@@ -149,34 +177,42 @@
     border-radius: 15px;
     background: rgba(255,255,255,.045);
     border: 1px solid rgba(255,255,255,.06);
+    /* Muestra el cursor de mano para indicar que la tarjeta parece interactiva; el comportamiento debe estar implementado en HTML/JS. */
     cursor: pointer;
     transition: transform .2s ease, border-color .2s ease, background .2s ease;
 }
 
+/* Eleva levemente la tarjeta cuando el cursor pasa por encima. */
 .profile-product-card:hover {
     transform: translateY(-2px);
     border-color: rgba(255,255,255,.13);
     background: rgba(255,255,255,.065);
 }
 
+/* Indicador de foco para navegación por teclado; mejora la accesibilidad frente a depender solo del hover. */
 .profile-product-card:focus-visible {
     outline: 2px solid rgba(255,136,111,.7);
+    /* Separa el contorno de foco 2 px del borde del elemento para que se distinga mejor. */
     outline-offset: 2px;
 }
 
+/* Tamaño y recorte de la portada del producto. object-fit:cover llena el marco sin deformar la imagen, recortando sobrantes si hace falta. */
 .profile-product-image {
     width: 86px;
     height: 112px;
+    /* Llena el marco de imagen conservando proporciones; puede recortar los bordes de la portada. */
     object-fit: cover;
     border-radius: 9px;
     background: rgba(255,255,255,.05);
 }
 
+/* Columna textual del producto. min-width:0 permite que el contenido se comprima dentro de Grid y no ensanche toda la tarjeta. */
 .profile-product-content {
     min-width: 0;
     padding-right: 6px;
 }
 
+/* Etiqueta discreta del estado del producto, como nuevo o usado, según el contenido que inserte el HTML/JS. */
 .profile-product-state {
     font-size: 9px;
     font-weight: 700;
@@ -184,18 +220,21 @@
     opacity: .48;
 }
 
+/* Título del producto; line-height controla la altura de las líneas si el nombre ocupa más de una. */
 .profile-product-content h3 {
     margin: 7px 0 5px;
     font-size: 14px;
     line-height: 1.3;
 }
 
+/* Texto secundario de la publicación, separado del precio u otro dato siguiente. */
 .profile-product-content p {
     margin: 0 0 9px;
     font-size: 11px;
     opacity: .5;
 }
 
+/* Da énfasis al precio u otro valor importante del producto. */
 .profile-product-content strong {
     font-size: 14px;
 }
@@ -203,6 +242,7 @@
 /* Secciones */
 
 /* ===== SECCIONES Y TARJETAS DE FAVORITOS ===== */
+/* Panel que agrupa secciones completas, como publicaciones o favoritos. */
 .profile-section {
     padding: 30px;
     border-radius: 20px;
@@ -210,6 +250,7 @@
     border: 1px solid rgba(255,255,255,.07);
 }
 
+/* Encabezado de una sección: distribuye el título y el contador hacia extremos opuestos. */
 .profile-section-heading {
     display: flex;
     justify-content: space-between;
@@ -217,11 +258,13 @@
     margin-bottom: 24px;
 }
 
+/* Título de la sección dentro del panel. */
 .profile-section-heading h2 {
     margin: 7px 0 0;
     font-size: 24px;
 }
 
+/* Insignia circular para mostrar una cantidad; grid y place-items centran el número. */
 .profile-section-count {
     min-width: 38px;
     height: 38px;
@@ -234,14 +277,17 @@
     font-weight: 700;
 }
 
+/* Cuadrícula para las tarjetas guardadas como favoritas. */
 .profile-favorites-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
 }
 
+/* Tarjeta de favorito, con imagen y contenido. position:relative sirve como referencia para ubicar el botón de quitar favorito. */
 .profile-favorite-card {
     min-width: 0;
+    /* Crea un contexto de posicionamiento para hijos con position:absolute, como el botón de quitar favorito. */
     position: relative;
     overflow: hidden;
     display: grid;
@@ -256,10 +302,12 @@
     transition: transform .2s ease;
 }
 
+/* Desplazamiento visual breve para indicar que la tarjeta es interactiva. */
 .profile-favorite-card:hover {
     transform: translateY(-2px);
 }
 
+/* Regla de la imagen dentro de cada favorito, con dimensiones consistentes y recorte proporcional. */
 .profile-favorite-card img {
     width: 86px;
     height: 112px;
@@ -268,11 +316,13 @@
     background: rgba(255,255,255,.05);
 }
 
+/* Columna de texto del favorito. El relleno derecho reserva espacio para el botón de quitar. */
 .profile-favorite-content {
     min-width: 0;
     padding-right: 25px;
 }
 
+/* Etiqueta secundaria que identifica el estado del producto favorito. */
 .profile-favorite-state {
     font-size: 9px;
     font-weight: 700;
@@ -280,22 +330,26 @@
     opacity: .48;
 }
 
+/* Título del manga/producto favorito. */
 .profile-favorite-content h3 {
     margin: 7px 0 5px;
     font-size: 14px;
     line-height: 1.3;
 }
 
+/* Texto descriptivo secundario de la tarjeta favorita. */
 .profile-favorite-content p {
     margin: 0 0 9px;
     font-size: 11px;
     opacity: .5;
 }
 
+/* Resalta el dato principal, normalmente el precio. */
 .profile-favorite-content strong {
     font-size: 14px;
 }
 
+/* Botón circular superpuesto a la tarjeta. position:absolute lo coloca en la esquina superior derecha del contenedor relativo. */
 .favorite-remove {
     position: absolute;
     top: 10px;
@@ -312,10 +366,12 @@
     opacity: .65;
 }
 
+/* Aumenta la opacidad del botón al pasar el cursor, haciéndolo más visible. */
 .favorite-remove:hover {
     opacity: 1;
 }
 
+/* Estado vacío que se muestra cuando no hay elementos para listar. Flexbox centra vertical y horizontalmente el mensaje y la acción. */
 .profile-empty {
     min-height: 180px;
     display: flex;
@@ -327,19 +383,23 @@
     box-sizing: border-box;
     border-radius: 15px;
     background: rgba(255,255,255,.025);
+    /* Borde discontinuo para diferenciar el estado vacío de una tarjeta con contenido. */
     border: 1px dashed rgba(255,255,255,.09);
 }
 
+/* Icono que acompaña al mensaje de estado vacío. */
 .profile-empty i {
     font-size: 28px;
     margin-bottom: 12px;
     opacity: .5;
 }
 
+/* Encabezado del estado vacío, con margen inferior pequeño. */
 .profile-empty h3 {
     margin: 0 0 7px;
 }
 
+/* Explicación del estado vacío; el ancho máximo limita líneas demasiado largas. */
 .profile-empty p {
     max-width: 430px;
     margin: 0 0 17px;
@@ -348,6 +408,7 @@
     opacity: .5;
 }
 
+/* Enlace de acción del estado vacío, diferenciado por peso tipográfico. */
 .profile-empty a {
     color: inherit;
     font-size: 13px;
@@ -358,22 +419,26 @@
 
 /* Próximamente */
 
+/* Bloque informativo de una función todavía no disponible; alinea icono y texto en una fila. */
 .profile-coming-soon {
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
+/* Icono directo del bloque de próxima disponibilidad. */
 .profile-coming-soon > i {
     font-size: 25px;
     opacity: .5;
 }
 
+/* Título del bloque informativo. */
 .profile-coming-soon h2 {
     margin: 7px 0;
     font-size: 20px;
 }
 
+/* Descripción de la función futura, con anchura limitada para facilitar lectura. */
 .profile-coming-soon p {
     margin: 0;
     max-width: 680px;
@@ -391,6 +456,7 @@
 }
 
 /* ===== INFORMACIÓN DE LA CUENTA Y CIERRE DE SESIÓN ===== */
+/* Tarjeta de información de cuenta, por ejemplo detalles o texto relacionado con la sesión. */
 .profile-info-card {
     width: 100%;
     display: flex;
@@ -402,17 +468,20 @@
     border: 1px solid rgba(255,255,255,.07);
 }
 
+/* Icono directo de la tarjeta informativa, separado del texto mediante padding superior. */
 .profile-info-card > i {
     font-size: 22px;
     opacity: .7;
     padding-top: 3px;
 }
 
+/* Encabezado de la información de cuenta. */
 .profile-info-card h2 {
     margin: 0 0 7px;
     font-size: 18px;
 }
 
+/* Párrafo de la tarjeta informativa, con altura de línea suficiente para texto de varias líneas. */
 .profile-info-card p {
     margin: 0;
     line-height: 1.6;
@@ -420,6 +489,7 @@
     font-size: 14px;
 }
 
+/* Botón para cerrar sesión. font:inherit mantiene la tipografía del contexto y font-weight enfatiza la acción. */
 .logout-button {
     margin-top: 28px;
     border: 0;
@@ -433,26 +503,34 @@
     transition: .2s ease;
 }
 
+/* El efecto hover solo se aplica si el botón no está deshabilitado; :not(:disabled) evita sugerir una acción no disponible. */
 .logout-button:hover:not(:disabled) {
     transform: translateY(-2px);
     background: rgba(255,255,255,.16);
 }
 
+/* Apariencia del botón durante un estado deshabilitado; cursor:wait sugiere que hay una operación en curso. */
 .logout-button:disabled {
     opacity: .55;
+    /* Cambia el cursor para sugerir que la interfaz está esperando una operación. */
     cursor: wait;
 }
 
+/* Área para mensajes de estado. min-height reserva espacio y puede reducir saltos de diseño al aparecer texto. */
 .profile-message {
     min-height: 20px;
     margin: 12px 0 0;
     font-size: 13px;
 }
 
+/* Variante de error: comunica visualmente un problema mediante el color. La clase por sí sola no genera el mensaje. */
 .profile-message.error { color: #ff8b79; }
+/* Variante informativa con contraste moderado. */
 .profile-message.info { opacity: .65; }
+/* Variante de éxito. El JavaScript/HTML debe asignar esta clase cuando corresponda. */
 .profile-message.success { opacity: .8; }
 
+/* Enlace para volver a la página principal. */
 .back-home {
     margin-top: 6px;
     color: inherit;
@@ -461,11 +539,14 @@
     font-size: 14px;
 }
 
+/* Recupera opacidad completa al pasar el cursor para hacer más visible el enlace. */
 .back-home:hover { opacity: 1; }
 
 /* ===== ADAPTACIÓN DEL PERFIL A TABLETS ===== */
+/* Tablet y ventanas medianas: reduce a dos columnas las cuadrículas de indicadores, favoritos y publicaciones. */
 @media (max-width: 900px) {
     .profile-dashboard {
+        /* En tablet se usan dos columnas para que las tarjetas tengan más espacio que en la cuadrícula de escritorio. */
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -476,6 +557,7 @@
 }
 
 /* ===== ADAPTACIÓN DEL PERFIL A MÓVILES ===== */
+/* Móvil: apila la tarjeta de perfil y convierte las cuadrículas en una columna para aprovechar el ancho limitado. */
 @media (max-width: 650px) {
     .profile-page {
         padding: 50px 20px 70px;
@@ -494,6 +576,7 @@
      .profile-dashboard,
     .profile-favorites-grid,
     .profile-products-grid {
+        /* En móvil las tarjetas se apilan en una sola columna. */
         grid-template-columns: 1fr;
     }
 
