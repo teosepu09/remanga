@@ -4,13 +4,17 @@
    RESET
 ========================================================= */
 
+/* Selector universal: aplica el reinicio a todos los elementos. Quitar márgenes y rellenos predeterminados reduce diferencias entre navegadores. */
 * {
     margin: 0;
     padding: 0;
+    /* Incluye padding y borde dentro del ancho/alto declarado, haciendo más predecibles las dimensiones. */
     box-sizing: border-box;
 }
 
+/* :root representa el elemento raíz del documento. Las custom properties declaradas aquí pueden reutilizarse en toda esta hoja mediante var(...). */
 :root {
+    /* Color de acento reutilizable para botones, focos y detalles de marca. */
     --accent: #e76f58;
     --accent-soft: rgba(231, 111, 88, 0.18);
     --panel: rgba(8, 12, 24, 0.72);
@@ -18,16 +22,20 @@
     --text-muted: rgba(255, 255, 255, 0.68);
 }
 
+/* Estilos base del documento: define tipografía, colores, fondo y comportamiento general del desplazamiento. */
 body {
+    /* 100vh representa la altura del viewport; permite que el fondo y el contenedor alcancen como mínimo una pantalla. */
     min-height: 100vh;
     font-family: "Montserrat", Arial, Helvetica, sans-serif;
     background: #070914;
     color: white;
+    /* Evita una barra de desplazamiento horizontal causada por adornos o elementos que sobresalgan lateralmente. */
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;
 }
 
+/* Las imágenes se comportan como bloques y nunca superan el ancho de su contenedor; esto evita desbordamientos horizontales. */
 img {
     display: block;
     max-width: 100%;
@@ -38,11 +46,15 @@ img {
 ========================================================= */
 
 /* ===== FONDO Y CAPA DECORATIVA ===== */
+/* Capa decorativa fija detrás de la interfaz. No participa en el flujo normal y ocupa toda la ventana. */
 .login-background {
     position: fixed;
+    /* Atajo para top/right/bottom/left: 0; estira esta capa hasta los cuatro bordes de su bloque de referencia. */
     inset: 0;
     overflow: hidden;
+    /* Envía la capa decorativa detrás del contenido; el orden final también depende de los contextos de apilamiento. */
     z-index: -3;
+    /* La capa decorativa no intercepta clics ni movimientos del cursor destinados al formulario. */
     pointer-events: none;
     background:
         radial-gradient(circle at top left, rgba(231, 111, 88, 0.12), transparent 30%),
@@ -50,16 +62,20 @@ img {
         #070914;
 }
 
+/* Imagen opcional que cubre el fondo. Sus dimensiones llenan la capa y object-fit decide cómo encajar sin deformarla. */
 .login-background-image {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
+    /* Cubre el contenedor sin deformar la imagen; si las proporciones no coinciden, recorta parte de ella. */
     object-fit: cover;
     object-position: center center;
+    /* Aplica desenfoque, reduce mucho el brillo y aumenta apenas la saturación para que el fondo no compita con el formulario. */
     filter: blur(2px) brightness(0.36) saturate(1.05);
     /* Antes estaba en 1.08 y ampliaba innecesariamente la imagen,
        recortando todavía más los bordes. */
+    /* Mantiene la escala original de la imagen. Se deja explícito para evitar la ampliación y el recorte extra de versiones anteriores. */
     transform: scale(1);
 }
 
@@ -69,14 +85,18 @@ img {
    CONTENEDOR
 ========================================================= */
 
+/* Contenedor principal de acceso: en escritorio distribuye presentación y formulario en dos columnas. */
 .login-container {
     width: 100%;
     min-height: 100vh;
     position: relative;
     z-index: 1;
     display: grid;
+    /* Dos columnas: la primera ocupa el espacio restante y puede reducirse hasta 0; la segunda reserva 390 px al formulario. */
     grid-template-columns: minmax(0, 1fr) 390px;
+    /* Alinea los elementos de la cuadrícula en el centro del eje transversal; en esta cuadrícula centra verticalmente las columnas. */
     align-items: center;
+    /* Separación entre la presentación de marca y el panel de acceso. */
     gap: 40px;
     padding: 36px 52px;
 }
@@ -86,11 +106,13 @@ img {
 ========================================================= */
 
 /* ===== IDENTIDAD VISUAL Y TEXTO DE PRESENTACIÓN ===== */
+/* Zona de marca: agrupa el logotipo, eslogan y texto de presentación junto al panel de acceso. */
 .branding {
     padding-left: 4%;
     max-width: 760px;
 }
 
+/* Eslogan de la marca. El espaciado entre letras y las mayúsculas crean un tratamiento visual de etiqueta. */
 .slogan {
     font-size: 18px;
     letter-spacing: 4px;
@@ -99,11 +121,13 @@ img {
     text-transform: uppercase;
 }
 
+/* Resalta solo los fragmentos del eslogan envueltos en span, usando el color de acento. */
 .slogan span {
     color: var(--accent);
     margin: 0 8px;
 }
 
+/* Texto de apoyo de la marca. max-width limita la longitud de línea para que el párrafo sea más fácil de leer. */
 .branding-description {
     margin-top: 22px;
     max-width: 560px;
@@ -117,23 +141,27 @@ img {
 ========================================================= */
 
 /* ===== PANEL DEL FORMULARIO ===== */
+/* Panel visual que contiene el formulario. Fondo translúcido, borde tenue y desenfoque crean el efecto de vidrio. */
 .login-panel {
     width: 100%;
     padding: 30px 30px;
     border-radius: 20px;
     background: var(--panel);
     border: 1px solid var(--panel-border);
+    /* Desenfoca lo que se ve a través del panel translúcido; el efecto depende del soporte del navegador. */
     backdrop-filter: blur(18px);
     box-shadow:
         0 24px 80px rgba(0, 0, 0, 0.50),
         inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
+/* Encabezado interior del panel: centra icono, título y texto secundario. */
 .login-header {
     text-align: center;
     margin-bottom: 22px;
 }
 
+/* Contenedor circular del icono de usuario. Flexbox centra su contenido horizontal y verticalmente. */
 .user-icon {
     width: 54px;
     height: 54px;
@@ -149,11 +177,13 @@ img {
     box-shadow: 0 0 24px rgba(231, 111, 88, 0.35);
 }
 
+/* Título principal del formulario de inicio de sesión. */
 .login-header h1 {
     font-size: 25px;
     margin-bottom: 6px;
 }
 
+/* Texto secundario del encabezado, con menos contraste para mantener la jerarquía visual. */
 .login-header p {
     font-size: 13px;
     color: rgba(255, 255, 255, 0.60);
@@ -164,10 +194,12 @@ img {
 ========================================================= */
 
 /* ===== CAMPOS DE ENTRADA Y ESTADOS DE FOCO ===== */
+/* Agrupa cada etiqueta y su campo de entrada, reservando espacio antes del siguiente campo. */
 .input-group {
     margin-bottom: 14px;
 }
 
+/* La etiqueta ocupa una línea completa y queda separada del campo al que describe. */
 .input-group label {
     display: block;
     margin-bottom: 7px;
@@ -175,6 +207,7 @@ img {
     color: rgba(255, 255, 255, 0.80);
 }
 
+/* Apariencia común de los campos del formulario. width:100% los hace ocupar el ancho disponible del grupo. */
 .input-group input {
     width: 100%;
     height: 46px;
@@ -183,17 +216,21 @@ img {
     border: 1px solid rgba(255, 255, 255, 0.10);
     background: rgba(255, 255, 255, 0.04);
     color: white;
+    /* Elimina el contorno predeterminado del campo; por eso la regla :focus dibuja otro indicador visible para teclado y clic. */
     outline: none;
     font-size: 13px;
+    /* Suaviza los cambios de propiedades durante 0,25 segundos; ease acelera y desacelera la transición. */
     transition: 0.25s ease;
 }
 
+/* Estado de foco: se aplica cuando el usuario selecciona el campo con clic o teclado; el borde y el halo muestran dónde está escribiendo. */
 .input-group input:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(231, 111, 88, 0.14);
     background: rgba(255, 255, 255, 0.055);
 }
 
+/* Estilo del texto de ejemplo que aparece dentro de un campo vacío; se atenúa para distinguirlo del valor escrito. */
 .input-group input::placeholder {
     color: rgba(255, 255, 255, 0.35);
 }
@@ -202,6 +239,7 @@ img {
    CONTRASEÑA
 ========================================================= */
 
+/* Fila de la etiqueta de contraseña y el enlace para recuperarla. space-between los separa hacia extremos opuestos. */
 .password-label {
     display: flex;
     align-items: center;
@@ -209,6 +247,7 @@ img {
     gap: 14px;
 }
 
+/* Enlace para recuperar la contraseña. white-space:nowrap evita que se parta en varias líneas en el diseño amplio. */
 .forgot-password {
     font-size: 13px;
     color: #f08a75;
@@ -216,18 +255,22 @@ img {
     white-space: nowrap;
 }
 
+/* Subraya el enlace cuando se pasa el cursor para señalar que es interactivo. */
 .forgot-password:hover {
     text-decoration: underline;
 }
 
+/* Marco de referencia para posicionar el control de mostrar/ocultar contraseña dentro del campo. */
 .password-container {
     position: relative;
 }
 
+/* Reserva espacio a la derecha para que el texto escrito no quede debajo del botón de mostrar contraseña. */
 .password-container input {
     padding-right: 46px;
 }
 
+/* Botón superpuesto al campo de contraseña. position:absolute lo posiciona respecto del contenedor relativo. */
 .toggle-password {
     position: absolute;
     right: 12px;
@@ -240,6 +283,7 @@ img {
     font-size: 12px;
 }
 
+/* Aumenta el contraste del botón al pasar el cursor. La acción real de mostrar u ocultar depende del JavaScript/HTML asociado. */
 .toggle-password:hover {
     color: white;
 }
@@ -248,10 +292,12 @@ img {
    RECORDAR
 ========================================================= */
 
+/* Espaciado alrededor de la opción de recordar al usuario. */
 .remember-container {
     margin: 4px 0 18px;
 }
 
+/* Alinea horizontalmente la casilla y su texto; cursor:pointer permite reconocer la etiqueta como elemento activable. */
 .remember-label {
     display: flex;
     align-items: center;
@@ -261,6 +307,7 @@ img {
     cursor: pointer;
 }
 
+/* Tamaño de la casilla y color de selección en navegadores compatibles mediante accent-color. */
 .remember-label input {
     width: 15px;
     height: 15px;
@@ -272,6 +319,7 @@ img {
 ========================================================= */
 
 /* ===== ACCIONES PRINCIPALES Y ACCESO COMO INVITADO ===== */
+/* Botón principal del formulario. Se diseña para ocupar todo el ancho y destacar con color, peso tipográfico y sombra. */
 .login-button {
     width: 100%;
     height: 46px;
@@ -287,11 +335,14 @@ img {
     box-shadow: 0 12px 28px rgba(231, 111, 88, 0.28);
 }
 
+/* Realimentación visual al pasar el cursor: eleva ligeramente el botón y refuerza la sombra. */
 .login-button:hover {
+    /* Mueve visualmente el elemento 2 px hacia arriba sin cambiar su posición en el flujo del documento. */
     transform: translateY(-2px);
     box-shadow: 0 16px 32px rgba(231, 111, 88, 0.36);
 }
 
+/* Estado mientras se pulsa el botón; vuelve a su posición base para simular una presión física. */
 .login-button:active {
     transform: translateY(0);
 }
@@ -300,6 +351,7 @@ img {
    CONTINUAR SIN INICIAR SESIÓN
 ========================================================= */
 
+/* Enlace con apariencia de botón para continuar sin iniciar sesión. Sigue siendo un enlace y su destino lo define el HTML. */
 .guest-button {
     display: block;
     width: 100%;
@@ -314,6 +366,7 @@ img {
     transition: 0.25s ease;
 }
 
+/* Estado visual del acceso como invitado cuando el cursor está encima. */
 .guest-button:hover {
     background: rgba(231, 111, 88, 0.16);
     border-color: rgba(231, 111, 88, 0.5);
@@ -325,6 +378,7 @@ img {
    REGISTRO
 ========================================================= */
 
+/* Bloque inferior que invita a crear una cuenta si el usuario todavía no está registrado. */
 .register-section {
     margin-top: 20px;
     text-align: center;
@@ -332,6 +386,7 @@ img {
     color: rgba(255, 255, 255, 0.62);
 }
 
+/* Enlace de registro diferenciado del texto que lo rodea. */
 .register-section a {
     margin-left: 6px;
     color: #f08a75;
@@ -339,6 +394,7 @@ img {
     font-weight: 700;
 }
 
+/* Subrayado al pasar el cursor para comunicar que el texto lleva a otra pantalla. */
 .register-section a:hover {
     text-decoration: underline;
 }
@@ -348,8 +404,10 @@ img {
 ========================================================= */
 
 /* ===== DISTRIBUCIÓN EN PANTALLAS MEDIANAS ===== */
+/* Breakpoint de tablet y ventanas estrechas: apila marca y formulario en una columna y centra la presentación. */
 @media (max-width: 1000px) {
     .login-container {
+        /* Sustituye las columnas por una sola: marca y formulario quedan apilados. */
         grid-template-columns: 1fr;
         min-height: auto;
         padding: 36px 24px 42px;
@@ -368,6 +426,7 @@ img {
 }
 
 /* ===== DISTRIBUCIÓN EN MÓVILES ===== */
+/* Breakpoint para móvil: reduce espacios y tamaños y reorganiza la fila de contraseña para evitar que sus elementos se aprieten. */
 @media (max-width: 600px) {
     .login-container {
         padding: 20px;
@@ -393,6 +452,7 @@ img {
 
     .password-label {
         align-items: flex-start;
+        /* Apila los elementos de la fila verticalmente cuando falta ancho en el móvil. */
         flex-direction: column;
         gap: 6px;
     }
@@ -402,6 +462,7 @@ img {
     }
 }
 
+/* Ajuste por altura: en ventanas bajas reduce los espacios verticales para que el formulario no requiera tanto desplazamiento. */
 @media (max-height: 800px) {
     .login-container {
         min-height: auto;
