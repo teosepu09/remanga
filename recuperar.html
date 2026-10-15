@@ -1,69 +1,117 @@
+<!-- DOCTYPE activa el modo estándar HTML5. No se muestra en pantalla; le indica al navegador cómo interpretar el marcado. -->
 <!DOCTYPE html>
+<!-- Elemento raíz del documento. lang="es" declara el idioma principal para lectores de pantalla y traducción automática. -->
 <html lang="es">
 <head>
-    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recuperar contraseña | ReManga</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="static/login.css">
-    <link rel="stylesheet" href="static/brand.css">
+    <!-- HEAD reúne metadatos, título, fuentes y CSS que el navegador necesita antes de presentar la interfaz. -->    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
+    <!-- UTF-8 permite representar correctamente ñ, tildes y símbolos del español. -->
+<meta charset="UTF-8">
+    <!-- Ajusta el ancho de la página al dispositivo y permite que el CSS adapte la interfaz a móviles. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título de la pestaña del navegador; identifica la tarea de esta pantalla. -->
+<title>Recuperar contraseña | ReManga</title>
+    <!-- Prepara la conexión con Google Fonts antes de pedir la hoja de estilos de las fuentes. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Dominio que entrega archivos de fuentes; crossorigin habilita la conexión anticipada que requiere ese recurso. -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Carga Montserrat en varios grosores. rel="stylesheet" indica que el recurso es CSS; display=swap permite mostrar una fuente de reserva mientras carga. -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Reutiliza el CSS de login/registro para el fondo, el panel, los campos y el botón. -->
+<link rel="stylesheet" href="static/login.css">
+    <!-- Reglas compartidas para mantener el isotipo y logotipo coherentes con las demás páginas. -->
+<link rel="stylesheet" href="static/brand.css">
+    <!-- Estilos específicos de recuperación: mensajes, estado deshabilitado del botón y enlace para volver al login. -->
     <style>
+        /* Reserva espacio para mensajes y define separación, tamaño y altura de línea para que el aviso sea legible. */
         .auth-message { min-height: 20px; margin: 0 0 16px; font-size: 13px; line-height: 1.45; }
+        /* Selector compuesto: se aplica cuando el elemento tiene ambas clases, auth-message y error. */
         .auth-message.error { color: #ff8b79; }
+        /* Da un color distinto a los mensajes de éxito, por ejemplo después de solicitar el correo. */
         .auth-message.success { color: #68e0a0; }
+        /* Estilo para avisos neutrales o informativos que no son ni error ni confirmación final. */
         .auth-message.info { color: rgba(255,255,255,.68); }
+        /* :disabled selecciona el botón mientras está desactivado; reduce su opacidad y muestra que hay una operación en curso. */
         .login-button:disabled { opacity: .65; cursor: wait; transform: none; }
+        /* El enlace ocupa una línea completa y se centra, con espacio respecto del botón y estilo secundario. */
         .back-login { display:block; margin-top:18px; text-align:center; color:rgba(255,255,255,.62); text-decoration:none; font-size:14px; }
+        /* :hover cambia el color al pasar el cursor; solo afecta la apariencia, no el destino del enlace. */
         .back-login:hover { color:white; }
     </style>
 </head>
+<!-- BODY contiene la interfaz visible. Las clases se usan principalmente para CSS; los id permiten a recuperar.js encontrar controles específicos. -->
+<body></head>
 <body>
-    <!-- RECUPERAR CONTRASEÑA: solicita un correo para iniciar el proceso de recuperación de acceso. -->
-    <div class="login-background" aria-hidden="true">
-        <img class="login-background-image" src="static/fotologin.jpeg" alt="">
-        <div class="login-background-glow"></div>
+    <!-- OBJETIVO: esta pantalla solicita el correo asociado a la cuenta. El HTML muestra el formulario; recuperar.js valida y llama a Supabase Auth para enviar el enlace. -->    <!-- RECUPERAR CONTRASEÑA: solicita un correo para iniciar el proceso de recuperación de acceso. -->
+    <!-- Fondo decorativo. aria-hidden="true" evita que lectores de pantalla intenten anunciar efectos que no aportan información funcional. -->
+<div class="login-background" aria-hidden="true">
+        <!-- Imagen de fondo: src es la ruta del archivo y alt vacío declara que es decorativa, no contenido que deba leerse. -->
+<img class="login-background-image" src="static/fotologin.jpeg" alt="">
+        <!-- Capa sin texto cuyo efecto de luz/gradiente se define en CSS mediante la clase login-background-glow. -->
+<div class="login-background-glow"></div>
     </div>
 
     
-    <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
-    <main class="login-container">
-        <section class="branding">
-            <div class="login-brand">
-                <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="login-brand-mark">
-                <img src="static/logotipo.png" alt="ReManga" class="login-brand-wordmark">
+    <!-- CONTENIDO PRINCIPAL: main identifica el contenido central para navegadores y tecnologías de asistencia. -->    <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
+    <!-- Contenedor principal que agrupa la marca y el panel; login-container controla su distribución responsive mediante CSS. -->
+<main class="login-container">
+        <!-- Bloque de marca y presentación, separado del formulario de recuperación. -->
+<section class="branding">
+            <!-- Agrupa isotipo y logotipo para alinearlos como una unidad visual con CSS. -->
+<div class="login-brand">
+                <!-- Isotipo: src indica la ruta, alt describe la imagen y login-brand-mark define su tamaño/posición con CSS. -->
+<img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="login-brand-mark">
+                <!-- Logotipo independiente del isotipo para controlar su ancho sin deformar la otra imagen. -->
+<img src="static/logotipo.png" alt="ReManga" class="login-brand-wordmark">
             </div>
-            <p class="slogan">COMPRA <span>•</span> VENDE <span>•</span> DESCUBRÍ</p>
-            <p class="branding-description">Recuperá el acceso a tu cuenta de ReManga.</p>
+            <!-- Eslogan estático; los span separan las palabras con puntos decorativos, no son campos ni variables. -->
+<p class="slogan">COMPRA <span>•</span> VENDE <span>•</span> DESCUBRÍ</p>
+            <!-- Texto descriptivo de esta pantalla; no interviene en el proceso de autenticación. -->
+<p class="branding-description">Recuperá el acceso a tu cuenta de ReManga.</p>
         </section>
 
-        <section class="login-panel" aria-labelledby="recoveryTitle">
+        <!-- Panel de recuperación. aria-labelledby vincula el nombre accesible de esta sección al h1 con id recoveryTitle. -->
+<section class="login-panel" aria-labelledby="recoveryTitle">
             <div class="login-header">
-                <div class="user-icon" aria-hidden="true"><span>♙</span></div>
-                <h1 id="recoveryTitle">Recuperar contraseña</h1>
-                <p>Te enviaremos un enlace para restablecerla.</p>
+                <!-- Icono decorativo; se oculta del árbol accesible porque el título ya describe la función del panel. -->
+<div class="user-icon" aria-hidden="true"><span>♙</span></div>
+                <!-- Encabezado principal. Su id también sirve de referencia para aria-labelledby en la sección. -->
+<h1 id="recoveryTitle">Recuperar contraseña</h1>
+                <!-- Instrucción para el usuario. El envío real depende de la respuesta de Supabase, no de que este texto esté presente. -->
+<p>Te enviaremos un enlace para restablecerla.</p>
             </div>
 
             
-    <!-- FORMULARIO DE AUTENTICACIÓN: campos que utiliza el script de esta página. -->
-    <form id="recoveryForm" novalidate>
+    <!-- FORMULARIO: recoveryForm es el id que recuperar.js usa para escuchar submit. novalidate deja la validación y los mensajes bajo control del JavaScript. -->    <!-- FORMULARIO DE AUTENTICACIÓN: campos que utiliza el script de esta página. -->
+    <!-- form agrupa los controles de una acción. id conecta el formulario con recuperar.js; novalidate evita los avisos nativos al enviar, así que el script debe validar el correo. -->
+<form id="recoveryForm" novalidate>
                 <div class="input-group">
-                    <label for="email">Correo electrónico</label>
-                    <input type="email" id="email" name="email" placeholder="Ingresá tu correo electrónico" autocomplete="email" required>
+                    <!-- for="email" vincula esta etiqueta con el input id="email"; al pulsar el texto, el navegador enfoca el campo. -->
+<label for="email">Correo electrónico</label>
+                    <!-- CAMPO DE CORREO: type=email identifica el tipo de dato y puede ofrecer un teclado adecuado en móviles.
+     id=email es el selector que usa JavaScript; name=email es el nombre tradicional del campo en un envío HTML.
+     placeholder es una pista visual, no el valor enviado. autocomplete=email permite sugerir un correo guardado.
+     required declara que debe completarse; como el form usa novalidate, recuperar.js debe comprobarlo explícitamente.
+     Esta comprobación no puede demostrar por sí sola que el correo exista o pertenezca al usuario. -->
+<input type="email" id="email" name="email" placeholder="Ingresá tu correo electrónico" autocomplete="email" required>
                 </div>
 
-                <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
-                <button type="submit" class="login-button">ENVIAR ENLACE</button>
-                <a href="login.html" class="back-login">Volver a iniciar sesión</a>
+                <!-- Área inicialmente vacía donde recuperar.js escribe errores o confirmaciones, por ejemplo que se solicitó el enlace.
+     role=status y aria-live=polite permiten anunciar el cambio a lectores de pantalla sin interrumpir bruscamente. -->
+<p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+                <!-- submit dispara el evento submit del formulario. recuperar.js lo intercepta, evita la recarga, valida el correo y solicita el envío del enlace a Supabase Auth. -->
+<button type="submit" class="login-button">ENVIAR ENLACE</button>
+                <!-- Enlace de navegación que vuelve al login. Es un enlace normal y funciona sin lógica JavaScript adicional. -->
+<a href="login.html" class="back-login">Volver a iniciar sesión</a>
             </form>
         </section>
     </main>
 
-        <!-- JAVASCRIPT: librería de Supabase, configuración y lógica de esta pantalla. -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
-    <script src="static/recuperar.js"></script>
+        <!-- ORDEN DE CARGA: primero se carga el SDK que define window.supabase; después config.js publica la URL y clave publicable; finalmente recuperar.js usa ambos para crear el cliente. -->        <!-- JAVASCRIPT: librería de Supabase, configuración y lógica de esta pantalla. -->
+    <!-- SDK de Supabase para JavaScript. Debe estar cargado antes de crear el cliente de autenticación. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Define window.REMANGA_SUPABASE_CONFIG; recuperar.js lee esta configuración para conectarse al proyecto correcto. -->
+<script src="config.js"></script>
+    <!-- Lógica de esta pantalla: lee el correo, valida el formulario, solicita el enlace de recuperación y presenta el resultado. -->
+<script src="static/recuperar.js"></script>
 </body>
 </html>
