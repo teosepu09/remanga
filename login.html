@@ -1,84 +1,161 @@
+<!-- DOCTYPE activa el modo estándar HTML5. No es un elemento visual: le indica al navegador
+     cómo interpretar el resto de las etiquetas y sus reglas. -->
 <!DOCTYPE html>
+<!-- Elemento raíz del documento. lang="es" declara el idioma principal, importante para lectores
+     de pantalla, traducción automática y programas que analizan el contenido. -->
 <html lang="es">
 <head>
-    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesión | ReManga</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="static/login.css">
-    <link rel="stylesheet" href="static/brand.css">
+    <!-- HEAD reúne información que el navegador necesita antes de mostrar la pantalla: codificación,
+         título, fuentes y hojas CSS. La lógica del formulario se carga al final del body. -->    <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
+    <!-- UTF-8 permite representar correctamente la ñ, tildes y símbolos del español. -->
+<meta charset="UTF-8">
+    <!-- Hace que el ancho del documento siga el ancho físico del dispositivo y permite que login.css
+     adapte la distribución a móviles. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Texto de la pestaña del navegador; describe la tarea de esta página. -->
+<title>Iniciar sesión | ReManga</title>
+    <!-- Le indica al navegador que puede preparar una conexión con Google Fonts antes de descargar la hoja. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Dominio desde el que se descargan los archivos de fuente. crossorigin habilita la conexión anticipada
+     con la política que exige ese recurso externo. -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Descarga la familia Montserrat en varios grosores. rel="stylesheet" indica que el recurso es CSS;
+     display=swap permite mostrar una fuente de reserva mientras se carga Montserrat. -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS específico del login: fondo, distribución en columnas, panel, campos y botones de autenticación. -->
+<link rel="stylesheet" href="static/login.css">
+    <!-- Reglas compartidas de marca para presentar el isotipo y logotipo de manera consistente con el resto del sitio. -->
+<link rel="stylesheet" href="static/brand.css">
 </head>
+<!-- BODY contiene el contenido mostrado al usuario. Las clases CSS determinan la apariencia y los id permiten
+     que login.js encuentre los campos y conecte sus eventos. -->
 <body>
     <!-- INICIAR SESIÓN: formulario para acceder con una cuenta y opción para continuar como invitado. -->
-    <div class="login-background" aria-hidden="true">
-        <img class="login-background-image" src="static/fotologin.jpeg" alt="">
-        <div class="login-background-glow"></div>
+    <!-- Fondo decorativo de toda la pantalla. aria-hidden="true" indica que este bloque no aporta información
+     necesaria a lectores de pantalla; así se evita anunciar contenido puramente visual. -->
+<div class="login-background" aria-hidden="true">
+        <!-- Imagen de fondo. alt="" declara que es decorativa: no se necesita leer una descripción porque no transmite
+     información funcional distinta del diseño de la página. -->
+<img class="login-background-image" src="static/fotologin.jpeg" alt="">
+        <!-- Capa vacía usada para efectos de luz/gradiente desde CSS; no necesita texto interno. -->
+<div class="login-background-glow"></div>
     </div>
 
     
     <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
-    <main class="login-container">
-        <section class="branding">
-            <div class="login-brand">
-                <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="login-brand-mark">
-                <img src="static/logotipo.png" alt="ReManga" class="login-brand-wordmark">
+    <!-- main identifica el contenido principal del documento. login-container organiza el bloque de marca y el panel
+     de autenticación, y sirve como ámbito de estilos para la distribución responsive. -->
+<main class="login-container">
+        <!-- BLOQUE DE MARCA: identidad y mensaje de ReManga, separado semánticamente del formulario. -->
+<section class="branding">
+            <!-- Agrupa las dos imágenes de marca para que CSS pueda alinearlas y controlar su tamaño como una unidad. -->
+<div class="login-brand">
+                <!-- Isotipo de ReManga: src es la ruta, alt describe la imagen y login-brand-mark permite dimensionarla por CSS. -->
+<img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="login-brand-mark">
+                <!-- Logotipo escrito en una segunda imagen; se separa del isotipo para controlar su ancho independientemente. -->
+<img src="static/logotipo.png" alt="ReManga" class="login-brand-wordmark">
             </div>
-            <p class="slogan">COMPRA <span>•</span> VENDE <span>•</span> DESCUBRÍ</p>
+            <!-- Eslogan estático. Los span separan visualmente las palabras con puntos; no son campos ni variables. -->
+<p class="slogan">COMPRA <span>•</span> VENDE <span>•</span> DESCUBRÍ</p>
             <p class="branding-description">Tu comunidad para comprar, vender y descubrir nuevas historias.</p>
         </section>
 
-        <section class="login-panel" aria-labelledby="loginTitle">
+        <!-- PANEL DE ACCESO: contiene encabezado, formulario y enlace al registro.
+     aria-labelledby="loginTitle" asocia el nombre accesible de esta sección con el h1 que tiene ese id. -->
+<section class="login-panel" aria-labelledby="loginTitle">
             <div class="login-header">
-                <div class="user-icon" aria-hidden="true"><span>♙</span></div>
-                <h1 id="loginTitle">Iniciar sesión</h1>
+                <!-- Icono visual decorativo del usuario. Se excluye del árbol accesible porque el título ya explica la sección. -->
+<div class="user-icon" aria-hidden="true"><span>♙</span></div>
+                <!-- h1 es el encabezado principal del panel. El id loginTitle se usa también en aria-labelledby de la sección. -->
+<h1 id="loginTitle">Iniciar sesión</h1>
                 <p>Bienvenido de nuevo a ReManga</p>
             </div>
 
             
-    <!-- FORMULARIO DE AUTENTICACIÓN: campos que utiliza el script de esta página. -->
-    <form id="loginForm" novalidate>
-                <div class="input-group">
-                    <label for="usuario">Correo electrónico</label>
-                    <input type="email" id="usuario" name="usuario" placeholder="Ingresá tu correo electrónico" autocomplete="email" required>
+    <!-- FORMULARIO:
+         loginForm es el id que login.js usa para registrar el evento submit.
+         novalidate desactiva la validación automática del navegador al enviar, para que el script controle
+         los mensajes y comprobaciones. Por eso login.js debe validar los campos explícitamente. -->    <!-- FORMULARIO DE AUTENTICACIÓN: campos que utiliza el script de esta página. -->
+    <!-- form agrupa datos que se envían como una acción. id permite encontrarlo desde JavaScript.
+     novalidate no elimina required de los campos, pero evita que el navegador interrumpa el submit con sus avisos
+     automáticos; la validación de este archivo se realiza mediante login.js. -->
+<form id="loginForm" novalidate>
+                <!-- Grupo visual de un campo: label y control de entrada quedan asociados dentro de la misma unidad de formulario. -->
+<div class="input-group">
+                    <!-- for="usuario" debe coincidir con id="usuario". Al pulsar la etiqueta, el navegador enfoca ese input. -->
+<label for="usuario">Correo electrónico</label>
+                    <!-- CAMPO DE CORREO:
+     type="email" indica el tipo esperado y habilita teclado de correo en móviles.
+     id="usuario" es el selector que usa login.js; name="usuario" nombra el campo en un envío HTML tradicional.
+     placeholder es una pista, no el valor real. autocomplete="email" ayuda al navegador a sugerir un correo guardado.
+     required documenta que debe completarse, aunque novalidate hace que el script tenga que comprobarlo por sí mismo. -->
+<input type="email" id="usuario" name="usuario" placeholder="Ingresá tu correo electrónico" autocomplete="email" required>
                 </div>
 
                 <div class="input-group">
-                    <div class="password-label">
-                        <label for="password">Contraseña</label>
-                        <a href="recuperar.html" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                    <!-- Agrupa la etiqueta de contraseña y el enlace para recuperarla, para alinearlos en la misma fila mediante CSS. -->
+<div class="password-label">
+                        <!-- Vincula la etiqueta al campo password cuyo id debe coincidir exactamente con el atributo for. -->
+<label for="password">Contraseña</label>
+                        <!-- Enlace normal a la recuperación. No necesita un listener especial aquí: el navegador navega a recuperar.html. -->
+<a href="recuperar.html" class="forgot-password">¿Olvidaste tu contraseña?</a>
                     </div>
-                    <div class="password-container">
-                        <input type="password" id="password" name="password" placeholder="Ingresá tu contraseña" autocomplete="current-password" required>
-                        <button type="button" id="togglePassword" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
+                    <!-- Agrupa el input y el botón de mostrar/ocultar, de modo que CSS pueda situar el botón dentro del área de contraseña. -->
+<div class="password-container">
+                        <!-- CAMPO DE CONTRASEÑA:
+     type="password" oculta visualmente los caracteres, pero no cifra ni envía por sí mismo la contraseña.
+     login.js lee passwordInput.value cuando se envía el formulario.
+     autocomplete="current-password" indica que este campo es para una contraseña existente.
+     required marca el dato como necesario; como el form tiene novalidate, JS comprueba que no esté vacío. -->
+<input type="password" id="password" name="password" placeholder="Ingresá tu contraseña" autocomplete="current-password" required>
+                        <!-- Botón independiente del envío. togglePassword es el id que login.js escucha para alternar input.type
+     entre password y text; aria-label cambia a Mostrar/Ocultar según el estado. -->
+<button type="button" id="togglePassword" class="toggle-password" aria-label="Mostrar contraseña">◉</button>
                     </div>
                 </div>
 
-                <div class="remember-container">
+                <!-- Contenedor visual de la opción de recordar, separado de correo y contraseña. -->
+<div class="remember-container">
                     <label class="remember-label">
-                        <input type="checkbox" id="remember">
+                        <!-- Casilla booleana: su propiedad checked será true si se marcó.
+     login.js utiliza ese valor para guardar o quitar remangaRemember en localStorage.
+     Importante: en el código actual el cliente de Supabase tiene persistSession=true independientemente de esta casilla;
+     este checkbox guarda una preferencia, pero por sí solo no modifica la configuración real de persistencia de Supabase. -->
+<input type="checkbox" id="remember">
                         <span>Recordarme</span>
                     </label>
                 </div>
 
-                <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+                <!-- Región de mensajes. authMessage permite que login.js escriba errores/avisos sin insertar un popup nuevo.
+     role="status" y aria-live="polite" ayudan a tecnologías de asistencia a anunciar los cambios de forma no urgente. -->
+<p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
 
-                <button type="submit" class="login-button">ENTRAR</button>
-                <a href="./index.html" id="guestBtn" class="guest-button">CONTINUAR SIN INICIAR SESIÓN</a>
+                <!-- Botón principal. type="submit" dispara el evento submit de loginForm; login.js lo intercepta con
+     preventDefault(), verifica los datos y llama a Supabase Auth en vez de hacer un envío HTML tradicional. -->
+<button type="submit" class="login-button">ENTRAR</button>
+                <!-- El enlace tiene una ruta de respaldo a index.html, pero login.js intercepta el clic con preventDefault(),
+     escribe remangaGuest="true" en sessionStorage y luego navega con location.replace().
+     El modo invitado no crea una cuenta ni una sesión autenticada; solo registra temporalmente esa elección en la pestaña. -->
+<a href="./index.html" id="guestBtn" class="guest-button">CONTINUAR SIN INICIAR SESIÓN</a>
             </form>
 
-            <div class="register-section">
+            <!-- Zona separada del formulario principal para personas que todavía no tienen cuenta. -->
+<div class="register-section">
                 <span>¿No tenés una cuenta?</span>
-                <a href="registro.html">Crear cuenta</a>
+                <!-- Navegación al formulario de registro. Como es un enlace normal, no necesita un evento de submit. -->
+<a href="registro.html">Crear cuenta</a>
             </div>
         </section>
     </main>
 
         <!-- JAVASCRIPT: librería de Supabase, configuración y lógica de esta pantalla. -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
-    <script src="static/login.js"></script>
+    <!-- SDK de Supabase: define window.supabase. Debe cargarse antes de que login.js intente crear el cliente. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Publica la configuración compartida en window.REMANGA_SUPABASE_CONFIG; contiene la URL y clave publicable.
+     login.js depende de esta variable, por eso config.js se carga antes. -->
+<script src="config.js"></script>
+    <!-- Lógica de esta pantalla: localiza los elementos por id, muestra/oculta contraseña, gestiona invitado,
+     valida datos, llama a Supabase Auth y redirige según el resultado. Se carga al final para que el HTML ya esté parseado. -->
+<script src="static/login.js"></script>
 </body>
 </html>
