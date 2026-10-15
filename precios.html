@@ -1,78 +1,133 @@
+<!-- DOCTYPE HTML5: indica al navegador que interprete el documento con los estándares actuales. -->
 <!DOCTYPE html>
+<!-- Elemento raíz del documento. lang="es" declara el idioma para lectores de pantalla y herramientas de traducción. -->
 <html lang="es">
+<!-- HEAD reúne los metadatos, el título y los recursos que el navegador necesita para mostrar la página. -->
 <head>
     <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mejores precios | ReManga</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="static/style.css">
-    <link rel="stylesheet" href="static/brand.css">
-    <link rel="stylesheet" href="static/info.css">
+        <!-- UTF-8 permite representar correctamente tildes, ñ y otros caracteres del español. -->
+<meta charset="UTF-8">
+        <!-- Adapta el ancho al dispositivo y permite que el diseño responda a pantallas pequeñas. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Título mostrado en la pestaña, el historial y otros lugares donde se identifica el documento. -->
+<title>Mejores precios | ReManga</title>
+        <!-- Anticipa la conexión con Google Fonts para reducir la espera al cargar las fuentes. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+        <!-- Dominio que entrega los archivos de fuente; crossorigin prepara la conexión con el modo CORS requerido. -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <!-- Importa Montserrat para texto y Orbitron para títulos. Se piden varios grosores; display=swap permite una fuente alternativa mientras cargan. -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+        <!-- Biblioteca Font Awesome 6.6.0, usada para dibujar iconos mediante clases como fa-solid y fa-brands. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+        <!-- Hoja global de estilos compartidos entre distintas páginas del sitio. -->
+<link rel="stylesheet" href="static/style.css">
+        <!-- Hoja adicional para la presentación de la identidad de marca. -->
+<link rel="stylesheet" href="static/brand.css">
+        <!-- Estilos de páginas informativas: hero, tarjetas, pasos, preguntas frecuentes y enlaces de regreso. -->
+<link rel="stylesheet" href="static/info.css">
 </head>
+<!-- BODY contiene el contenido visible e interactivo de la página. -->
 <body>
     <!-- INFORMACIÓN DE PRECIOS: reúne orientación para comparar precios y encontrar publicaciones convenientes. -->
 
     <!-- ENCABEZADO: identidad de ReManga, navegación y accesos comunes. -->
-    <header id="header">
+        <!-- Cabecera compartida: marca, navegación, buscador y accesos a perfil y carrito. El id permite identificarla desde CSS o JavaScript. -->
+<header id="header">
     <div class="logo">
-        <a href="index.html" class="brand-lockup" aria-label="ReManga">
-            <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
-            <img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
+                <!-- Enlace al inicio que agrupa isotipo y logotipo; aria-label da un nombre accesible al enlace. -->
+<a href="index.html" class="brand-lockup" aria-label="ReManga">
+                        <!-- Imagen del símbolo de la marca. src apunta al archivo y alt describe la imagen si no carga o para lectores de pantalla. -->
+<img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
+                        <!-- Imagen del nombre de marca, separada del isotipo para controlar cada pieza con CSS. -->
+<img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
         </a>
     </div>
-    <nav>
-        <ul>
+        <!-- Región semántica de navegación; agrupa los enlaces a las secciones principales. -->
+<nav>
+                <!-- Lista de navegación. ul agrupa las opciones y cada li representa un enlace. -->
+<ul>
             <li><a href="index.html">Inicio</a></li>
             <li><a href="catalogo.html">Catálogo</a></li>
             <li><a href="vender.html">Vender</a></li>
         </ul>
     </nav>
-    <div class="header-right">
-        <div class="search-box">
-            <input type="text" placeholder="Buscar manga...">
-            <button type="button" aria-label="Buscar"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <!-- Agrupa los controles que se ubican a la derecha de la cabecera: búsqueda, cuenta y carrito. -->
+<div class="header-right">
+                <!-- Contenedor visual del buscador. Para buscar de verdad hace falta lógica JavaScript asociada al campo o al botón. -->
+<div class="search-box">
+                        <!-- Campo para escribir. placeholder es una pista visual, pero no reemplaza una etiqueta accesible como label o aria-label. -->
+<input type="text" placeholder="Buscar manga...">
+                        <!-- Botón que no envía formularios; aria-label le da nombre accesible porque solo muestra un icono. Su acción depende de JavaScript. -->
+<button type="button" aria-label="Buscar"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
         <div class="header-icons">
-            <a href="perfil.html" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-regular fa-user"></i></a>
-            <a href="carrito.html" class="cart-icon-container" aria-label="Carrito">
+                        <!-- Enlace a perfil; aria-label ayuda a tecnologías de asistencia y title puede mostrarse como ayuda al pasar el cursor. -->
+<a href="perfil.html" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-regular fa-user"></i></a>
+                        <!-- Enlace al carrito; la clase permite posicionar juntos el icono y el contador. -->
+<a href="carrito.html" class="cart-icon-container" aria-label="Carrito">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <span class="cart-counter" id="cartCounter">0</span>
+                                <!-- Contador visible del carrito. El id permite que JavaScript lo actualice; 0 es el valor inicial del HTML. -->
+<span class="cart-counter" id="cartCounter">0</span>
             </a>
         </div>
     </div>
 </header>
 
     <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
-    <main class="info-page">
-<section class="info-hero"><div class="info-icon"><i class="fa-solid fa-tags"></i></div><div class="info-eyebrow">Información ReManga</div><h1>Mejores precios</h1><p>Un espacio pensado para encontrar mangas nuevos y usados, comparar publicaciones y elegir la opción que mejor se adapte a cada compra.</p></section>
+        <!-- main identifica el contenido principal; info-page conecta con las reglas CSS de páginas informativas. -->
+<main class="info-page">
+    <!-- Hero: bloque introductorio con icono, categoría, título y descripción. -->
+<section class="info-hero">    <!-- Icono de etiquetas de precio de Font Awesome. Las clases seleccionan la familia de iconos y el símbolo tags. -->
+<div class="info-icon"><i class="fa-solid fa-tags"></i></div><div class="info-eyebrow">Información ReManga</div>    <!-- Encabezado principal, que comunica el tema central de la página. -->
+<h1>Mejores precios</h1><p>Un espacio pensado para encontrar mangas nuevos y usados, comparar publicaciones y elegir la opción que mejor se adapte a cada compra.</p></section>
+    <!-- Aviso destacado con contexto sobre cómo se definirán los precios y las promociones. -->
 <div class="info-note"><i class="fa-solid fa-circle-info"></i><span>Los precios publicados serán definidos por cada vendedor según las características de sus productos. Las promociones y condiciones comerciales futuras se informarán cuando estén disponibles.</span></div>
+    <!-- Agrupa las secciones explicativas que aparecen debajo del aviso. -->
 <section class="info-content">
-<div class="info-section"><h2>Cómo funciona el sistema de precios</h2><div class="info-grid"><article class="info-card"><i class="fa-solid fa-store"></i><h3>Publicaciones de vendedores</h3><p>Cada vendedor podrá establecer el precio de sus mangas teniendo en cuenta el estado, edición y características del producto.</p></article><article class="info-card"><i class="fa-solid fa-scale-balanced"></i><h3>Compará opciones</h3><p>La plataforma busca facilitar la comparación entre distintas publicaciones para que puedas tomar una decisión informada.</p></article><article class="info-card"><i class="fa-solid fa-book-open"></i><h3>Nuevo o usado</h3><p>Las publicaciones indican el estado del manga para que puedas evaluar el producto antes de comprarlo.</p></article></div></div>
-<div class="info-section"><h2>Qué buscamos ofrecer</h2><div class="info-steps"><div class="info-step"><span class="info-step-number">01</span><div><h3>Transparencia</h3><p>La información de cada publicación debería permitir conocer el precio y las condiciones del producto antes de avanzar.</p></div></div><div class="info-step"><span class="info-step-number">02</span><div><h3>Variedad</h3><p>La presencia de diferentes vendedores puede generar distintas alternativas para un mismo título o colección.</p></div></div><div class="info-step"><span class="info-step-number">03</span><div><h3>Precios competitivos</h3><p>ReManga busca construir un mercado donde la variedad de publicaciones favorezca precios atractivos y oportunidades para compradores y vendedores.</p></div></div></div></div>
+<div class="info-section"><h2>Cómo funciona el sistema de precios</h2>        <!-- Contenedor de tarjetas; CSS define cómo se distribuyen en columnas y cómo responden a pantallas pequeñas. -->
+<div class="info-grid">        <!-- Tarjeta semántica que reúne icono, título y explicación de un concepto. -->
+<article class="info-card"><i class="fa-solid fa-store"></i><h3>Publicaciones de vendedores</h3><p>Cada vendedor podrá establecer el precio de sus mangas teniendo en cuenta el estado, edición y características del producto.</p></article>        <!-- Segunda tarjeta: explica la comparación de distintas publicaciones. -->
+<article class="info-card"><i class="fa-solid fa-scale-balanced"></i><h3>Compará opciones</h3><p>La plataforma busca facilitar la comparación entre distintas publicaciones para que puedas tomar una decisión informada.</p></article>        <!-- Tercera tarjeta: recuerda que el estado nuevo/usado influye en la evaluación del producto. -->
+<article class="info-card"><i class="fa-solid fa-book-open"></i><h3>Nuevo o usado</h3><p>Las publicaciones indican el estado del manga para que puedas evaluar el producto antes de comprarlo.</p></article></div></div>
+<div class="info-section"><h2>Qué buscamos ofrecer</h2>        <!-- Lista visual de tres principios, numerados para dejar claro el orden de lectura. -->
+<div class="info-steps">            <!-- Primer principio. El número está escrito como texto, no depende únicamente de numeración CSS. -->
+<div class="info-step"><span class="info-step-number">01</span><div><h3>Transparencia</h3><p>La información de cada publicación debería permitir conocer el precio y las condiciones del producto antes de avanzar.</p></div></div>            <!-- Segundo principio, relacionado con la variedad de vendedores y alternativas. -->
+<div class="info-step"><span class="info-step-number">02</span><div><h3>Variedad</h3><p>La presencia de diferentes vendedores puede generar distintas alternativas para un mismo título o colección.</p></div></div>            <!-- Tercer principio: precios competitivos, presentado como objetivo del proyecto. -->
+<div class="info-step"><span class="info-step-number">03</span><div><h3>Precios competitivos</h3><p>ReManga busca construir un mercado donde la variedad de publicaciones favorezca precios atractivos y oportunidades para compradores y vendedores.</p></div></div></div></div>
+    <!-- Sección que describe posibilidades futuras, no necesariamente funcionalidades disponibles hoy. -->
 <div class="info-section"><h2>Promociones y ofertas</h2><p>En el futuro podrán incorporarse herramientas como promociones, descuentos, publicaciones destacadas u otras formas de incentivar la compra y venta dentro de la plataforma.</p></div>
-<div class="info-section"><h2>Preguntas frecuentes</h2><div class="info-faq"><details><summary>¿ReManga fija el precio de los mangas?</summary><p>La idea del marketplace es que cada vendedor pueda establecer el precio de su publicación respetando las reglas que se definan para la plataforma.</p></details><details><summary>¿Puede cambiar el precio de una publicación?</summary><p>Las condiciones definitivas para modificar una publicación serán establecidas cuando esté disponible la gestión completa de ventas.</p></details><details><summary>¿Habrá descuentos?</summary><p>Es una posibilidad futura. Las promociones dependerán de las funcionalidades comerciales que se incorporen a ReManga.</p></details></div></div>
-<div class="info-back"><a href="index.html" class="btn-secondary"><i class="fa-solid fa-arrow-left"></i> Volver al inicio</a></div>
+<div class="info-section"><h2>Preguntas frecuentes</h2>        <!-- Contenedor de preguntas frecuentes. Cada details agrupa una pregunta y una respuesta desplegable. -->
+<div class="info-faq">            <!-- Elemento HTML desplegable; summary actúa como encabezado pulsable y el navegador muestra/oculta la respuesta. -->
+<details>                <!-- summary es el título interactivo del details que contiene esta pregunta. -->
+<summary>¿ReManga fija el precio de los mangas?</summary><p>La idea del marketplace es que cada vendedor pueda establecer el precio de su publicación respetando las reglas que se definan para la plataforma.</p></details>            <!-- Segundo desplegable: consulta sobre cambios de precio. -->
+<details><summary>¿Puede cambiar el precio de una publicación?</summary><p>Las condiciones definitivas para modificar una publicación serán establecidas cuando esté disponible la gestión completa de ventas.</p></details>            <!-- Tercer desplegable: consulta sobre posibles descuentos. -->
+<details><summary>¿Habrá descuentos?</summary><p>Es una posibilidad futura. Las promociones dependerán de las funcionalidades comerciales que se incorporen a ReManga.</p></details></div></div>
+    <!-- Bloque final con un enlace para regresar al inicio del sitio. -->
+<div class="info-back">        <!-- Enlace a index.html con apariencia de botón secundario definida en CSS. -->
+<a href="index.html" class="btn-secondary"><i class="fa-solid fa-arrow-left"></i> Volver al inicio</a></div>
 </section></main>
     <!-- PIE DE PÁGINA: enlaces secundarios, redes e información legal. -->
-    <footer>
-    <div class="footer-logo">
+        <!-- Pie de página compartido: marca, enlaces rápidos, iconos sociales y aviso de derechos. -->
+<footer>
+            <!-- Zona de marca del pie; reutiliza isotipo y logotipo para mantener coherencia visual. -->
+<div class="footer-logo">
         <a href="index.html" class="brand-lockup" aria-label="ReManga">
             <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
             <img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
         </a>
     </div>
-    <div class="footer-links">
+            <!-- Enlaces rápidos a páginas principales para facilitar la navegación desde el pie. -->
+<div class="footer-links">
         <a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a><a href="carrito.html">Carrito</a>
     </div>
-    <div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div>
-    <p>© 2026 ReManga - Todos los derechos reservados.</p>
+            <!-- Iconos de redes sociales; en este HTML no están dentro de enlaces, así que no abren perfiles. -->
+<div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div>
+    <p>        <!-- Aviso de derechos. El año está escrito manualmente y habría que actualizarlo con el tiempo. -->© 2026 ReManga - Todos los derechos reservados.</p>
 </footer>
     <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
-    <script src="static/script.js"></script>
+        <!-- Carga el JavaScript compartido del sitio. src indica la ruta del archivo externo que ejecutará el navegador. -->
+<script src="static/script.js"></script>
+    <!-- Carga la lógica compartida de favoritos para esta página. -->
 <script src="static/favoritos.js"></script>
 </body>
 </html>
