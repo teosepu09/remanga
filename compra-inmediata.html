@@ -1,78 +1,143 @@
+<!-- DOCTYPE activa el modo estándar HTML5. No es contenido visible: indica al navegador cómo interpretar las etiquetas. -->
 <!DOCTYPE html>
+<!-- Elemento raíz. lang="es" declara el idioma principal para lectores de pantalla y herramientas de traducción. -->
 <html lang="es">
 <head>
     <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compra inmediata | ReManga</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="static/style.css">
-    <link rel="stylesheet" href="static/brand.css">
-    <link rel="stylesheet" href="static/info.css">
+    <!-- UTF-8 permite mostrar correctamente ñ, tildes y otros caracteres del español. -->
+<meta charset="UTF-8">
+    <!-- Hace que el ancho de la página siga al dispositivo; junto con las media queries permite adaptar el diseño a móviles. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título de la pestaña del navegador. Es descriptivo y estático porque esta página explica el proceso general de compra. -->
+<title>Compra inmediata | ReManga</title>
+    <!-- Solicita al navegador que prepare la conexión a Google Fonts antes de descargar la hoja de fuentes. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Dominio que entrega los archivos de fuente; crossorigin permite anticipar la conexión con la política que necesita ese recurso. -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Carga Montserrat y Orbitron con los grosores solicitados. rel=stylesheet identifica el recurso como CSS; display=swap permite usar una fuente de reserva mientras descarga. -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Hoja externa de Font Awesome. Las clases fa-solid, fa-brands, etc. seleccionan iconos de esa biblioteca. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- CSS general del sitio: estructura común, cabecera, navegación, pie y reglas visuales reutilizadas. -->
+<link rel="stylesheet" href="static/style.css">
+    <!-- Reglas compartidas para el isotipo y el logotipo de ReManga. -->
+<link rel="stylesheet" href="static/brand.css">
+    <!-- Estilos específicos de páginas informativas: hero, tarjetas, pasos, preguntas frecuentes y botón de regreso. -->
+<link rel="stylesheet" href="static/info.css">
 </head>
+<!-- BODY contiene lo que ve el usuario. Las class conectan elementos con CSS; los id permiten que JavaScript encuentre nodos concretos cuando necesita interactuar con ellos. -->
 <body>
-    <!-- INFORMACIÓN DE COMPRA: página explicativa con recomendaciones y orientación para comprar dentro de ReManga. -->
+    <!-- OBJETIVO DE ESTA PÁGINA:
+         explica el recorrido previsto de una compra. No implementa el checkout ni procesa pagos.
+         Es importante distinguir contenido informativo de funciones reales: el propio aviso indica que las compras están en desarrollo. -->    <!-- INFORMACIÓN DE COMPRA: página explicativa con recomendaciones y orientación para comprar dentro de ReManga. -->
 
     <!-- ENCABEZADO: identidad de ReManga, navegación y accesos comunes. -->
-    <header id="header">
-    <div class="logo">
-        <a href="index.html" class="brand-lockup" aria-label="ReManga">
-            <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
-            <img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
+        <!-- CABECERA GLOBAL:
+         id="header" permite a CSS y a funciones compartidas localizar este bloque.
+         Contiene marca, enlaces principales, búsqueda y accesos al perfil/carrito. -->
+<header id="header">
+            <!-- Contenedor de la marca. La clase logo aplica estilos de posición y tamaño desde CSS. -->
+<div class="logo">
+                    <!-- Enlace al inicio. brand-lockup agrupa las dos imágenes; aria-label proporciona un nombre accesible al enlace. -->
+<a href="index.html" class="brand-lockup" aria-label="ReManga">
+                        <!-- Isotipo: src es la ruta del archivo, alt describe la imagen y brand-mark controla su presentación con CSS. -->
+<img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
+                        <!-- Logotipo textual como imagen independiente para ajustar su tamaño sin deformar el isotipo. -->
+<img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
         </a>
     </div>
-    <nav>
-        <ul>
+        <!-- nav identifica semánticamente los enlaces de navegación principales del sitio. -->
+<nav>
+                <!-- ul agrupa los destinos como lista; cada li representa una opción de navegación. -->
+<ul>
             <li><a href="index.html">Inicio</a></li>
             <li><a href="catalogo.html">Catálogo</a></li>
             <li><a href="vender.html">Vender</a></li>
         </ul>
     </nav>
-    <div class="header-right">
-        <div class="search-box">
-            <input type="text" placeholder="Buscar manga...">
-            <button type="button" aria-label="Buscar"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <!-- Zona derecha de la cabecera: búsqueda y accesos rápidos. La clase permite al CSS alinearlos horizontalmente. -->
+<div class="header-right">
+                <!-- Agrupa el campo y el botón de búsqueda. En esta página no hay id en el input, por lo que el script compartido no necesariamente puede enlazar este buscador como hace en otras páginas. -->
+<div class="search-box">
+                        <!-- Campo de texto. type=text acepta texto común; placeholder es una pista visual, no un valor inicial ni una búsqueda por sí mismo. -->
+<input type="text" placeholder="Buscar manga...">
+                        <!-- type=button evita un envío de formulario. aria-label da nombre accesible al botón, cuyo contenido visible es solo un icono. -->
+<button type="button" aria-label="Buscar"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
-        <div class="header-icons">
-            <a href="perfil.html" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-regular fa-user"></i></a>
-            <a href="carrito.html" class="cart-icon-container" aria-label="Carrito">
+                <!-- Agrupa los accesos de cuenta y carrito. Los iconos son enlaces, por lo que se puede navegar pulsándolos. -->
+<div class="header-icons">
+                        <!-- Enlace al perfil. aria-label y title describen la acción aunque el contenido visible sea únicamente un icono. -->
+<a href="perfil.html" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-regular fa-user"></i></a>
+                        <!-- Enlace al carrito. cart-icon-container permite posicionar el contador sobre el icono mediante CSS. -->
+<a href="carrito.html" class="cart-icon-container" aria-label="Carrito">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <span class="cart-counter" id="cartCounter">0</span>
+                                <!-- Contador inicial de reserva. El script compartido puede reemplazar el 0 con la cantidad calculada del carrito. -->
+<span class="cart-counter" id="cartCounter">0</span>
             </a>
         </div>
     </div>
 </header>
 
     <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
-    <main class="info-page">
-<section class="info-hero"><div class="info-icon"><i class="fa-solid fa-bolt"></i></div><div class="info-eyebrow">Información ReManga</div><h1>Compra inmediata</h1><p>La experiencia de compra está pensada para que encontrar un manga, revisarlo y avanzar con el pedido sea rápido y sencillo.</p></section>
+        <!-- CONTENIDO PRINCIPAL:
+         main marca el contenido central de la página.
+         info-page delimita el ámbito de estilos que se definen en info.css. -->
+<main class="info-page">
+        <!-- HERO: introducción destacada. Agrupa icono, categoría, título y resumen para que CSS los presente como una unidad. -->
+<section class="info-hero">            <!-- Contenedor del icono de rayo; la clase controla fondo, tamaño y alineación. -->
+<div class="info-icon"><i class="fa-solid fa-bolt"></i></div>        <!-- Etiqueta secundaria que clasifica la página antes del título principal. -->
+<div class="info-eyebrow">Información ReManga</div>        <!-- h1 es el encabezado principal del documento; debería existir uno que represente el tema central de esta página. -->
+<h1>Compra inmediata</h1><p>La experiencia de compra está pensada para que encontrar un manga, revisarlo y avanzar con el pedido sea rápido y sencillo.</p></section>
+    <!-- Aviso destacado: comunica explícitamente que el checkout y las compras reales todavía no están habilitados. Es una aclaración funcional importante, no solo decorativa. -->
 <div class="info-note"><i class="fa-solid fa-circle-info"></i><span>El proceso de checkout y las compras reales todavía están en desarrollo. Esta página presenta el funcionamiento previsto de la plataforma.</span></div>
+    <!-- Agrupa el contenido informativo posterior al hero para aplicar márgenes y ancho comunes. -->
 <section class="info-content">
-<div class="info-section"><h2>El recorrido de una compra</h2><div class="info-steps"><div class="info-step"><span class="info-step-number">01</span><div><h3>Encontrá tu manga</h3><p>Explorá el catálogo y utilizá las herramientas disponibles para encontrar el título que buscás.</p></div></div><div class="info-step"><span class="info-step-number">02</span><div><h3>Revisá la publicación</h3><p>Consultá el precio, tomo, estado, descripción e imágenes antes de decidir.</p></div></div><div class="info-step"><span class="info-step-number">03</span><div><h3>Agregalo al carrito</h3><p>El carrito permite reunir los productos que querés comprar y revisar tu selección antes de confirmar.</p></div></div><div class="info-step"><span class="info-step-number">04</span><div><h3>Confirmá el pedido</h3><p>Cuando el sistema de compras esté habilitado, podrás confirmar los datos de la operación y avanzar con el pago.</p></div></div></div></div>
-<div class="info-section"><h2>Una experiencia simple</h2><div class="info-grid"><article class="info-card"><i class="fa-solid fa-magnifying-glass"></i><h3>Encontrá rápido</h3><p>El catálogo está pensado para facilitar la búsqueda y exploración de diferentes títulos.</p></article><article class="info-card"><i class="fa-solid fa-cart-shopping"></i><h3>Organizá tu compra</h3><p>El carrito te permite revisar los productos seleccionados antes de completar una futura compra.</p></article><article class="info-card"><i class="fa-solid fa-lock"></i><h3>Proceso seguro</h3><p>Las futuras funciones de pago y pedidos se diseñarán para mantener clara y protegida la información de cada operación.</p></article></div></div>
+    <!-- Primera sección: presenta una secuencia conceptual. Los números 01–04 son texto visual, no un contador calculado por JavaScript. -->
+<div class="info-section"><h2>El recorrido de una compra</h2>        <!-- Contenedor de los pasos. CSS organiza las tarjetas; cada paso está escrito directamente en el HTML. -->
+<div class="info-steps">            <!-- Paso 1. info-step-number muestra el número decorativo y el resto del bloque explica la acción. -->
+<div class="info-step"><span class="info-step-number">01</span><div><h3>Encontrá tu manga</h3><p>Explorá el catálogo y utilizá las herramientas disponibles para encontrar el título que buscás.</p></div></div><div class="info-step"><span class="info-step-number">02</span><div><h3>Revisá la publicación</h3><p>Consultá el precio, tomo, estado, descripción e imágenes antes de decidir.</p></div></div><div class="info-step"><span class="info-step-number">03</span><div><h3>Agregalo al carrito</h3><p>El carrito permite reunir los productos que querés comprar y revisar tu selección antes de confirmar.</p></div></div><div class="info-step"><span class="info-step-number">04</span><div><h3>Confirmá el pedido</h3><p>Cuando el sistema de compras esté habilitado, podrás confirmar los datos de la operación y avanzar con el pago.</p></div></div></div></div>
+    <!-- Sección de beneficios descriptivos. Sus tarjetas son contenido estático y no representan funciones transaccionales activas. -->
+<div class="info-section"><h2>Una experiencia simple</h2>        <!-- Cuadrícula de tarjetas; info.css define columnas, separación y adaptación a pantallas pequeñas. -->
+<div class="info-grid">            <!-- article representa una tarjeta con contenido independiente: icono, título y descripción. -->
+<article class="info-card"><i class="fa-solid fa-magnifying-glass"></i><h3>Encontrá rápido</h3><p>El catálogo está pensado para facilitar la búsqueda y exploración de diferentes títulos.</p></article><article class="info-card"><i class="fa-solid fa-cart-shopping"></i><h3>Organizá tu compra</h3><p>El carrito te permite revisar los productos seleccionados antes de completar una futura compra.</p></article><article class="info-card"><i class="fa-solid fa-lock"></i><h3>Proceso seguro</h3><p>Las futuras funciones de pago y pedidos se diseñarán para mantener clara y protegida la información de cada operación.</p></article></div></div>
+    <!-- Explica una funcionalidad futura. El texto está redactado como intención, no como confirmación de que ya existe seguimiento de pedidos. -->
 <div class="info-section"><h2>Después de comprar</h2><p>Una vez implementado el sistema de pedidos, la intención es que el comprador pueda consultar el estado de su compra, recibir información sobre el envío y contar con mecanismos de atención ante inconvenientes.</p></div>
-<div class="info-section"><h2>Preguntas frecuentes</h2><div class="info-faq"><details><summary>¿Ya puedo realizar una compra?</summary><p>El catálogo y el carrito están disponibles, pero el checkout y la compra real todavía no están habilitados.</p></details><details><summary>¿Necesito una cuenta?</summary><p>Las funciones que requieran identificar al comprador se integrarán con las cuentas de ReManga. Las condiciones definitivas se definirán junto con el sistema de compras.</p></details><details><summary>¿Qué medios de pago habrá?</summary><p>Los medios de pago todavía no fueron definidos porque esa parte del sistema se implementará más adelante.</p></details></div></div>
-<div class="info-back"><a href="index.html" class="btn-secondary"><i class="fa-solid fa-arrow-left"></i> Volver al inicio</a></div>
+    <!-- FAQ: respuestas plegables usando elementos HTML nativos details y summary, sin necesitar un componente JavaScript propio. -->
+<div class="info-section"><h2>Preguntas frecuentes</h2>        <!-- Contenedor que agrupa las preguntas para darles un estilo común. -->
+<div class="info-faq">            <!-- details crea un bloque desplegable nativo. Sin open, comienza cerrado; al pulsar summary, el navegador muestra u oculta la respuesta. -->
+<details>                <!-- summary es el control visible que abre/cierra el contenido de details. -->
+<summary>¿Ya puedo realizar una compra?</summary><p>El catálogo y el carrito están disponibles, pero el checkout y la compra real todavía no están habilitados.</p></details>            <!-- Segunda pregunta desplegable; cada details administra su propio estado abierto/cerrado. -->
+<details><summary>¿Necesito una cuenta?</summary><p>Las funciones que requieran identificar al comprador se integrarán con las cuentas de ReManga. Las condiciones definitivas se definirán junto con el sistema de compras.</p></details>            <!-- Tercera pregunta desplegable sobre medios de pago todavía no definidos. -->
+<details><summary>¿Qué medios de pago habrá?</summary><p>Los medios de pago todavía no fueron definidos porque esa parte del sistema se implementará más adelante.</p></details></div></div>
+    <!-- Zona de navegación al final del contenido para regresar al inicio del sitio. -->
+<div class="info-back">        <!-- Enlace al inicio con apariencia de botón secundaria definida por CSS; sigue siendo un enlace HTML. -->
+<a href="index.html" class="btn-secondary"><i class="fa-solid fa-arrow-left"></i> Volver al inicio</a></div>
 </section></main>
     <!-- PIE DE PÁGINA: enlaces secundarios, redes e información legal. -->
-    <footer>
-    <div class="footer-logo">
+        <!-- PIE DE PÁGINA: enlaces secundarios, marca e iconos sociales compartidos por varias páginas. -->
+<footer>
+            <!-- Marca en el pie. Se reutiliza el mismo patrón de isotipo y logotipo que en la cabecera. -->
+<div class="footer-logo">
         <a href="index.html" class="brand-lockup" aria-label="ReManga">
             <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
             <img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
         </a>
     </div>
-    <div class="footer-links">
+            <!-- Enlaces de navegación secundaria; cada href apunta a un archivo HTML local. -->
+<div class="footer-links">
         <a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a><a href="carrito.html">Carrito</a>
     </div>
-    <div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div>
+            <!-- Iconos de redes. En este marcado son elementos i, no enlaces a perfiles, por lo que no se pueden pulsar para navegar. -->
+<div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div>
     <p>© 2026 ReManga - Todos los derechos reservados.</p>
 </footer>
-    <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
-    <script src="static/script.js"></script>
+    <!-- SCRIPTS:
+         Se cargan al final del body para que el navegador haya leído previamente los elementos HTML.
+         script.js contiene comportamiento compartido; favoritos.js agrega la funcionalidad común de favoritos.
+         Esta página informativa no contiene lógica propia de checkout. -->    <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
+        <!-- Script general del sitio. Su ejecución puede inicializar navegación, contador del carrito y otras funciones comunes. -->
+<script src="static/script.js"></script>
+    <!-- Módulo compartido de favoritos. Se incluye para mantener disponibles los comportamientos globales previstos por el proyecto. -->
 <script src="static/favoritos.js"></script>
 </body>
 </html>
