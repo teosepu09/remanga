@@ -1,87 +1,177 @@
+<!-- DOCTYPE activa el modo estándar HTML5; no se muestra en pantalla, sino que indica al navegador cómo interpretar el documento. -->
 <!DOCTYPE html>
+<!-- Elemento raíz. lang="es" declara el idioma principal para lectores de pantalla y herramientas de traducción. -->
 <html lang="es">
 <head>
     <!-- HEAD: metadatos del documento, título, estilos y librerías necesarias para esta página. -->
+<!-- UTF-8 permite representar correctamente caracteres como ñ, tildes y símbolos. -->
 <meta charset="UTF-8">
+<!-- Hace que el ancho del documento siga al dispositivo; permite que las media queries adapten la interfaz a móviles. -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Texto que aparece en la pestaña del navegador y ayuda a identificar la página abierta. -->
 <title>Comunidad | ReManga</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+<!-- Los estilos de esta página están escritos aquí mismo en vez de importarse desde static/style.css.
+     Esto hace que el diseño de comunidad sea autónomo, pero también significa que sus reglas deben mantenerse por separado. -->
 <style>
 /* ===== ESTILOS LOCALES DE COMUNIDAD =====
    Esta página tiene su propio diseño; sus reglas no vienen de static/style.css. ===== */
+/* :root apunta al elemento raíz. Las propiedades -- son variables CSS reutilizables: var(--accent), por ejemplo,
+   toma el color coral guardado en accent. Cambiar un valor aquí puede actualizar muchas partes del diseño. */
 :root{--bg-primary:#181820;--bg-secondary:#20202a;--bg-card:#24242f;--accent:#ff886f;--accent-light:#ff9d88;--text:#f7f4f2;--muted:#aaa8b2;--border:rgba(255,255,255,.08)}
+/* * selecciona todos los elementos. border-box hace que ancho/alto incluyan padding y borde.
+   body elimina el margen predeterminado, usa colores de :root y prioriza Montserrat con Arial como alternativa. */
 *{box-sizing:border-box}body{margin:0;background:var(--bg-primary);color:var(--text);font-family:Montserrat,Arial,sans-serif}
+/* ::before crea una capa decorativa sin agregar un nodo HTML. content:"" habilita el pseudo-elemento;
+   fixed e inset:0 lo extienden por la ventana, pointer-events:none deja pasar clics y radial-gradient dibuja un brillo. */
 body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 75% 10%,rgba(255,136,111,.07),transparent 28%)}
 /* ===== BARRA SUPERIOR FIJA Y NAVEGACIÓN DE COMUNIDAD ===== */
+/* Cabecera fija: fixed la mantiene visible al desplazarse; top/left/right la anclan a los bordes.
+   z-index:10 la coloca por encima del contenido. flex alinea sus hijos en fila y align-items:center los centra verticalmente.
+   El fondo semitransparente y backdrop-filter crean el efecto de vidrio; el borde inferior separa la cabecera. */
 .header{height:78px;position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;padding:0 6%;background:rgba(24,24,32,.84);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+/* font combina grosor, tamaño y familia. text-decoration:none quita el subrayado; letter-spacing separa letras.
+   .logo span solo colorea el span interno, que destaca una parte de la marca. */
 .logo{font:700 23px Orbitron,sans-serif;color:var(--text);text-decoration:none;letter-spacing:1px}.logo span{color:var(--accent)}
+/* nav es una fila flex. :hover se activa al pasar el cursor y .active marca la página actual.
+   La coma agrupa selectores para compartir estilo; transition suaviza los cambios visuales. */
 .nav{display:flex;gap:10px;margin-left:42px}.nav a{color:var(--muted);text-decoration:none;padding:10px 14px;border-radius:9px;font-weight:600;font-size:14px;transition:.2s}.nav a:hover,.nav a.active{color:var(--accent-light);background:rgba(255,136,111,.07);box-shadow:0 0 18px rgba(255,136,111,.12)}
+/* margin-left:auto empuja el buscador hacia la derecha dentro del flex. La coma comparte reglas entre inputs.
+   :focus se activa cuando un campo recibe foco por clic o teclado y le da una señal visual. */
 .search{margin-left:auto;width:230px}.search input,.community-search input{width:100%;background:var(--bg-secondary);border:1px solid var(--border);border-radius:10px;color:var(--text);outline:none;padding:12px 15px;font:500 13px Montserrat}.search input:focus,.community-search input:focus{border-color:rgba(255,136,111,.5);box-shadow:0 0 16px rgba(255,136,111,.1)}
+/* max-width limita la anchura; margin:auto centra el bloque. El padding superior deja espacio para la cabecera fija.
+   clamp(min, preferido, max) escala el título con la ventana sin bajar de 30px ni superar 46px.
+   max-width y line-height ayudan a mantener legible el párrafo introductorio. */
 .page{max-width:1200px;margin:auto;padding:132px 6% 70px}.eyebrow{font:600 12px Orbitron,sans-serif;letter-spacing:2px;color:var(--accent);text-transform:uppercase}.intro h1{font:700 clamp(30px,4vw,46px) Orbitron,sans-serif;margin:10px 0 12px}.intro p{color:var(--muted);max-width:650px;line-height:1.7;margin:0 0 28px}.community-search{max-width:600px;margin-bottom:30px}
-.layout{display:grid;grid-template-columns:255px minmax(0,1fr);gap:22px}.panel{background:rgba(32,32,42,.72);border:1px solid var(--border);border-radius:16px}.sidebar{padding:15px;height:max-content}.side-title{font:600 12px Orbitron,sans-serif;color:var(--muted);letter-spacing:1px;padding:8px 10px 13px;text-transform:uppercase}.community-list{display:flex;flex-direction:column;gap:5px}.community{width:100%;border:0;background:transparent;color:var(--text);display:flex;align-items:center;justify-content:space-between;padding:12px 10px;border-radius:10px;cursor:pointer;text-align:left;font:600 13px Montserrat;transition:.2s}.community:hover{background:rgba(255,255,255,.035)}.community.active{background:rgba(255,136,111,.08);box-shadow:inset 2px 0 0 var(--accent);color:var(--accent-light)}.count{color:#7f7d87;font-size:11px}.community.active .count{color:var(--accent)}
+/* Grid crea dos columnas: barra lateral de 255px y una columna flexible. minmax(0,1fr) permite que la columna
+   principal se encoja sin desbordarse. gap separa columnas. height:max-content ajusta la altura del sidebar a su contenido. */
+.layout{display:grid;grid-template-columns:255px minmax(0,1fr);gap:22px}.panel{background:rgba(32,32,42,.72);border:1px solid var(--border);border-radius:16px}.sidebar{padding:15px;height:max-content}.side-title{font:600 12px Orbitron,sans-serif;color:var(--muted);letter-spacing:1px;padding:8px 10px 13px;text-transform:uppercase}/* La lista flex apila botones. Cada .community ocupa el ancho y separa nombre y cantidad.
+   cursor:pointer comunica que es pulsable. .active resalta la selección; el estado real lo determina JavaScript.
+   .community.active .count selecciona el contador dentro del botón activo. */
+.community-list{display:flex;flex-direction:column;gap:5px}.community{width:100%;border:0;background:transparent;color:var(--text);display:flex;align-items:center;justify-content:space-between;padding:12px 10px;border-radius:10px;cursor:pointer;text-align:left;font:600 13px Montserrat;transition:.2s}.community:hover{background:rgba(255,255,255,.035)}.community.active{background:rgba(255,136,111,.08);box-shadow:inset 2px 0 0 var(--accent);color:var(--accent-light)}.count{color:#7f7d87;font-size:11px}.community.active .count{color:var(--accent)}
+/* Estilos del panel: flex distribuye el encabezado y apila tarjetas. Cada .post tiene fondo, borde, radio y padding.
+   .post-meta separa autor y fecha; tamaños menores y colores apagados distinguen metadatos del contenido principal. */
 .main{padding:24px}.main-head{display:flex;justify-content:space-between;align-items:end;gap:15px;border-bottom:1px solid var(--border);padding:0 2px 20px}.main-head h2{font:600 25px Orbitron;margin:0}.main-head span{color:var(--muted);font-size:12px}.posts{display:flex;flex-direction:column;gap:12px;padding-top:18px}.post{background:var(--bg-card);border:1px solid var(--border);border-radius:13px;padding:18px}.post-meta{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:11px;margin-bottom:10px}.post-author{color:var(--accent-light);font-weight:700}.post h3{margin:0 0 8px;font-size:16px}.post p{margin:0;color:#c3c0c7;line-height:1.65;font-size:13px}.reply{margin-top:15px;color:#8e8b95;font-size:11px}
+/* Mensaje de lista vacía. Comienza oculto; render() cambia display cuando la búsqueda no tiene coincidencias. */
 .empty{display:none;text-align:center;color:var(--muted);padding:30px 10px;font-size:13px}
+/* Media query: solo se activa con ventana de 760px o menos. Reduce márgenes, oculta el buscador superior y
+   convierte el grid en una columna. order cambia el orden visual; la lista pasa a dos columnas. */
 @media(max-width:760px){.header{padding:0 4%}.nav{margin-left:15px;gap:2px}.nav a{padding:8px;font-size:12px}.search{display:none}.page{padding:115px 4% 50px}.layout{grid-template-columns:1fr}.sidebar{order:2}.main{order:1}.community-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.main-head{align-items:start;flex-direction:column}}
 </style>
 </head>
+<!-- BODY contiene la interfaz visible. Las clases enlazan elementos con CSS; los id son referencias para JavaScript. -->
 <body>
     <!-- COMUNIDAD: interfaz para explorar y filtrar comunidades o espacios de conversación de ReManga. -->
 
     <!-- ENCABEZADO: identidad de ReManga, navegación y accesos comunes. -->
-    <header class="header">
+    <!-- Cabecera fija con marca, navegación y buscador superior. La clase header enlaza con la regla CSS .header. -->
+<header class="header">
+<!-- Marca clicable: href lleva al inicio. El span interno permite colorear solo parte del texto. -->
 <a class="logo" href="index.html">RE<span>MANGA</span></a>
+<!-- nav identifica los enlaces de navegación. aria-label ofrece un nombre accesible a esta región. -->
 <nav class="nav" aria-label="Navegación principal">
-<a href="index.html">Inicio</a><a href="#">Catálogo</a><a href="#">Vender</a><a href="comunidad.html" class="active">Comunidad</a>
+<a href="index.html">Inicio</a><!-- Destino provisional: href="#" vuelve al inicio del documento, no abre todavía el catálogo. -->
+<a href="#">Catálogo</a><!-- Destino provisional: # no conecta con vender.html; debe cambiarse por una ruta real para navegar. -->
+<a href="#">Vender</a><a href="comunidad.html" class="active">Comunidad</a>
 </nav>
+<!-- Buscador superior. aria-label le da un nombre accesible; en este archivo no tiene id ni listener, por lo que no busca por sí solo. -->
 <div class="search"><input type="search" placeholder="Buscar manga..." aria-label="Buscar manga"></div>
 </header>
 
     <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
-    <main class="page">
+    <!-- main marca el contenido principal; page define ancho, centrado y separación con la cabecera fija. -->
+<main class="page">
+<!-- Introducción: categoría, título, explicación y buscador de comunidades. -->
 <section class="intro">
 <div class="eyebrow">Comunidad ReManga</div>
+<!-- Encabezado principal del documento, con el tema central de la página. -->
 <h1>Encontrá tu comunidad.</h1>
 <p>Compartí opiniones, teorías y conversaciones sobre tus mangas favoritos.</p>
+<!-- Buscador funcional: id permite obtener el input desde JS. El evento input se dispara al escribir o borrar;
+     el script lee value y filtra el array local. aria-label lo nombra para tecnologías de asistencia. -->
 <div class="community-search"><input id="communitySearch" type="search" placeholder="Buscar una comunidad..." aria-label="Buscar una comunidad"></div>
 </section>
+<!-- Grid de dos áreas: selector de comunidades y panel de publicaciones; CSS lo adapta a una columna en móviles. -->
 <section class="layout">
+<!-- aside contiene el selector lateral, información complementaria respecto del panel principal. -->
 <aside class="panel sidebar">
 <div class="side-title">Comunidades</div>
+<!-- Contenedor vacío al inicio. render() crea botones y los inserta aquí mediante appendChild. -->
 <div class="community-list" id="communityList"></div>
+<!-- Aviso para búsquedas sin resultados. render() alterna su display entre none y block. -->
 <div class="empty" id="empty">No encontramos esa comunidad.</div>
 </aside>
+<!-- Panel principal de la comunidad. main aquí es solo una clase; el elemento semántico main ya está más arriba. -->
 <section class="panel main">
-<div class="main-head"><div><h2 id="communityTitle">Naruto</h2></div><span id="communityCount">128 publicaciones</span></div>
+<div class="main-head"><div><!-- Título dinámico: selectCommunity cambia su texto usando textContent. Naruto es solo el valor inicial. -->
+<h2 id="communityTitle">Naruto</h2></div><!-- Contador que JavaScript actualiza al elegir otra comunidad; el número inicial es un dato escrito a mano. -->
+<span id="communityCount">128 publicaciones</span></div>
+<!-- Contenedor de tarjetas de ejemplo. Las publicaciones están escritas en el HTML y no cambian al seleccionar otra comunidad. -->
 <div class="posts" id="posts">
+<!-- Una publicación independiente, agrupando autor/fecha, título, cuerpo y respuestas. -->
 <article class="post"><div class="post-meta"><span class="post-author">manga_fan</span><span>hace 2 h</span></div><h3>¿Cuál es su arco favorito?</h3><p>Estuve releyendo la serie y cada arco tiene algo especial. ¿Cuál les gustó más y por qué?</p><div class="reply">12 respuestas</div></article>
+<!-- Segunda tarjeta de ejemplo. article agrupa todo el contenido de esa publicación. -->
 <article class="post"><div class="post-meta"><span class="post-author">otaku_sur</span><span>ayer</span></div><h3>Volví a empezar la serie</h3><p>Después de bastante tiempo volví al principio. Se siente distinto cuando ya conocés todo lo que viene.</p><div class="reply">8 respuestas</div></article>
+<!-- Tercera tarjeta de ejemplo. Ninguna de estas tarjetas proviene actualmente de Supabase. -->
 <article class="post"><div class="post-meta"><span class="post-author">ramenlover</span><span>hace 3 días</span></div><h3>¿Qué personaje les gustaría ver más?</h3><p>Hay varios personajes secundarios que podrían tener muchísimo más desarrollo.</p><div class="reply">19 respuestas</div></article>
 </div>
 </section>
 </section>
 </main>
     <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
-    <script>
+    <!-- La lógica de comunidad está escrita en este script local, en vez de importarse desde static/script.js. -->
+<script>
 // ===== DATOS Y REFERENCIAS DE LA INTERFAZ =====
 // En esta versión las comunidades se definen en un array local; todavía no se consultan a Supabase.
+// Array local de datos. const impide reasignar communities, pero no vuelve inmutables los objetos del array.
+ // Cada objeto tiene name (nombre visible) y count (cantidad mostrada). Estos valores están escritos a mano y no se consultan a Supabase.
 const communities=[
  {name:"Naruto",count:128},{name:"One Piece",count:96},{name:"Jujutsu Kaisen",count:74},{name:"Berserk",count:51},{name:"Dragon Ball",count:43}
 ];
+// Guarda referencias a elementos del DOM para reutilizarlos. getElementById busca por atributo id y devuelve el elemento, no su texto.
+ // list es la lista de botones; search es el input; title es el encabezado; count es el contador; empty es el aviso sin resultados.
+ // El script está al final del HTML, por lo que estos elementos ya deberían existir cuando se ejecuta esta línea.
 const list=document.getElementById("communityList"), search=document.getElementById("communitySearch"), title=document.getElementById("communityTitle"), count=document.getElementById("communityCount"), empty=document.getElementById("empty");
 // ===== FILTRADO Y DIBUJO DEL LISTADO =====
 // Cada cambio de búsqueda vuelve a crear los botones que coinciden con el texto.
+// Declara render(), que vuelve a dibujar la lista. filter tiene valor predeterminado "", usado cuando se llama render() sin argumento.
+ // La función calcula qué comunidades mostrar y actualiza el DOM; no modifica el array original.
 function render(filter=""){
+ // Borra los botones anteriores antes de crear los resultados nuevos; evita duplicarlos en cada búsqueda.
+ // innerHTML interpreta una cadena como marcado HTML; aquí la cadena vacía simplemente limpia el contenedor.
  list.innerHTML="";
+ // filter crea un nuevo array con los elementos que cumplen la condición, sin modificar communities.
+ // c representa cada comunidad evaluada. toLowerCase convierte nombre y filtro a minúsculas para ignorar diferencias de mayúsculas.
+ // includes busca el filtro dentro del nombre, por lo que admite coincidencias parciales. Con filtro vacío, pasan todas las comunidades.
  const visible=communities.filter(c=>c.name.toLowerCase().includes(filter.toLowerCase()));
- visible.forEach((c,i)=>{const b=document.createElement("button");b.className="community"+((c.name===title.textContent)?" active":"");b.innerHTML="<span>"+c.name+"</span><span class='count'>"+c.count+"</span>";b.onclick=()=>selectCommunity(c);list.appendChild(b)});
+ // forEach ejecuta el bloque por cada coincidencia. c es el objeto actual; i es su índice, que aquí no se utiliza.
+ visible.forEach((c,i)=>{ // Crea un botón real en memoria; todavía no aparece en la página hasta insertarlo en el DOM.
+const b=document.createElement("button"); // Define la clase base y añade active si el nombre coincide con el título seleccionado.
+ // === compara valores estrictamente; textContent lee el texto del encabezado. active sirve para el resaltado visual.
+b.className="community"+((c.name===title.textContent)?" active":""); // Construye dos spans: nombre y contador. + concatena fragmentos para crear la cadena HTML.
+ // Como innerHTML interpreta marcado, esto solo es prudente porque los nombres actuales están controlados en el array.
+ // Si los nombres provinieran de usuarios o de una base externa, sería más seguro crear spans y asignar textContent para evitar inyección HTML.
+b.innerHTML="<span>"+c.name+"</span><span class='count'>"+c.count+"</span>"; // Guarda una función para ejecutar al pulsar el botón. La flecha captura c, el objeto de esta iteración, y lo pasa a selectCommunity.
+ // No se ejecuta selectCommunity ahora; se ejecutará cuando ocurra el clic.
+b.onclick=()=>selectCommunity(c); // Inserta el botón en el contenedor de la lista; desde ese momento forma parte del DOM visible.
+list.appendChild(b)});
+ // Operador ternario: si hay resultados, oculta el aviso; si visible.length es 0, muestra el mensaje de lista vacía.
+ // Equivale a un if/else abreviado y depende de la cantidad de coincidencias.
  empty.style.display=visible.length?"none":"block";
 }
 // ===== SELECCIÓN DE UNA COMUNIDAD =====
 // Actualiza el nombre y la cantidad de publicaciones del panel seleccionado.
-function selectCommunity(c){title.textContent=c.name;count.textContent=c.count+" publicaciones";render(search.value)}
+// Recibe el objeto de la comunidad seleccionada al pulsar uno de los botones.
+ // c es un parámetro local que representa el objeto enviado por el manejador del clic.
+function selectCommunity(c){ // Cambia el título y el contador usando textContent, que inserta texto sin interpretarlo como HTML.
+ // c.count + " publicaciones" forma la etiqueta visible. Luego render(search.value) redibuja la lista conservando el filtro actual.
+ // Límite actual: no se actualizan las tarjetas dentro de #posts, por lo que solo cambian título, contador y selección lateral.
+title.textContent=c.name;count.textContent=c.count+" publicaciones";render(search.value)}
 // Reacciona a cada cambio del buscador y hace una primera representación al cargar la página.
+// Registra un listener para input: cada modificación del texto llama render con el valor actual del campo.
+ // La llamada final render() inicializa la lista al cargar la página; sin ella, communityList quedaría vacío.
 search.addEventListener("input",()=>render(search.value));render();
 </script>
 </body>
