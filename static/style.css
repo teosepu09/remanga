@@ -1,4 +1,11 @@
 /* =========================================================
+   ReManga - estilos compartidos del sitio
+   Este archivo controla la base visual y las páginas de inicio,
+   catálogo, detalle del producto y carrito. Los estilos específicos
+   de marca, perfil, login e información viven en archivos separados.
+   ========================================================= */
+
+/* =========================================================
    REMANGA
    STYLE.CSS
    Home Page
@@ -9,6 +16,7 @@
    1. VARIABLES
    ========================================================= */
 
+/* ===== VARIABLES GLOBALES: colores, sombras, bordes y transiciones ===== */
 :root {
 
     /* Colores principales */
@@ -98,6 +106,7 @@ button {
    3. HEADER
    ========================================================= */
 
+/* ===== CABECERA: navegación, marca, búsqueda e iconos ===== */
 #header {
 
     position: fixed;
@@ -403,6 +412,7 @@ nav ul li a:hover {
    4. HERO
    ========================================================= */
 
+/* ===== PORTADA DE INICIO: imagen de fondo, superposición y texto principal ===== */
 .hero {
 
     position: relative;
@@ -639,6 +649,7 @@ nav ul li a:hover {
    5. BENEFICIOS
    ========================================================= */
 
+/* ===== BLOQUE DE BENEFICIOS ===== */
 .benefits {
 
     width: 90%;
@@ -733,6 +744,7 @@ nav ul li a:hover {
    6. COMPRAR / VENDER
    ========================================================= */
 
+/* ===== ACCESOS PRINCIPALES PARA COMPRAR O VENDER ===== */
 .actions {
 
     width: 90%;
@@ -855,6 +867,7 @@ nav ul li a:hover {
    7. RECOMENDADOS
    ========================================================= */
 
+/* ===== PRODUCTOS RECOMENDADOS Y TARJETAS ===== */
 .recommended {
 
     width: 90%;
@@ -1044,6 +1057,7 @@ nav ul li a:hover {
    8. NEWSLETTER
    ========================================================= */
 
+/* ===== FORMULARIO DE SUSCRIPCIÓN AL NEWSLETTER ===== */
 .newsletter {
 
     width: 90%;
@@ -1176,6 +1190,7 @@ nav ul li a:hover {
    9. FOOTER
    ========================================================= */
 
+/* ===== PIE DE PÁGINA Y ENLACES SECUNDARIOS ===== */
 footer {
 
     padding: 65px 5% 30px;
@@ -1332,6 +1347,7 @@ footer > p {
    11. RESPONSIVE - TABLET
    ========================================================= */
 
+/* ===== AJUSTES RESPONSIVOS PARA PANTALLAS MEDIANAS ===== */
 @media (max-width: 1100px) {
 
     #header {
@@ -1389,6 +1405,7 @@ footer > p {
    12. RESPONSIVE - MOBILE
    ========================================================= */
 
+/* ===== AJUSTES RESPONSIVOS PARA TABLETS Y MÓVILES ===== */
 @media (max-width: 768px) {
 
     /* HEADER */
@@ -1597,6 +1614,7 @@ footer > p {
    13. RESPONSIVE - MOBILE PEQUEÑO
    ========================================================= */
 
+/* ===== AJUSTES RESPONSIVOS PARA MÓVILES PEQUEÑOS ===== */
 @media (max-width: 480px) {
 
     .logo img {
@@ -1785,6 +1803,7 @@ nav ul li a.active {
    2. PÁGINA CATÁLOGO
    ========================================================= */
 
+/* ===== VISTA DE CATÁLOGO: filtros, resultados y tarjetas de mangas ===== */
 .catalog-page {
     padding-top: 82px;
     min-height: 100vh;

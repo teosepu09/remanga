@@ -2,8 +2,10 @@
 // ReManga - Registro real con Supabase Auth
 // =========================================================
 
+// Inicializa los campos y sus eventos cuando el formulario ya existe en el documento.
 document.addEventListener("DOMContentLoaded", async () => {
-    const form = document.getElementById("registerForm");
+    // Referencia al formulario que agrupa los campos y el evento submit.
+const form = document.getElementById("registerForm");
     const usernameInput = document.getElementById("username");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
@@ -12,6 +14,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const togglePasswordConfirm = document.getElementById("togglePasswordConfirm");
     const message = document.getElementById("authMessage");
 
+    // ===== CLIENTE DE SUPABASE AUTH =====
+    // El registro crea la cuenta en el servicio de autenticación, no en una API Flask.
     const config = window.REMANGA_SUPABASE_CONFIG;
     const supabaseClient = (config?.enabled && window.supabase && config.url && config.publishableKey)
         ? window.supabase.createClient(config.url, config.publishableKey, {
@@ -23,12 +27,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
         : null;
 
+    // ===== FUNCIONES AUXILIARES DE INTERFAZ =====
+    // Muestra errores o confirmaciones sin modificar la estructura de la página.
+    /**
+     * Muestra errores o confirmaciones en el formulario de registro.
+     * - texto: mensaje; tipo: clase visual.
+     * - No devuelve valor.
+     */
     function mostrarMensaje(texto, tipo = "error") {
         if (!message) return;
         message.textContent = texto;
         message.className = `auth-message ${tipo}`;
     }
 
+    /**
+     * Conecta el botón que permite alternar la contraseña entre visible y oculta.
+     * - button: botón de alternancia; input: campo de contraseña.
+     * - No devuelve valor.
+     */
     function configurarToggle(button, input) {
         if (!button || !input) return;
         button.addEventListener("click", () => {
@@ -55,7 +71,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!form) return;
 
-    form.addEventListener("submit", async (event) => {
+    // ===== VALIDACIÓN Y CREACIÓN DE CUENTA =====
+        // Primero se validan los campos; después se solicita a Supabase registrar al usuario.
+        form.addEventListener("submit", async (event) => {
         event.preventDefault();
         mostrarMensaje("", "info");
 
@@ -108,7 +126,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        if (error) {
+        // Si Supabase devuelve error, no continuamos como si el usuario ya se hubiera registrado.
+    if (error) {
             const raw = (error.message || "").toLowerCase();
             let mensaje = error.message || "No se pudo crear la cuenta.";
 

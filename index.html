@@ -1,21 +1,43 @@
+<!-- DOCTYPE indica al navegador que interprete el documento con las reglas modernas de HTML5. -->
 <!DOCTYPE html>
 
+<!-- El elemento raíz envuelve todo el documento. lang="es" informa que su idioma principal es español;
+     ayuda a lectores de pantalla, motores de búsqueda y herramientas de traducción. -->
 <html lang="es">
 
 <head>
+    <!-- HEAD: información y recursos que el navegador necesita antes de mostrar el contenido.
+         Aquí van los metadatos, el título, las hojas de estilo, las fuentes y las librerías externas. -->
+    <!-- UTF-8 permite representar correctamente ñ, tildes, símbolos y otros caracteres. -->
     <meta charset="UTF-8">
+    <!-- Hace que el ancho de la página se adapte al ancho real del dispositivo móvil.
+         Sin esta etiqueta, el navegador móvil podría renderizar la página como si fuera de escritorio. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título de la pestaña y texto que suele aparecer como título en resultados del navegador. -->
     <title>ReManga | Compra y Venta de Mangas</title>
 
+    <!-- preconnect intenta preparar la conexión con el servidor de fuentes antes de pedir los archivos. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Segundo dominio desde el que Google Fonts entrega los archivos de fuentes.
+         crossorigin permite realizar la conexión anticipada con la política que requiere ese recurso. -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Descarga Montserrat y Orbitron. rel="stylesheet" indica que el recurso es una hoja de estilos,
+         y display=swap permite mostrar una fuente de reserva mientras se carga la elegida. -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome aporta los iconos que se usan con clases como fa-magnifying-glass y fa-heart.
+         href apunta a un recurso externo; si no carga, los iconos pueden no mostrarse. -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- CSS compartido: diseño general, encabezado, portada, botones, tarjetas y pie de página. -->
     <link rel="stylesheet" href="static/style.css">
+    <!-- Reglas especializadas para la zona desplazable de productos recomendados. -->
     <link rel="stylesheet" href="static/carousel.css">
+    <!-- Estilos reutilizables del sistema de marca: isotipo, logotipo y sus tamaños adaptables. -->
     <link rel="stylesheet" href="static/brand.css">
 
+    <!-- CSS local: esta regla es exclusiva de index.html y complementa los archivos externos.
+         Se usa aquí para fijar el tamaño de las dos piezas de la marca en la portada. -->
     <style>
+        /* ===== Ajustes puntuales de la portada: complementan los estilos compartidos de static/style.css. ===== */
         /* El header del index debe mantener el mismo tamaño de marca en Railway y GitHub Pages. */
         #header .logo .brand-lockup .brand-mark {
             width: 34px !important;
@@ -32,16 +54,38 @@
         }
     </style>
 
+    <!-- Carga el SDK oficial de Supabase. Debe aparecer antes de config.js y del código que usa
+         window.supabase; src indica la URL del archivo JavaScript que se descargará y ejecutará. -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Publica window.REMANGA_SUPABASE_CONFIG con URL, clave publicable y opciones del proyecto.
+         El orden importa: el script siguiente lee esa variable global. -->
     <script src="config.js"></script>
 
     <script>
+        // ===== PROTECCIÓN DE NAVEGACIÓN SEGÚN LA SESIÓN =====
+        // Este script está en el head, por eso se ejecuta antes de construir visualmente el body.
+        // Su objetivo es decidir si el visitante puede permanecer en index.html o debe ir al login.
+        // Revisa si hay una sesión de Supabase o si el visitante eligió entrar como invitado.
+        // Si no se cumple ninguna condición, lo envía a la pantalla de inicio de sesión.
         (async function () {
+            // sessionStorage guarda pequeños datos durante la sesión de esa pestaña.
+            // getItem devuelve texto o null; la comparación estricta con "true" produce un booleano.
+            // No equivale a una cuenta autenticada: solo recuerda que el visitante eligió el modo invitado.
             const guest = sessionStorage.getItem("remangaGuest") === "true";
+            // Lee la configuración que config.js publicó en el objeto global window.
             const config = window.REMANGA_SUPABASE_CONFIG;
 
+            // La variable se crea solo si están presentes todas las dependencias necesarias.
+            // ?. significa "acceder a enabled solo si config no es null/undefined".
+            // && exige que cada condición sea verdadera; si alguna falla, se usa null (más abajo). 
             const supabaseClient = (config?.enabled && window.supabase && config.url && config.publishableKey)
+                // Operador ternario: si la condición anterior se cumple, crea el cliente;
+                // si no se cumple, la parte posterior a ":" asignará null.
+                // createClient conecta la interfaz con el proyecto y configura el manejo de la sesión.
                 ? window.supabase.createClient(config.url, config.publishableKey, {
+                    // Estas opciones controlan el comportamiento de la sesión en el SDK.
+                    // persistSession conserva la sesión, autoRefreshToken renueva tokens cuando corresponde
+                    // y detectSessionInUrl permite detectar datos de sesión en enlaces de autenticación.
                     auth: {
                         persistSession: true,
                         autoRefreshToken: true,
@@ -50,67 +94,120 @@
                 })
                 : null;
 
+            // Cuando hay cliente disponible, consultamos la sesión actual antes de redirigir.
+            // Un if con el propio cliente comprueba que se pudo crear; si es null se saltea la consulta.
             if (supabaseClient) {
+                // await espera a que Auth devuelva el resultado de getSession().
+                // La respuesta tiene data (donde está session) y error (si ocurrió un problema).
+                // La desestructuración extrae esas dos propiedades en variables locales.
                 const { data, error } = await supabaseClient.auth.getSession();
 
+                // Solo se considera una sesión recuperada si no hubo error y data.session existe.
+                // data?.session evita intentar leer session cuando data fuera null o undefined.
                 if (!error && data?.session) {
+                    // Si hay una sesión real, limpiamos la marca de invitado para que no quede
+                    // un estado contradictorio guardado en la pestaña.
                     sessionStorage.removeItem("remangaGuest");
+                    // Termina la función asíncrona: la persona ya tiene sesión y puede ver el inicio.
                     return;
                 }
             }
 
+            // La marca de invitado está en sessionStorage y dura durante la sesión del navegador.
             if (guest) return;
 
+            // replace navega al login y reemplaza esta entrada del historial, para que el botón
+            // "Atrás" no vuelva inmediatamente a esta página protegida.
             window.location.replace("./login.html");
         })();
     </script>
 </head>
 
 <body>
+    <!-- BODY: aquí comienza el contenido visual. A diferencia del head, lo que sigue forma parte
+         de la página que ve y con la que interactúa el visitante. -->
+    <!-- INICIO: página principal, presentación de ReManga, accesos rápidos, productos destacados y suscripción al boletín. -->
 
-<header id="header">
+
+    <!-- ENCABEZADO: identidad de ReManga, navegación y accesos comunes. -->
+    <!-- HEADER: franja común de navegación. id="header" permite que JavaScript y CSS encuentren
+         exactamente esta cabecera; id debe ser único dentro de este documento. -->
+    <header id="header">
+    <!-- Marca clickeable. class="logo" sirve para aplicar estilos; brand-lockup organiza el isotipo
+         y el logotipo en una misma línea. aria-label da un nombre accesible al enlace. -->
     <div class="logo">
         <a href="index.html" class="brand-lockup" aria-label="ReManga">
+            <!-- src indica dónde está el archivo; alt describe la imagen si no carga y para lectores
+                 de pantalla. brand-mark es la clase que CSS usa para darle tamaño al isotipo. -->
             <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
+            <!-- Segundo archivo de marca: el logotipo escrito. Se separa del isotipo para controlar
+                 por CSS la proporción y alineación de cada pieza de manera independiente. -->
             <img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
         </a>
     </div>
 
+    <!-- nav identifica semánticamente el bloque de navegación principal. -->
     <nav>
+        <!-- ul representa una lista sin numeración; cada li contiene un enlace del menú. -->
         <ul>
+            <!-- href es el destino del enlace. active señala mediante CSS cuál es la página actual. -->
             <li><a href="index.html" class="active">Inicio</a></li>
             <li><a href="catalogo.html">Catálogo</a></li>
             <li><a href="vender.html">Vender</a></li>
         </ul>
     </nav>
 
+    <!-- Agrupa las acciones ubicadas a la derecha del encabezado: búsqueda, cuenta y carrito. -->
     <div class="header-right">
+        <!-- Contenedor del buscador global. static/script.js localiza este bloque por .search-box
+             y conecta el input con el botón o la tecla Enter. -->
         <div class="search-box">
+            <!-- input recoge texto. type="text" permite escribir; placeholder es una ayuda visual,
+                 no un valor real del campo. Al escribir aquí, JavaScript podrá leer input.value. -->
             <input type="text" placeholder="Buscar manga...">
+            <!-- type="button" evita que el botón intente enviar un formulario por defecto.
+                 aria-label da un nombre accesible porque el botón contiene solo un icono. -->
             <button type="button" aria-label="Buscar">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
         </div>
 
+        <!-- Accesos rápidos mediante iconos. Los enlaces siguen teniendo destinos normales aunque
+             los iconos se dibujen con Font Awesome. -->
         <div class="header-icons">
+            <!-- href lleva a la página de cuenta; aria-label y title explican el propósito del icono. -->
             <a href="perfil.html" aria-label="Mi cuenta" title="Mi cuenta">
                 <i class="fa-regular fa-user"></i>
             </a>
+            <!-- El carrito tiene una clase para posicionar su contador sobre el icono. -->
             <a href="carrito.html" class="cart-icon-container" aria-label="Carrito">
                 <i class="fa-solid fa-cart-shopping"></i>
+                <!-- El número inicial es un marcador. static/script.js lo reemplaza con la suma de
+                     unidades guardada en localStorage; class sirve para todos los contadores e id
+                     permite referirse a este contador específico. -->
                 <span class="cart-counter" id="cartCounter">0</span>
             </a>
         </div>
     </div>
 </header>
 
-<section class="hero">
+
+    <!-- CONTENIDO PRINCIPAL: portada y presentación de la página de inicio. -->
+    <!-- HERO: primera sección destacada. section agrupa contenido relacionado; hero es la clase
+         visual que CSS convierte en una portada con imagen, texto y botones. -->
+    <section class="hero">
+    <!-- Imagen decorativa de fondo. hero-bg permite estirarla/recortarla desde CSS; si la imagen
+         solo fuera decorativa se podría usar alt="" para que el lector de pantalla la ignore. -->
     <img src="static/fondoinicio.png" class="hero-bg" alt="Banner">
+    <!-- Capa superpuesta para controlar contraste y legibilidad del texto encima de la imagen.
+         Está vacía porque su apariencia se genera mediante CSS, no porque le falte contenido. -->
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <span>COMPRA • VENDE • DESCUBRÍ</span>
+        <!-- h1 es el título principal de esta página; conviene que exista un encabezado principal claro. -->
         <h1>La comunidad definitiva para comprar y vender mangas.</h1>
         <p>Encontrá mangas nuevos y usados al mejor precio.</p>
+        <!-- Agrupa las dos acciones principales y permite distribuirlas juntas con CSS. -->
         <div class="hero-buttons">
             <a href="catalogo.html" class="btn-primary">Comprar</a>
             <a href="vender.html" class="btn-secondary">Vender</a>
@@ -118,6 +215,8 @@
     </div>
 </section>
 
+<!-- BENEFICIOS: cada enlace completo funciona como una tarjeta clickeable hacia una página informativa.
+     aria-label ofrece un nombre accesible para el enlace. -->
 <section class="benefits">
     <a href="envios.html" class="benefit" aria-label="Envíos rápidos">
         <i class="fa-solid fa-truck-fast"></i>
@@ -141,40 +240,66 @@
     </a>
 </section>
 
+<!-- ACCIONES: presenta dos accesos visuales para los recorridos más importantes, comprar y vender. -->
 <section class="actions">
     <div class="action-card"><img src="static/fondo compra.jpg" alt="Comprar"><div class="action-info"><h2>Comprar Mangas</h2><p>Explorá cientos de títulos nuevos y usados.</p><a href="catalogo.html" class="btn-primary">Explorar</a></div></div>
     <div class="action-card"><img src="static/fondo venta.jpg" alt="Vender"><div class="action-info"><h2>Vender Mangas</h2><p>Publicá tus mangas en pocos minutos.</p><a href="vender.html" class="btn-primary">Publicar</a></div></div>
 </section>
 
+<!-- RECOMENDADOS: el espacio para las tarjetas se deja vacío en el HTML porque JavaScript las
+     construye con los registros que obtiene de Supabase. -->
 <section class="recommended">
     <div class="section-title">
         <div><h2>Recomendados</h2><p>Descubrí mangas de nuestra colección.</p></div>
+        <!-- id identifica cada control para que iniciarCarruselRecomendados pueda asociarle el evento click.
+     Las flechas se declaran como botones reales, no como enlaces, porque no navegan a otra página. -->
         <div class="recommended-controls"><button type="button" id="recommendedPrev" aria-label="Mangas anteriores"><i class="fa-solid fa-chevron-left"></i></button><button type="button" id="recommendedNext" aria-label="Mangas siguientes"><i class="fa-solid fa-chevron-right"></i></button></div>
     </div>
+        <!-- El contenedor exterior limita/permite el desplazamiento horizontal.
+         #homeProducts es el punto de inserción: mostrarProductosHome() agrega una tarjeta por producto. -->
     <div class="recommended-carousel"><div class="cards" id="homeProducts"></div></div>
 </section>
 
+<!-- NEWSLETTER: estructura visual del formulario. En el JavaScript actual se valida el correo y
+     se muestra una confirmación local; todavía no se envían esos datos a un servicio de suscripción. -->
 <section class="newsletter">
     <h2>Enterate antes que nadie de las novedades</h2>
     <p>Recibí lanzamientos y ofertas exclusivas.</p>
+    
+    <!-- NEWSLETTER: recoge el correo del visitante para la suscripción. -->
+    <!-- type="email" ofrece validación básica del navegador. Este form no tiene action porque
+         static/script.js intercepta submit con preventDefault(). El botón sin type equivale a submit
+         dentro del formulario y dispara ese evento. -->
     <form><input type="email" placeholder="Tu correo electrónico"><button>Suscribirme</button></form>
 </section>
 
-<footer>
+
+    <!-- PIE DE PÁGINA: enlaces secundarios, redes e información legal. -->
+    <!-- FOOTER: contenido final compartido, separado semánticamente del contenido principal. -->
+    <footer>
+    <!-- Repite la marca en el pie para que el enlace al inicio esté disponible al final del documento. -->
     <div class="footer-logo">
         <a href="index.html" class="brand-lockup" aria-label="ReManga">
             <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
             <img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
         </a>
     </div>
+    <!-- Enlaces secundarios. Cada href es una ruta relativa a otro archivo HTML del mismo sitio. -->
     <div class="footer-links">
         <a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a><a href="carrito.html">Carrito</a>
     </div>
+    <!-- Iconos de redes dibujados por Font Awesome. En este HTML son solo iconos: no están dentro
+         de enlaces y, por tanto, todavía no llevan a perfiles externos. -->
     <div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div>
     <p>© 2026 ReManga - Todos los derechos reservados.</p>
 </footer>
 
-<script src="static/script.js"></script>
+    <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
+    <!-- Carga la lógica común del sitio: buscador, catálogo, tarjetas, carrito, publicar y otros módulos.
+         Se coloca al final del body para que la mayoría del HTML ya exista cuando se inicializa. -->
+    <script src="static/script.js"></script>
+<!-- Módulo de favoritos: complementa las tarjetas generadas por script.js y también escucha
+     cambios del DOM para actualizar botones creados dinámicamente. -->
 <script src="static/favoritos.js"></script>
 
 </body>

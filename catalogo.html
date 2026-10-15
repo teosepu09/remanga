@@ -1,62 +1,172 @@
+<!-- DOCTYPE activa el modo estándar HTML5 del navegador. No es una etiqueta visual: determina
+     las reglas con las que el navegador interpreta el resto del documento. -->
 <!DOCTYPE html>
+<!-- html es el elemento raíz del documento. lang="es" indica el idioma principal; esto ayuda a
+     tecnologías de asistencia, traducción y herramientas que procesan la página. -->
 <html lang="es">
 <head>
+    <!-- HEAD: configura el documento antes de su contenido visible: codificación, título, estilos y fuentes.
+         Estos recursos no son el catálogo en sí; definen cómo se interpreta y se presenta. -->
+<!-- UTF-8 permite representar correctamente letras acentuadas, ñ y otros caracteres. -->
 <meta charset="UTF-8">
+<!-- Ajusta el ancho del documento al ancho físico de la pantalla, especialmente en móviles.
+     Sin viewport el navegador móvil podría calcular el diseño como si fuera una pantalla de escritorio. -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Texto de la pestaña del navegador y título usado habitualmente por marcadores y resultados de búsqueda. -->
 <title>Catálogo | ReManga</title>
+<!-- preconnect intenta preparar la conexión con Google Fonts antes de solicitar sus archivos, reduciendo espera. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- Dominio desde el que se descargan los archivos de fuente. crossorigin permite establecer esa conexión
+     anticipada usando la política de recursos cruzados requerida por el navegador. -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Solicita Montserrat y Orbitron en los grosores especificados. rel="stylesheet" indica que el recurso
+     es una hoja CSS; display=swap permite usar una fuente provisional mientras llega la definitiva. -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome dibuja iconos a partir de clases como fa-magnifying-glass y fa-heart. Si falla la carga,
+     el botón puede seguir existiendo, pero su icono no aparecerá. -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<!-- Hoja de estilos principal del sitio: contiene el diseño compartido de cabecera, botones, catálogo y pie. -->
 <link rel="stylesheet" href="static/style.css">
+<!-- Reglas compartidas para el sistema de marca: combinación, tamaño y adaptación del isotipo y logotipo. -->
 <link rel="stylesheet" href="static/brand.css">
+<!-- CSS escrito en esta misma página. La regla siguiente se limita al tamaño de la marca del header;
+     se suma a las hojas externas y por eso puede sobreescribir reglas generales. -->
 <style>
 #header .logo .brand-lockup .brand-mark { width: 34px !important; height: 34px !important; max-width: 34px !important; min-width: 34px !important; flex: 0 0 34px !important; }
 #header .logo .brand-lockup .brand-wordmark { width: 112px !important; max-width: 112px !important; height: auto !important; }
 </style>
 </head>
+<!-- BODY contiene la interfaz visible e interactiva. Los id de este contenido conectan el HTML con JavaScript;
+     las clases conectan los elementos con las reglas CSS. -->
 <body>
+    <!-- CATÁLOGO: página donde se muestra el conjunto de productos y se permite reducirlo mediante filtros. -->
+
+    <!-- ENCABEZADO: identidad de ReManga, navegación y accesos comunes. -->
+    <!-- HEADER: id="header" identifica de forma única esta cabecera para CSS y para iniciarHeader() en script.js.
+     id es un identificador; class puede compartirse entre muchos elementos. -->
 <header id="header">
+<!-- Bloque visual de la marca. La clase logo activa estilos y el enlace interno permite volver al inicio. -->
 <div class="logo">
+<!-- a crea un enlace. href marca el destino; brand-lockup coloca juntos los archivos de marca;
+     aria-label proporciona un nombre accesible cuando el contenido principal del enlace son imágenes. -->
 <a href="index.html" class="brand-lockup" aria-label="ReManga">
+<!-- src apunta al archivo; alt describe la imagen a lectores de pantalla o si no se carga.
+     brand-mark es la clase a la que CSS aplica el tamaño del isotipo. -->
 <img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark">
+<!-- El logotipo escrito se mantiene como segunda imagen para poder darle tamaño independiente del isotipo. -->
 <img src="static/logotipo.png" alt="ReManga" class="brand-wordmark">
 </a>
 </div>
+<!-- nav identifica un bloque de navegación. ul agrupa sus opciones como lista y cada li contiene un enlace. -->
 <nav><ul>
 <li><a href="index.html">Inicio</a></li>
+<!-- active señala la página actual para resaltarla visualmente en el menú. No cambia el destino del enlace. -->
 <li><a href="catalogo.html" class="active">Catálogo</a></li>
 <li><a href="vender.html">Vender</a></li>
 </ul></nav>
 <div class="header-right">
+<!-- BUSCADOR DE CABECERA:
+     catalogSearch es el id que script.js usa para recuperar este input. El usuario escribe en value;
+     placeholder es solo una pista visual y autocomplete="off" pide al navegador no sugerir búsquedas anteriores.
+     El botón tiene type="button" para que no envíe accidentalmente un formulario.
+     aria-label nombra el botón para lectores de pantalla porque visualmente solo contiene un icono. -->
 <div class="search-box"><input type="text" id="catalogSearch" placeholder="Buscar manga..." autocomplete="off"><button type="button" id="searchButton" aria-label="Buscar"><i class="fa-solid fa-magnifying-glass"></i></button></div>
+<!-- Acciones rápidas de la cabecera: cuenta y carrito. -->
 <div class="header-icons">
+<!-- Enlace a la pantalla de perfil. aria-label y title describen el icono sin texto visible. -->
 <a href="perfil.html" aria-label="Mi cuenta" title="Mi cuenta"><i class="fa-regular fa-user"></i></a>
+<!-- El contador empieza en 0 como marcador. script.js lee localStorage, suma las unidades y actualiza
+     el texto de todos los elementos .cart-counter. La clase identifica cualquier contador; este id identifica uno concreto. -->
 <a href="carrito.html" class="cart-icon-container" aria-label="Carrito"><i class="fa-solid fa-cart-shopping"></i><span class="cart-counter" id="cartCounter">0</span></a>
 </div></div>
 </header>
+
+    <!-- CONTENIDO PRINCIPAL: información y controles propios de esta página. -->
+    <!-- main indica el contenido principal de la página. catalog-page aporta el ámbito CSS para los estilos del catálogo.
+     Se reserva un main principal por documento para mantener la estructura semántica clara. -->
 <main class="catalog-page">
+<!-- CABECERA DEL CATÁLOGO: título y texto introductorio. Esta sección es contenido estático;
+     los registros reales se insertan más abajo en #catalogGrid. -->
 <section class="catalog-hero"><div class="catalog-hero-content"><span class="catalog-eyebrow">REMANGA STORE</span><h1>Catálogo</h1><p>Encontrá tu próximo manga entre nuestra selección de títulos nuevos y usados.</p></div></section>
+<!-- ZONA OPERATIVA DEL CATÁLOGO: reúne el panel lateral de filtros y la columna de resultados. -->
 <section class="catalog-container">
+<!-- aside funciona como panel complementario (los filtros). El id filters permitiría localizar todo el panel;
+     la clase filters aplica su diseño. -->
 <aside class="filters" id="filters">
+<!-- clearFilters conecta con configurarLimpiarFiltros() en script.js. Al pulsarlo se restablecen buscadores,
+     casillas, precio y orden. type=button evita un envío de formulario. -->
 <div class="filters-header"><h2>Filtrar</h2><button type="button" id="clearFilters">Limpiar</button></div>
-<div class="filter-group"><label for="filterSearch">Buscar</label><div class="filter-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="filterSearch" placeholder="Nombre del manga..."></div></div>
-<div class="filter-group"><h3>Estado</h3><label class="check-option"><input type="checkbox" name="estado" value="nuevo" id="filterNuevo"><span class="custom-check"></span><span>Nuevo</span></label><label class="check-option"><input type="checkbox" name="estado" value="usado" id="filterUsado"><span class="custom-check"></span><span>Usado</span></label></div>
-<div class="filter-group"><h3>Precio máximo</h3><div class="price-value"><span>Hasta</span><strong id="priceDisplay">$50.000</strong></div><input type="range" id="priceFilter" min="0" max="50000" value="50000" step="500"><div class="price-range"><span>$0</span><span>$50.000</span></div></div>
+<!-- Grupo de búsqueda. label for="filterSearch" enlaza la etiqueta con el input que tenga ese id:
+     al pulsar el texto de la etiqueta, el navegador enfoca el campo. -->
+<div class="filter-group"><label for="filterSearch">Buscar</label><!-- filterSearch es el segundo campo de búsqueda, dentro del panel lateral. script.js mantiene su value sincronizado
+     con catalogSearch y vuelve a ejecutar mostrarProductosFiltrados() cuando cambia. El icono es decorativo. -->
+<div class="filter-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="filterSearch" placeholder="Nombre del manga..."></div></div>
+<!-- FILTRO DE ESTADO: cada checkbox puede activarse de manera independiente, por lo que se puede mostrar
+     solo Nuevo, solo Usado o ambos. Si no se marca ninguno, el código interpreta que no se filtra por estado. -->
+<div class="filter-group"><h3>Estado</h3><label class="check-option"><!-- checkbox crea una casilla. checked indica si está seleccionada; value="nuevo" describe su valor;
+     id="filterNuevo" permite que JavaScript compruebe su propiedad checked. name agrupa ambos filtros conceptualmente. -->
+<input type="checkbox" name="estado" value="nuevo" id="filterNuevo"><span class="custom-check"></span><span>Nuevo</span></label><label class="check-option"><!-- Segunda opción de estado, paralela a la de Nuevo. Su id separado permite leer su estado por separado. -->
+<input type="checkbox" name="estado" value="usado" id="filterUsado"><span class="custom-check"></span><span>Usado</span></label></div>
+<!-- FILTRO DE PRECIO: limita el precio superior permitido, no un rango con mínimo y máximo. -->
+<div class="filter-group"><h3>Precio máximo</h3><div class="price-value"><span>Hasta</span><!-- Texto visible del límite elegido. JavaScript lo actualiza al mover el slider; es una etiqueta, no el valor que filtra. -->
+<strong id="priceDisplay">$50.000</strong></div><!-- range dibuja un deslizador. min/max son sus extremos, value es el valor inicial y step es el salto entre valores.
+     script.js convierte value a número y descarta productos cuyo precio supere ese límite. -->
+<input type="range" id="priceFilter" min="0" max="50000" value="50000" step="500"><div class="price-range"><span>$0</span><span>$50.000</span></div></div>
+<!-- Botón visual para aplicar filtros. En el script.js actual no se registra un listener para #applyFilters:
+     la búsqueda, las casillas y el slider vuelven a filtrar al cambiar. Se deja anotado para identificarlo al estudiar,
+     sin cambiar ahora el comportamiento solicitado. -->
 <button type="button" class="apply-filters" id="applyFilters">Aplicar filtros</button>
 </aside>
+<!-- Columna de resultados: contiene la barra de ordenamiento, las tarjetas y los estados de carga/error/vacío. -->
 <div class="catalog-products">
-<div class="catalog-toolbar"><div class="results-count"><span id="resultsCount">8 productos encontrados</span></div><div class="catalog-sort"><label for="sortProducts">Ordenar:</label><select id="sortProducts"><option value="default">Recomendados</option><option value="price-low">Precio: menor a mayor</option><option value="price-high">Precio: mayor a menor</option><option value="name">Nombre A-Z</option></select></div></div>
+<!-- Barra superior de resultados: contador de coincidencias y selector de orden. -->
+<div class="catalog-toolbar"><div class="results-count"><!-- Texto inicial de reserva; al cargar datos, actualizarContadorResultados() reemplaza este texto con la cantidad real.
+     El número 8 escrito aquí no garantiza que Supabase tenga ocho productos. -->
+<span id="resultsCount">8 productos encontrados</span></div><div class="catalog-sort"><!-- for enlaza la etiqueta con el select que tiene id="sortProducts". -->
+<label for="sortProducts">Ordenar:</label><!-- Este select entrega a JavaScript el valor de la opción elegida. Los valores internos de option son claves
+     que el código entiende; el texto visible es lo que lee la persona. -->
+<select id="sortProducts"><!-- default no activa orden por precio ni por nombre; el código devuelve la lista en el orden recibido. -->
+<option value="default">Recomendados</option><!-- price-low se interpreta en ordenarProductosCatalogo() como precio ascendente. -->
+<option value="price-low">Precio: menor a mayor</option><!-- price-high se interpreta como precio descendente. -->
+<option value="price-high">Precio: mayor a menor</option><!-- name activa una comparación alfabética de títulos mediante localeCompare en JavaScript. -->
+<option value="name">Nombre A-Z</option></select></div></div>
+<!-- CONTENEDOR DINÁMICO: queda vacío en el HTML. iniciarCatalogo() obtiene los registros de Supabase,
+     y mostrarProductos() crea una tarjeta HTML por cada producto que pasa los filtros. -->
 <div class="catalog-grid" id="catalogGrid"></div>
+<!-- ESTADO DE CARGA: script.js muestra este bloque mientras espera la consulta y lo oculta al terminar.
+     No contiene los productos, solo informa visualmente que están cargando. -->
 <div class="catalog-loading" id="catalogLoading"><i class="fa-solid fa-spinner"></i><p>Cargando mangas...</p></div>
-<div class="no-results" id="noResults"><i class="fa-solid fa-book-open"></i><h2>No encontramos mangas</h2><p>Probá modificando los filtros o buscando otro título.</p><button type="button" id="resetSearch">Ver todos los mangas</button></div>
+<!-- ESTADO SIN RESULTADOS O DE ERROR. La clase show controla su visibilidad; el código también cambia sus textos
+     cuando falla la carga de datos. Una lista vacía y un error de conexión son situaciones diferentes. -->
+<div class="no-results" id="noResults"><i class="fa-solid fa-book-open"></i><h2>No encontramos mangas</h2><p>Probá modificando los filtros o buscando otro título.</p><!-- resetSearch vuelve a llamar a limpiarFiltros() para quitar la búsqueda y filtros activos. -->
+<button type="button" id="resetSearch">Ver todos los mangas</button></div>
 </div></section></main>
-<section class="newsletter"><h2>Enterate antes que nadie de las novedades</h2><p>Recibí lanzamientos y ofertas exclusivas.</p><form><input type="email" placeholder="Tu correo electrónico"><button type="submit">Suscribirme</button></form></section>
+<!-- NEWSLETTER: formulario decorativo/funcional en el estado actual. El script valida el correo y muestra un mensaje,
+     pero no lo envía a una tabla de Supabase ni a un proveedor de correo. -->
+<section class="newsletter"><h2>Enterate antes que nadie de las novedades</h2><p>Recibí lanzamientos y ofertas exclusivas.</p>
+    <!-- FORMULARIO DE NEWSLETTER: los campos capturan un correo para la confirmación de la interfaz. -->
+    <!-- type=email ofrece validación básica del formato del correo. El submit activa iniciarNewsletter() en script.js,
+     donde preventDefault impide la recarga y se muestra el mensaje local de confirmación. -->
+<form><input type="email" placeholder="Tu correo electrónico"><button type="submit">Suscribirme</button></form></section>
+
+    <!-- PIE DE PÁGINA: enlaces secundarios, redes e información legal. -->
+    <!-- FOOTER: cierre semántico del documento; contiene enlaces secundarios y datos de la marca. -->
 <footer>
 <div class="footer-logo"><a href="index.html" class="brand-lockup" aria-label="ReManga"><img src="static/isotipo sin fondo.png" alt="Isotipo ReManga" class="brand-mark"><img src="static/logotipo.png" alt="ReManga" class="brand-wordmark"></a></div>
+<!-- Navegación repetida al pie. Los href son rutas relativas a otros archivos del mismo sitio. -->
 <div class="footer-links"><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="vender.html">Vender</a></div>
+<!-- Estos elementos son iconos, no enlaces: en esta versión no tienen href para abrir perfiles sociales. -->
 <div class="footer-social"><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-x-twitter"></i></div>
 <p>© 2026 ReManga - Todos los derechos reservados.</p>
 </footer>
-<script src="config.js"></script><script src="static/script.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="static/favoritos.js"></script>
+    <!-- JAVASCRIPT: dependencias y scripts que añaden comportamiento a la página. -->
+    <!-- config.js define la configuración de Supabase en window. Se carga de forma síncrona en el orden del documento. -->
+<script src="config.js"></script><!-- script.js registra la inicialización para DOMContentLoaded. Aunque el SDK externo aparece después en este HTML,
+     el navegador ejecuta los scripts clásicos en orden y DOMContentLoaded ocurre después de procesarlos todos;
+     por eso la inicialización registrada puede encontrar el SDK si cargó correctamente. -->
+<script src="static/script.js"></script><!-- SDK de Supabase para el navegador. favoritos.js y el callback de inicialización de script.js lo necesitan
+     a través de window.supabase. Si la CDN no carga, la conexión de datos no puede iniciarse. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><!-- Inicializa el módulo de favoritos. Usa los botones .favorite-button y sus data-product-id para enlazar
+     las tarjetas del catálogo con las filas de la tabla favoritos o con el almacenamiento local de invitados. -->
+<script src="static/favoritos.js"></script>
 </body></html>

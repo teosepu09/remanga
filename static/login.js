@@ -2,6 +2,7 @@
 // ReManga - Autenticación con Supabase
 // =========================================================
 
+// Espera el DOM antes de buscar los campos del formulario y conectar sus eventos.
 document.addEventListener("DOMContentLoaded", async () => {
     const loginForm = document.getElementById("loginForm");
     const passwordInput = document.getElementById("password");
@@ -10,6 +11,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const rememberInput = document.getElementById("remember");
     const authMessage = document.getElementById("authMessage");
 
+    // ===== CLIENTE DE SUPABASE AUTH =====
+    // Auth administra la sesión y valida las credenciales; este archivo solo coordina la interfaz.
+    // config.js debe haberse cargado antes que este archivo; publica sus valores en window.
+    // Si falta la configuración o la librería, no se puede iniciar sesión desde esta página.
     const config = window.REMANGA_SUPABASE_CONFIG;
     let supabaseClient = null;
 
@@ -27,6 +32,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error creando el cliente de Supabase:", error);
     }
 
+    // ===== MENSAJES DE ESTADO =====
+    // Centraliza el texto y la clase visual del aviso para evitar repetir ese código.
+    /**
+     * Muestra un aviso dentro de la pantalla de acceso.
+     * - mensaje: texto visible; tipo: clase visual.
+     * - No devuelve valor.
+     */
     function mostrarMensaje(mensaje, tipo = "error") {
         if (!authMessage) return;
         authMessage.textContent = mensaje;
@@ -37,7 +49,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (supabaseClient) {
         try {
             const { data, error } = await supabaseClient.auth.getSession();
-            if (error) {
+            // Los errores de autenticación pueden significar credenciales incorrectas, cuenta no confirmada
+    // u otro problema del proveedor. Se muestra un mensaje sin exponer detalles internos sensibles.
+    if (error) {
                 console.error("Error al recuperar la sesión:", error);
             }
             if (data?.session) {
@@ -65,6 +79,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // El enlace de recuperación es un link normal hacia recuperar.html.
     // No se intercepta con JavaScript para permitir la navegación.
 
+    // ===== ACCESO COMO INVITADO =====
+    // Esta ruta permite navegar sin iniciar una sesión autenticada.
     // Continuar como invitado.
     if (guestButton) {
         guestButton.addEventListener("click", (event) => {
@@ -75,6 +91,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+    // ===== ENVÍO DEL FORMULARIO =====
+    // El evento de envío evita recargar la página y pasa el correo/contraseña a Supabase Auth.
     // Login real mediante Supabase Auth.
     if (loginForm) {
         loginForm.addEventListener("submit", async (event) => {
@@ -86,7 +104,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const usuarioEl = document.getElementById("usuario");
-            const email = usuarioEl ? usuarioEl.value.trim() : "";
+            // El correo y la contraseña se leen de los controles al enviar; trim quita espacios accidentales del correo.
+const email = usuarioEl ? usuarioEl.value.trim() : "";
             const password = passwordInput ? passwordInput.value : "";
 
             if (!email || !password) {

@@ -2,11 +2,14 @@
 // ReManga - Recuperación de contraseña
 // =========================================================
 
+// Espera a que el formulario exista para conectar la solicitud de recuperación.
 document.addEventListener("DOMContentLoaded", async () => {
     const form = document.getElementById("recoveryForm");
     const emailInput = document.getElementById("email");
     const message = document.getElementById("authMessage");
 
+    // ===== CONFIGURACIÓN DE AUTENTICACIÓN =====
+    // Se necesita un cliente de Supabase para enviar el correo de recuperación.
     const config = window.REMANGA_SUPABASE_CONFIG;
     const supabaseClient = (config?.enabled && window.supabase && config.url && config.publishableKey)
         ? window.supabase.createClient(config.url, config.publishableKey, {
@@ -18,6 +21,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
         : null;
 
+    // ===== MENSAJES PARA EL USUARIO =====
+    /**
+     * Muestra el resultado de solicitar un correo de recuperación.
+     * - texto: mensaje; tipo: clase visual.
+     * - No devuelve valor.
+     */
     function mostrarMensaje(texto, tipo = "error") {
         if (!message) return;
         message.textContent = texto;
@@ -31,10 +40,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!form) return;
 
-    form.addEventListener("submit", async (event) => {
+    // ===== SOLICITAR EL ENLACE =====
+        // El correo contiene el enlace que devolverá al usuario a restablecer.html.
+        form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const email = emailInput?.value.trim() || "";
+        // Correo escrito por el usuario: Supabase lo usa para iniciar el flujo de recuperación.
+const email = emailInput?.value.trim() || "";
 
         if (!email || !email.includes("@")) {
             mostrarMensaje("Ingresá un correo electrónico válido.");
@@ -50,7 +62,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const redirectUrl = `${window.location.origin}${window.location.pathname.replace(/recuperar\.html$/, "restablecer.html")}`;
 
-        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+        // Supabase envía el flujo de recuperación al correo. redirectTo define a qué página vuelve
+    // el enlace; esa URL también debe estar permitida en la configuración de Auth del proyecto.
+    // Solicita el correo de recuperación. redirectTo debe estar permitido en la configuración de URLs de Auth.
+const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
             redirectTo: redirectUrl
         });
 
